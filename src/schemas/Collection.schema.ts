@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, ObjectId } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export type CollectionDocument = HydratedDocument<Collection>;
 
@@ -8,14 +8,16 @@ export class Collection {
     @Prop({
         required: true,
         ref: "Class",
+        type: Types.ObjectId,
     })
-    class: ObjectId;
+    class: Types.ObjectId;
 
     @Prop({
         required: true,
         ref: "Parent",
+        type: Types.ObjectId,
     })
-    creator: ObjectId;
+    creator: Types.ObjectId;
 
     @Prop({
         required: true,

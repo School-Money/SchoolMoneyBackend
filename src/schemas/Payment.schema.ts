@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export type PaymentDocument = HydratedDocument<Payment>;
 
@@ -8,20 +8,23 @@ export class Payment {
     @Prop({
         required: true,
         ref: "Collection",
+        type: Types.ObjectId,
     })
-    collection: string;
+    collection: Types.ObjectId;
 
     @Prop({
         required: true,
         ref: "Parent",
+        type: Types.ObjectId,
     })
-    parent: string;
+    parent: Types.ObjectId;
 
     @Prop({
         required: true,
         ref: "Child",
+        type: Types.ObjectId,
     })
-    child: string;
+    child: Types.ObjectId;
 
     @Prop({
         required: true,

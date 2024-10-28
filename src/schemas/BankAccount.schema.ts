@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, ObjectId } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export type BankAccountDocument = HydratedDocument<BankAccount>;
 
@@ -19,8 +19,9 @@ export class BankAccount {
     @Prop({
         ref: "User",
         required: true,
+        type: Types.ObjectId,
     })
-    owner: ObjectId;
+    owner: Types.ObjectId;
 }
 
 export const BankAccountSchema = SchemaFactory.createForClass(BankAccount);

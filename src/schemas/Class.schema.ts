@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, ObjectId } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export type ClassDocument = HydratedDocument<Class>;
 
@@ -15,8 +15,9 @@ export class Class {
     @Prop({
         required: true,
         ref: "Parent",
+        type: Types.ObjectId,
     })
-    treasurer: ObjectId;
+    treasurer: Types.ObjectId;
 
     @Prop({
         default: Date.now(),

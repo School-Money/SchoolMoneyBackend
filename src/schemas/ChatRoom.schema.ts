@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, ObjectId } from "mongoose";
+import { HydratedDocument, Types } from "mongoose";
 
 export type ChatRoomDocument = HydratedDocument<ChatRoom>;
 
@@ -12,12 +12,20 @@ export class ChatRoom {
     })
     type: string;
 
-    @Prop()
-    participants: ObjectId[];
+    @Prop({
+        type: Types.ObjectId,
+    })
+    participants: Types.ObjectId[];
 
-    @Prop()
+    @Prop({
+        type: {
+            sender: Types.ObjectId,
+            content: String,
+            createdAt: Date,
+        },
+    })
     messages: {
-        sender: ObjectId;
+        sender: Types.ObjectId;
         content: string;
         createdAt: Date;
     }[];
