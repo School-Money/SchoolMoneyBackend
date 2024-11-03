@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { AuthModule } from "./auth/auth.module";
+import { ParentModule } from './parent/parent.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthModule } from "./auth/auth.module";
       }),
     }),
     AuthModule,
+    ParentModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
