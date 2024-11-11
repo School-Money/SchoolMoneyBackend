@@ -2,7 +2,6 @@ import { Body, Controller, Get, Patch, Post, Req, UseGuards } from '@nestjs/comm
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CollectionPayload, CollectionUpdate } from 'src/interfaces/collection.interface';
 import { CollectionService } from './collection.service';
-import { Collection } from 'mongoose';
 
 @UseGuards(AuthGuard)
 @Controller('collections')
