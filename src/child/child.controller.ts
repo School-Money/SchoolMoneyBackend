@@ -6,6 +6,7 @@ import {
   Request,
   Get,
   Delete,
+  Patch,
 } from '@nestjs/common';
 import { ChildService } from './child.service';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -20,14 +21,14 @@ import {
 export class ChildController {
   constructor(private readonly childService: ChildService) {}
 
-  @Post('create')
+  @Post('/')
   async createChild(@Request() req, @Body() classInfo: ChildDetails) {
     const { id: parentId } = req.user;
     const childCreate: ChildCreate = { ...classInfo, parentId };
     return await this.childService.create(childCreate);
   }
 
-  @Post('update')
+  @Patch('/')
   async updateChild(
     @Request() req,
     @Body() childDetails: Partial<ChildDetails> & { childId: string },
