@@ -24,7 +24,7 @@ export class ChildService {
       if (!parent) {
         throw new NotFoundException('Parent not found');
       }
-      const clazz = await this.classModel.findById(childCreate.classId);
+      const clazz = await this.classModel.findById(childCreate.inviteCode);
       if (!clazz) {
         throw new NotFoundException('Class not found');
       }

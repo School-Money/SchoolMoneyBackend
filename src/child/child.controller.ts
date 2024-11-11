@@ -12,8 +12,9 @@ import { ChildService } from './child.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import {
   ChildCreate,
-  ChildDetails,
+  ChildCreateDetails,
   ChildUpdate,
+  ChildUpdateDetails,
 } from 'src/interfaces/child.interface';
 
 @Controller('children')
@@ -22,17 +23,14 @@ export class ChildController {
   constructor(private readonly childService: ChildService) {}
 
   @Post()
-  async createChild(@Request() req, @Body() classInfo: ChildDetails) {
+  async createChild(@Request() req, @Body() classInfo: ChildCreateDetails) {
     const { id: parentId } = req.user;
     const childCreate: ChildCreate = { ...classInfo, parentId };
     return await this.childService.create(childCreate);
   }
 
   @Patch()
-  async updateChild(
-    @Request() req,
-    @Body() childDetails: Partial<ChildDetails> & { childId: string },
-  ) {
+  async updateChild(@Request() req, @Body() childDetails: ChildUpdateDetails) {
     const { id: parentId } = req.user;
     const childUpdate: ChildUpdate = { ...childDetails, parentId };
     return await this.childService.update(childUpdate);
