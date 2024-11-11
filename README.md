@@ -49,11 +49,17 @@ $ npm run start:prod
 
 Here you can find all endpoint that are currently done and you can use them.
 
-## Collection
-
-| Path           | HTTP Method | Status |
-| -------------- | ----------- | ------ |
-| /auth/register | POST        | ✅     |
-| /auth/login    | POST        | ✅     |
-| /collections   | POST        | ✅     |
-| /collections   | PATCH       | ✅     |
+| Path            | HTTP Method | Status |
+| --------------- | ----------- | ------ |
+| /auth/register  | POST        | ✅     |
+| /auth/login     | POST        | ✅     |
+| /collections    | POST        | ✅     |
+| /collections    | PATCH       | ✅     |
+| /collections    | GET         | ✅     |
+| /classes        | POST        | ✅     |
+| /classes        | GET         | ✅     |
+| /classes/invite | GET         | ✅     |
+| /children       | POST        | ✅     |
+| /children       | PATCH       | ✅     |
+| /children       | GET         | ✅     |
+| /children       | DELETE      | ✅     |
