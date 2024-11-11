@@ -3,5 +3,5 @@ export interface ClassDetails {
 }
 
 export interface ClassCreate extends ClassDetails {
-  treasurer: string;
+  treasurerId: string;
 }

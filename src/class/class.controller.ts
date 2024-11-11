@@ -10,8 +10,8 @@ export class ClassController {
 
   @Post('create')
   async createClass(@Request() req, @Body() classInfo: ClassDetails) {
-    const { id } = req.user;
-    const classCreate: ClassCreate = { ...classInfo, treasurer: id };
+    const { id: treasurerId } = req.user;
+    const classCreate: ClassCreate = { ...classInfo, treasurerId };
     return this.classService.create(classCreate);
   }
 }

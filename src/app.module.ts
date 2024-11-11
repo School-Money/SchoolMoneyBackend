@@ -8,6 +8,7 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { ParentModule } from './parent/parent.module';
 import { ClassModule } from './class/class.module';
+import { ChildModule } from './child/child.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ClassModule } from './class/class.module';
     AuthModule,
     ParentModule,
     ClassModule,
+    ChildModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
