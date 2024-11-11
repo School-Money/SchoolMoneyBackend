@@ -84,8 +84,6 @@ export class CollectionService {
                 throw new NotFoundException('Parent not found');
             }
 
-            console.log(parent);
-
             const parentChilds = await this.childModel.find({ parent: parent._id });
             if (!parentChilds.length) {
                 throw new NotFoundException('No child found for this parent');
