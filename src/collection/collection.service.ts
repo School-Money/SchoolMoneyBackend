@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { CollectionPayload } from 'src/interfaces/collection.interface';
+import { Model, Types } from 'mongoose';
+import { CollectionPayload, CollectionUpdate } from 'src/interfaces/collection.interface';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
 import { Parent } from 'src/schemas/Parent.schema';
@@ -17,16 +17,60 @@ export class CollectionService {
         private readonly classModel: Model<Class>,
     ) {}
 
-    create(payload: CollectionPayload, parentId: string): Promise<Collection> {
-        const parent = this.parentModel.findById(parentId);
-        if (!parent) {
-            throw new Error('Parent not found');
+    async create(payload: CollectionPayload, parentId: string): Promise<Collection> {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            }
+
+            const classDoc = await this.classModel.findById(payload.classId);
+            if (!classDoc) {
+                throw new NotFoundException('Class not found');
+            }
+
+            return await this.collectionModel.create({
+                ...payload,
+                startDate: new Date(payload.startDate * 1000),
+                endDate: new Date(payload.endDate * 1000),
+                creator: parent._id,
+                class: classDoc._id,
+                currentAmount: 0,
+            });
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
         }
-        const classId = payload.classId;
-        const classDoc = this.classModel.findById(classId);
-        if (!classDoc) {
-            throw new Error('Class not found');
+    }
+
+    async updateCollecion(payload: CollectionUpdate, parentId: string): Promise<Collection> {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            }
+
+            const collection = await this.collectionModel.findById(payload.collectionId);
+            if (!collection) {
+                throw new NotFoundException('Collection not found');
+            }
+
+            if (collection.creator.toString() !== parent._id.toString()) {
+                throw new UnauthorizedException('You are not the creator of this collection');
+            }
+
+            await collection.updateOne({
+                ...payload,
+            });
+
+            return collection;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
         }
-        return this.collectionModel.create(payload);
     }
 }
