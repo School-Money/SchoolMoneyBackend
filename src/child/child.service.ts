@@ -30,10 +30,14 @@ export class ChildService {
       }
       return await this.childModel.create({
         ...childCreate,
+        birthDate: new Date(childCreate.birthDate * 1000),
         parent: parent._id,
         class: clazz._id,
       });
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to create child: ${error.message}`,
       );
@@ -60,6 +64,9 @@ export class ChildService {
         class: clazz._id,
       });
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to update child: ${error.message}`,
       );
@@ -74,6 +81,9 @@ export class ChildService {
       }
       return await this.childModel.find({ parent: parent._id });
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to get children: ${error.message}`,
       );
@@ -92,6 +102,9 @@ export class ChildService {
       }
       return await this.childModel.findByIdAndDelete(childDetails.childId);
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to delete child: ${error.message}`,
       );

@@ -11,7 +11,8 @@ export interface ChildUpdateDetails {
   classId: string;
   firstName?: string;
   lastName?: string;
-  birthDate?: Date;
+  //unix timestamp
+  birthDate?: number;
   avatar?: string;
 }
 
@@ -19,6 +20,7 @@ export interface ChildCreateDetails {
   inviteCode: string;
   firstName: string;
   lastName: string;
-  birthDate: Date;
+  //unix timestamp
+  birthDate?: number;
   avatar: string;
 }
