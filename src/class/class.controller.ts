@@ -27,4 +27,10 @@ export class ClassController {
     const { id: parentId } = req.user;
     return await this.classService.get(parentId);
   }
+
+  @Get('invite')
+  async getInviteCode(@Request() req) {
+    const { id: treasurerId } = req.user;
+    return await this.classService.getInviteCode(treasurerId);
+  }
 }

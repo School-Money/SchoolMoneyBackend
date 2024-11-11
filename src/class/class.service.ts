@@ -52,4 +52,22 @@ export class ClassService {
       );
     }
   }
+
+  async getInviteCode(treasurerId: string) {
+    try {
+      const treasurer = await this.parentModel.findById(treasurerId);
+      if (!treasurer) {
+        throw new NotFoundException('Treasurer not found');
+      }
+      const clazz = await this.classModel.findOne({ treasurer: treasurer._id });
+      if (!clazz) {
+        throw new NotFoundException('Class not found');
+      }
+      return clazz._id;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to get invite code: ${error.message}`,
+      );
+    }
+  }
 }
