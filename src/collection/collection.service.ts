@@ -1,7 +1,14 @@
-import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CollectionPayload, CollectionUpdate } from 'src/interfaces/collection.interface';
+import { BankAccount } from 'src/schemas/BankAccount.schema';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
@@ -18,6 +25,8 @@ export class CollectionService {
         private readonly classModel: Model<Class>,
         @InjectModel(Child.name)
         private readonly childModel: Model<Child>,
+        @InjectModel(BankAccount.name)
+        private readonly bankAccountModel: Model<BankAccount>,
     ) {}
 
     async create(payload: CollectionPayload, parentId: string): Promise<Collection> {
@@ -32,14 +41,23 @@ export class CollectionService {
                 throw new NotFoundException('Class not found');
             }
 
-            return await this.collectionModel.create({
+            const bankAccount = await this.bankAccountModel.create({});
+            if (!bankAccount) {
+                throw new BadRequestException('Failed to create bank account');
+            }
+
+            const newCollection = await this.collectionModel.create({
                 ...payload,
                 startDate: new Date(payload.startDate * 1000),
                 endDate: new Date(payload.endDate * 1000),
                 creator: parent._id,
                 class: classDoc._id,
-                currentAmount: 0,
+                bankAccount: bankAccount._id,
             });
+
+            await this.bankAccountModel.updateOne({ _id: bankAccount._id }, { owner: newCollection._id });
+
+            return newCollection;
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);

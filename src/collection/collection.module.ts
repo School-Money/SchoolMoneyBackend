@@ -6,6 +6,7 @@ import { Collection, CollectionSchema } from 'src/schemas/Collection.schema';
 import { Parent, ParentSchema } from 'src/schemas/Parent.schema';
 import { Class, ClassSchema } from 'src/schemas/Class.schema';
 import { Child, ChildSchema } from 'src/schemas/Child.schema';
+import { BankAccount, BankAccountSchema } from 'src/schemas/BankAccount.schema';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { Child, ChildSchema } from 'src/schemas/Child.schema';
             { name: Parent.name, schema: ParentSchema },
             { name: Class.name, schema: ClassSchema },
             { name: Child.name, schema: ChildSchema },
+            { name: BankAccount.name, schema: BankAccountSchema },
         ]),
     ],
     controllers: [CollectionController],
