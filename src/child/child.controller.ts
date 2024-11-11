@@ -21,14 +21,14 @@ import {
 export class ChildController {
   constructor(private readonly childService: ChildService) {}
 
-  @Post('/')
+  @Post()
   async createChild(@Request() req, @Body() classInfo: ChildDetails) {
     const { id: parentId } = req.user;
     const childCreate: ChildCreate = { ...classInfo, parentId };
     return await this.childService.create(childCreate);
   }
 
-  @Patch('/')
+  @Patch()
   async updateChild(
     @Request() req,
     @Body() childDetails: Partial<ChildDetails> & { childId: string },
@@ -38,13 +38,13 @@ export class ChildController {
     return await this.childService.update(childUpdate);
   }
 
-  @Get('/')
+  @Get()
   async getMyChildren(@Request() req) {
     const { id: parentId } = req.user;
     return await this.childService.get(parentId);
   }
 
-  @Delete('/')
+  @Delete()
   async deleteChild(@Request() req, @Body() childDetails: { childId: string }) {
     const { id: parentId } = req.user;
     return await this.childService.delete({ ...childDetails, parentId });

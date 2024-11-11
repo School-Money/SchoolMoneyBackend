@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClassCreate } from 'src/interfaces/class.interface';
@@ -15,25 +19,37 @@ export class ClassService {
   ) {}
 
   async create(classInfo: ClassCreate) {
-    const treasurer = await this.parentModel.findById(classInfo.treasurerId);
-    if (!treasurer) {
-      throw new NotFoundException('Treasurer not found');
+    try {
+      const treasurer = await this.parentModel.findById(classInfo.treasurerId);
+      if (!treasurer) {
+        throw new NotFoundException('Treasurer not found');
+      }
+      return this.classModel.create({ ...classInfo, treasurer: treasurer._id });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to create class: ${error.message}`,
+      );
     }
-    return this.classModel.create({ ...classInfo, treasurer: treasurer._id });
   }
 
   async get(parentId: string) {
-    const parent = await this.parentModel.findById(parentId);
-    if (!parent) {
-      throw new NotFoundException('Parent not found');
+    try {
+      const parent = await this.parentModel.findById(parentId);
+      if (!parent) {
+        throw new NotFoundException('Parent not found');
+      }
+      const myChildren = await this.childModel.find({ parent: parent._id });
+      if (!myChildren.length) {
+        return [];
+      }
+      const myClasses = await this.classModel.find({
+        _id: { $in: myChildren.map((child) => child.class) },
+      });
+      return myClasses;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to get classes: ${error.message}`,
+      );
     }
-    const myChildren = await this.childModel.find({ parent: parent._id });
-    if (!myChildren.length) {
-      return [];
-    }
-    const myClasses = await this.classModel.find({
-      _id: { $in: myChildren.map((child) => child.class) },
-    });
-    return myClasses;
   }
 }
