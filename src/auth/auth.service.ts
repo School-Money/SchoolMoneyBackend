@@ -10,17 +10,16 @@ import { ParentService } from 'src/parent/parent.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private parentService: ParentService,
-    private jwtService: JwtService,
+    private readonly parentService: ParentService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async registerUser(payload: ParentRegister): Promise<{ message: string }> {
-    const { email, password, repeatPassword, firstName, lastName } = payload;
+    const { email, password, firstName, lastName } = payload;
     try {
       await this.parentService.create({
         email,
         password,
-        repeatPassword,
         firstName,
         lastName,
       });
@@ -37,7 +36,6 @@ export class AuthService {
   async loginUser(payload: ParentLogin): Promise<{ accessToken: string }> {
     const { email, password } = payload;
     const parent = await this.parentService.findOne(email);
-    console.log(parent);
     if (!parent || parent.password !== password) {
       throw new UnauthorizedException('Invalid credentials');
     }
