@@ -8,9 +8,7 @@ import { BankAccount, BankAccountSchema } from 'src/schemas/BankAccount.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Parent.name, schema: ParentSchema }]),
-    MongooseModule.forFeature([
-      { name: BankAccount.name, schema: BankAccountSchema },
-    ]),
+    MongooseModule.forFeature([{ name: BankAccount.name, schema: BankAccountSchema }]),
   ],
   providers: [ParentService],
   controllers: [ParentController],
