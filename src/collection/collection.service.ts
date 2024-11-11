@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException, NotFoundException, Unauthoriz
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { CollectionPayload, CollectionUpdate } from 'src/interfaces/collection.interface';
+import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
 import { Parent } from 'src/schemas/Parent.schema';
@@ -15,6 +16,8 @@ export class CollectionService {
         private readonly parentModel: Model<Parent>,
         @InjectModel(Class.name)
         private readonly classModel: Model<Class>,
+        @InjectModel(Child.name)
+        private readonly childModel: Model<Child>,
     ) {}
 
     async create(payload: CollectionPayload, parentId: string): Promise<Collection> {
@@ -66,6 +69,39 @@ export class CollectionService {
             });
 
             return collection;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
+        }
+    }
+
+    async getCollections(parentId: string): Promise<Collection[]> {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            }
+
+            const parentChilds = await this.childModel.find({ parent: parent._id.toString() });
+            if (!parentChilds.length) {
+                throw new NotFoundException('No child found for this parent');
+            }
+
+            const parentChildClasses = parentChilds.map((child) => child.class);
+            const classesIds = parentChildClasses.map((classId) => new Types.ObjectId(classId));
+            if (!classesIds.length) {
+                throw new NotFoundException('No class found for this parent');
+            }
+
+            const res = await this.collectionModel.find({
+                class: {
+                    $in: classesIds,
+                },
+            });
+
+            return res;
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);

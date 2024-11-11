@@ -1,10 +1,11 @@
-import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CollectionPayload, CollectionUpdate } from 'src/interfaces/collection.interface';
 import { CollectionService } from './collection.service';
+import { Collection } from 'mongoose';
 
 @UseGuards(AuthGuard)
-@Controller('collection')
+@Controller('collections')
 export class CollectionController {
     constructor(private readonly collectionService: CollectionService) {}
 
@@ -22,5 +23,11 @@ export class CollectionController {
         await this.collectionService.updateCollecion(payload, id);
 
         return 'Collection updated successfully';
+    }
+
+    @Get()
+    async getAllCollections(@Req() req): Promise<any> {
+        const { id } = req.user;
+        return await this.collectionService.getCollections(id);
     }
 }
