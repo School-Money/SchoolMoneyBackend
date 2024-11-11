@@ -1,6 +1,10 @@
-export interface ChildCreate extends Omit<ChildDetails, 'classId'> {
+export interface ChildCreate extends ChildDetails {
   parentId: string;
-  classId: string;
+}
+
+export interface ChildUpdate extends Partial<ChildDetails> {
+  parentId: string;
+  childId: string;
 }
 
 export interface ChildDetails {
