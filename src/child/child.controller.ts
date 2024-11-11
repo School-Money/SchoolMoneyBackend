@@ -5,6 +5,7 @@ import {
   UseGuards,
   Request,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { ChildService } from './child.service';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -36,9 +37,15 @@ export class ChildController {
     return await this.childService.update(childUpdate);
   }
 
-  @Get('my')
+  @Get('/')
   async getMyChildren(@Request() req) {
     const { id: parentId } = req.user;
     return await this.childService.get(parentId);
+  }
+
+  @Delete('/')
+  async deleteChild(@Request() req, @Body() childDetails: { childId: string }) {
+    const { id: parentId } = req.user;
+    return await this.childService.delete({ ...childDetails, parentId });
   }
 }

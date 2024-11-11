@@ -15,14 +15,14 @@ import { ClassCreate, ClassDetails } from 'src/interfaces/class.interface';
 export class ClassController {
   constructor(private readonly classService: ClassService) {}
 
-  @Post('create')
+  @Post('/')
   async createClass(@Request() req, @Body() classInfo: ClassDetails) {
     const { id: treasurerId } = req.user;
     const classCreate: ClassCreate = { ...classInfo, treasurerId };
     return await this.classService.create(classCreate);
   }
 
-  @Get('my')
+  @Get('/')
   async getMyClasses(@Request() req) {
     const { id: parentId } = req.user;
     return await this.classService.get(parentId);

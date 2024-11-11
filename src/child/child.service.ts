@@ -57,4 +57,16 @@ export class ChildService {
     }
     return await this.childModel.find({ parent: parent._id });
   }
+
+  async delete(childDetails: { childId: string; parentId: string }) {
+    const parent = await this.parentModel.findById(childDetails.parentId);
+    if (!parent) {
+      throw new NotFoundException('Parent not found');
+    }
+    const child = await this.childModel.findById(childDetails.childId);
+    if (!child) {
+      throw new NotFoundException('Child not found');
+    }
+    return await this.childModel.findByIdAndDelete(childDetails.childId);
+  }
 }
