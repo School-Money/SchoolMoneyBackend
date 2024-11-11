@@ -26,6 +26,9 @@ export class ClassService {
       }
       return this.classModel.create({ ...classInfo, treasurer: treasurer._id });
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to create class: ${error.message}`,
       );
@@ -47,6 +50,9 @@ export class ClassService {
       });
       return myClasses;
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to get classes: ${error.message}`,
       );
@@ -65,6 +71,9 @@ export class ClassService {
       }
       return clazz._id;
     } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
       throw new InternalServerErrorException(
         `Failed to get invite code: ${error.message}`,
       );
