@@ -40,6 +40,12 @@ export class Collection {
 
   @Prop({
     required: true,
+    ref: 'BankAccount',
+  })
+  bankAccount: Types.ObjectId;
+
+  @Prop({
+    required: true,
   })
   startDate: Date;
 
@@ -53,12 +59,6 @@ export class Collection {
     min: 0,
   })
   targetAmount: number;
-
-  @Prop({
-    required: true,
-    min: 0,
-  })
-  currentAmount: number;
 }
 
 export const CollectionSchema = SchemaFactory.createForClass(Collection);

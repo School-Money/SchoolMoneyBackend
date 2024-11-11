@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, Document } from 'mongoose';
+import { HydratedDocument, Document, Types } from 'mongoose';
 
 export type ParentDocument = HydratedDocument<Parent>;
 
@@ -38,6 +38,12 @@ export class Parent extends Document {
     default: 'avatar.jpg',
   })
   avatar: string;
+
+  @Prop({
+    required: true,
+    ref: 'BankAccount',
+  })
+  bankAccount: Types.ObjectId;
 
   @Prop({
     default: Date.now(),
