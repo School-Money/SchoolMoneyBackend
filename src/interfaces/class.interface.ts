@@ -1,7 +1,7 @@
 export interface ClassDetails {
-  name: string;
+    name: string;
 }
 
 export interface ClassCreate extends ClassDetails {
-  treasurerId: string;
+    treasurerId: string;
 }

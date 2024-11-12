@@ -7,13 +7,13 @@ import { Parent, ParentSchema } from 'src/schemas/Parent.schema';
 import { Child, ChildSchema } from 'src/schemas/Child.schema';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: Class.name, schema: ClassSchema }]),
-    MongooseModule.forFeature([{ name: Parent.name, schema: ParentSchema }]),
-    MongooseModule.forFeature([{ name: Child.name, schema: ChildSchema }]),
-  ],
-  controllers: [ClassController],
-  providers: [ClassService],
-  exports: [ClassService],
+    imports: [
+        MongooseModule.forFeature([{ name: Class.name, schema: ClassSchema }]),
+        MongooseModule.forFeature([{ name: Parent.name, schema: ParentSchema }]),
+        MongooseModule.forFeature([{ name: Child.name, schema: ChildSchema }]),
+    ],
+    controllers: [ClassController],
+    providers: [ClassService],
+    exports: [ClassService],
 })
 export class ClassModule {}
