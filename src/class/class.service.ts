@@ -57,11 +57,11 @@ export class ClassService {
             if (!treasurer) {
                 throw new NotFoundException('Treasurer not found');
             }
-            const clazz = await this.classModel.findOne({ treasurer: treasurer._id });
-            if (!clazz) {
+            const classDoc = await this.classModel.findOne({ treasurer: treasurer._id });
+            if (!classDoc) {
                 throw new NotFoundException('Class not found');
             }
-            return clazz._id;
+            return classDoc._id;
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;

@@ -66,7 +66,7 @@ export class CollectionService {
         }
     }
 
-    async updateCollecion(payload: CollectionUpdate, parentId: string): Promise<Collection> {
+    async updateCollection(payload: CollectionUpdate, parentId: string): Promise<Collection> {
         try {
             const parent = await this.parentModel.findById(parentId);
             if (!parent) {

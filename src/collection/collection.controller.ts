@@ -19,7 +19,7 @@ export class CollectionController {
     @Patch()
     async updateCollection(@Body() payload: CollectionUpdate, @Req() req): Promise<string> {
         const { id } = req.user;
-        await this.collectionService.updateCollecion(payload, id);
+        await this.collectionService.updateCollection(payload, id);
 
         return 'Collection updated successfully';
     }

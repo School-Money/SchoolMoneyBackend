@@ -20,15 +20,15 @@ export class ChildService {
             if (!parent) {
                 throw new NotFoundException('Parent not found');
             }
-            const clazz = await this.classModel.findById(childCreate.inviteCode);
-            if (!clazz) {
+            const classDoc = await this.classModel.findById(childCreate.inviteCode);
+            if (!classDoc) {
                 throw new NotFoundException('Class not found');
             }
             return await this.childModel.create({
                 ...childCreate,
                 birthDate: new Date(childCreate.birthDate * 1000),
                 parent: parent._id,
-                class: clazz._id,
+                class: classDoc._id,
             });
         } catch (error) {
             if (error instanceof NotFoundException) {
@@ -44,8 +44,8 @@ export class ChildService {
             if (!parent) {
                 throw new NotFoundException('Parent not found');
             }
-            const clazz = await this.classModel.findById(childUpdate.classId);
-            if (!clazz) {
+            const classDoc = await this.classModel.findById(childUpdate.classId);
+            if (!classDoc) {
                 throw new NotFoundException('Class not found');
             }
             const child = await this.childModel.findById(childUpdate.childId);
@@ -55,7 +55,7 @@ export class ChildService {
             return await this.childModel.findByIdAndUpdate(childUpdate.childId, {
                 ...childUpdate,
                 parent: parent._id,
-                class: clazz._id,
+                class: classDoc._id,
             });
         } catch (error) {
             if (error instanceof NotFoundException) {
