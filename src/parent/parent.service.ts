@@ -15,7 +15,7 @@ export class ParentService {
 
     async create(parent: ParentRegister): Promise<Parent> {
         if (!parent.firstName || !parent.password || !parent.lastName || !parent.email) {
-            throw new BadRequestException('One of requitred fields is missing');
+            throw new BadRequestException('One of required fields is missing');
         }
 
         const bankAccount = await this.bankAccountModel.create({});

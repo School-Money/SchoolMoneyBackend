@@ -33,6 +33,7 @@ export class Payment {
 
     @Prop({
         required: true,
+        default: Date.now(),
     })
     createdAt: Date;
 }

@@ -9,6 +9,7 @@ import { ParentModule } from './parent/parent.module';
 import { ClassModule } from './class/class.module';
 import { ChildModule } from './child/child.module';
 import { CollectionModule } from './collection/collection.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { CollectionModule } from './collection/collection.module';
         ClassModule,
         ChildModule,
         CollectionModule,
+        PaymentModule,
     ],
     controllers: [AuthController],
     providers: [AppService, AuthService],

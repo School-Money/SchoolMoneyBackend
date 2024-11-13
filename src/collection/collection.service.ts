@@ -112,13 +112,23 @@ export class CollectionService {
                 throw new NotFoundException('No class found for this parent');
             }
 
-            const res = await this.collectionModel.find({
+            const collections = await this.collectionModel.find({
                 class: {
                     $in: parentChildClasses,
                 },
             });
 
-            return res;
+            const collectionsWithCurrentAmount = await Promise.all(
+                collections.map(async (collection) => {
+                    const bankAccount = await this.bankAccountModel.findById(collection.bankAccount);
+                    return {
+                        ...collection.toObject(),
+                        currentAmount: bankAccount.balance,
+                    };
+                })
+            );
+
+            return collectionsWithCurrentAmount;
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);

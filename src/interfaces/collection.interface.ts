@@ -1,3 +1,5 @@
+import { Collection } from "src/schemas/Collection.schema";
+
 export interface CollectionPayload {
     title: string;
     description: string;
@@ -12,4 +14,8 @@ export interface CollectionPayload {
 
 export interface CollectionUpdate extends CollectionPayload {
     collectionId: string;
+}
+
+export interface CollectionsDto extends Collection {
+    currentAmount: number;
 }
