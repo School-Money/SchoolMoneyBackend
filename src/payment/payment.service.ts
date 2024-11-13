@@ -33,7 +33,7 @@ export class PaymentService {
 
             const payments = await this.paymentModel.find({
                 collection: { $in: myCollections.map((collection) => collection._id) },
-            });
+            }).populate('collection').populate('child').populate('parent');
             return payments;
         } catch (error) {
             if (error instanceof NotFoundException) {
@@ -52,7 +52,7 @@ export class PaymentService {
             
             const payments = await this.paymentModel.find({
                 parent: parent._id,
-            });
+            }).populate('collection').populate('child');
 
             return payments;
         } catch (error) {
