@@ -26,4 +26,10 @@ export class PaymentController {
         const { id: parentId } = req.user;
         return await this.paymentService.withdraw(withdrawPaymentPayload, parentId);
     }
+
+    @Get('parent')
+    async getPaymentsMadeByParent(@Request() req): Promise<Payment[]> {
+        const { id: parentId } = req.user;
+        return await this.paymentService.getMadeByParent(parentId);
+    }
 }

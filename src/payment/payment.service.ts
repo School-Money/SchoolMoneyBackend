@@ -43,6 +43,26 @@ export class PaymentService {
         }
     }
 
+    async getMadeByParent(parentId: string): Promise<Payment[]> {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            }
+            
+            const payments = await this.paymentModel.find({
+                parent: parent._id,
+            });
+
+            return payments;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException(`Failed to get collections: ${error.message}`);
+        }
+    }
+
     async create(paymentCreatePayload: PaymentCreatePayload, parentId: string): Promise<Payment> {
         try {
             this.validatePaymentCreatePayload(paymentCreatePayload);
