@@ -102,12 +102,12 @@ export class CollectionService {
                 throw new NotFoundException('Parent not found');
             }
 
-            const parentChilds = await this.childModel.find({ parent: parent._id });
-            if (!parentChilds.length) {
+            const parentChildren = await this.childModel.find({ parent: parent._id });
+            if (!parentChildren.length) {
                 throw new NotFoundException('No child found for this parent');
             }
 
-            const parentChildClasses = parentChilds.map((child) => child.class);
+            const parentChildClasses = parentChildren.map((child) => child.class);
             if (!parentChildClasses.length) {
                 throw new NotFoundException('No class found for this parent');
             }
