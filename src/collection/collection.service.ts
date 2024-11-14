@@ -144,9 +144,9 @@ export class CollectionService {
         try {
             const parent = await this.parentModel.findById(parentId);
             const collection = await this.collectionModel.findById(collectionId)
-                .populate<{ creator: Parent }>('creator');
+                .populate<{ creator: Parent }>('creator', '-password');
             const payments = await this.paymentModel.find({ collection: collection._id })
-                .populate('parent').populate('child');
+                .populate('parent', '-password').populate('child');
 
             if (!parent) {
                 throw new NotFoundException('Parent not found');
