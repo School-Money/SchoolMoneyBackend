@@ -42,7 +42,15 @@ export class ClassService {
             const myClasses = await this.classModel.find({
                 _id: { $in: myChildren.map((child) => child.class) },
             });
-            return myClasses;
+
+            const childrenInMyClasses = await this.childModel.find({
+                class: { $in: myClasses.map((classDoc) => classDoc._id) },
+            });
+
+            return myClasses.map((classDoc) => {
+                const children = childrenInMyClasses.filter((child) => child.class.toHexString() === classDoc._id.toHexString());
+                return { ...classDoc.toObject(), childrenAmount: children.length };
+            });
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
