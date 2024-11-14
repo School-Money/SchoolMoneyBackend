@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
-import { PaymentCreatePayload, WithdrawPaymentPayload } from "src/interfaces/payment.interface";
+import { PaymentCreatePayload, PaymentDto, PaymentDtoMadeByParent, WithdrawPaymentPayload } from "src/interfaces/payment.interface";
 import { BankAccount } from "src/schemas/BankAccount.schema";
 import { Child } from "src/schemas/Child.schema";
 import { Collection } from "src/schemas/Collection.schema";
@@ -18,7 +18,7 @@ export class PaymentService {
         @InjectModel(BankAccount.name) private readonly bankAccountModel: Model<BankAccount>,
     ) {}
 
-    async get(parentId: string): Promise<Payment[]> {
+    async get(parentId: string): Promise<PaymentDto[]> {
         try {
             const parent = await this.parentModel.findById(parentId);
             if (!parent) {
@@ -33,7 +33,10 @@ export class PaymentService {
 
             const payments = await this.paymentModel.find({
                 collection: { $in: myCollections.map((collection) => collection._id) },
-            }).populate('collection').populate('child').populate('parent', '-password');
+            }).populate<{ collection: Collection }>('collection')
+            .populate<{ child: Child }>('child')
+            .populate<{ parent: Parent }>('parent', '-password');
+
             return payments;
         } catch (error) {
             if (error instanceof NotFoundException) {
@@ -43,7 +46,7 @@ export class PaymentService {
         }
     }
 
-    async getMadeByParent(parentId: string): Promise<Payment[]> {
+    async getMadeByParent(parentId: string): Promise<PaymentDtoMadeByParent[]> {
         try {
             const parent = await this.parentModel.findById(parentId);
             if (!parent) {
@@ -52,7 +55,8 @@ export class PaymentService {
             
             const payments = await this.paymentModel.find({
                 parent: parent._id,
-            }).populate('collection').populate('child');
+            }).populate<{ collection: Collection }>('collection')
+            .populate<{ child: Child }>('child');
 
             return payments;
         } catch (error) {
@@ -76,11 +80,14 @@ export class PaymentService {
 
             this.validateRelatedEntitiesCreatePayload(parent, collection, child, bankAccount, paymentCreatePayload);
 
+            const paymentStartString = paymentCreatePayload.amount > 0 ? 'Payment' : 'Payout';
             const payment = this.paymentModel.create({
                 ...paymentCreatePayload,
                 collection: collection._id,
                 child: child._id,
                 parent: parent._id,
+                description: `${paymentStartString} for ${child.firstName} ${child.lastName},
+                    for ${collection.title} collection`
             });
 
             if (paymentCreatePayload.amount > 0) {

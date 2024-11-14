@@ -33,6 +33,11 @@ export class Payment {
 
     @Prop({
         required: true,
+    })
+    description: string;
+
+    @Prop({
+        required: true,
         default: Date.now(),
     })
     createdAt: Date;
