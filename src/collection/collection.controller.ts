@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { CollectionPayload, CollectionUpdate } from 'src/interfaces/collection.interface';
+import { CollectionPayload, CollectionUpdate, GetCollectionDetails } from 'src/interfaces/collection.interface';
 import { CollectionService } from './collection.service';
 
 @UseGuards(AuthGuard)
@@ -28,5 +28,11 @@ export class CollectionController {
     async getAllCollections(@Req() req): Promise<any> {
         const { id } = req.user;
         return await this.collectionService.getCollections(id);
+    }
+
+    @Get(':collectionId')
+    async getCollectionDetails(@Req() req, @Param('collectionId') collectionId: string): Promise<GetCollectionDetails> {
+        const { id: parentId } = req.user;
+        return await this.collectionService.getCollectionDetails(collectionId, parentId);
     }
 }

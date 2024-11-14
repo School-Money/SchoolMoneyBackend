@@ -1,7 +1,7 @@
-import { Body, Controller, Post, UseGuards, Request, Get } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Get, Put } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { ClassCreate, ClassDetails } from 'src/interfaces/class.interface';
+import { ClassCreate, ClassDetails, PassTreasurerToParentPayload } from 'src/interfaces/class.interface';
 
 @Controller('classes')
 @UseGuards(AuthGuard)
@@ -25,5 +25,11 @@ export class ClassController {
     async getInviteCode(@Request() req) {
         const { id: treasurerId } = req.user;
         return await this.classService.getInviteCode(treasurerId);
+    }
+
+    @Put('passTreasurer')
+    async passTreasurer(@Request() req, @Body() payload: PassTreasurerToParentPayload) {
+        const { id: parentId } = req.user;
+        return await this.classService.passTreasurerToParent({ ...payload, currentTreasurerId: parentId });
     }
 }

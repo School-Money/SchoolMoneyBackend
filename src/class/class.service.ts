@@ -1,7 +1,7 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ClassCreate } from 'src/interfaces/class.interface';
+import { ClassCreate, PassTreasurerToParentParams } from 'src/interfaces/class.interface';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Parent } from 'src/schemas/Parent.schema';
@@ -67,6 +67,45 @@ export class ClassService {
                 throw error;
             }
             throw new InternalServerErrorException(`Failed to get invite code: ${error.message}`);
+        }
+    }
+
+    async passTreasurerToParent(
+        passTreasurerToParentParams: PassTreasurerToParentParams
+    ): Promise<Class> {
+        try {
+            const { currentTreasurerId, newTreasurerId, classId } = passTreasurerToParentParams;
+
+            const currentTreasurer = await this.parentModel.findById(currentTreasurerId);
+            const newTreasurer = await this.parentModel.findById(newTreasurerId);
+            const classDoc = await this.classModel.findById(classId);
+
+            if (!currentTreasurer || !newTreasurer || !classDoc) {
+                throw new NotFoundException('One of the related entities not found');
+            } else if (currentTreasurer._id.toString() !== classDoc.treasurer.toString()) {
+                throw new UnauthorizedException('You are not the treasurer of this class');
+            } else if (newTreasurer._id.toString() === currentTreasurer._id.toString()) {
+                return classDoc;
+            }
+
+            const newTreasurerChildren = await this.childModel.find({ parent: newTreasurer._id });
+            if (!newTreasurerChildren.length) {
+                throw new NotFoundException('New treasurer has no children');
+            } else if (!newTreasurerChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString())) {
+                throw new UnauthorizedException('New treasurer has no children in this class');
+            }
+
+            const updatedClassDoc = await this.classModel.findByIdAndUpdate(
+                classId,
+                { treasurer: newTreasurer._id },
+                { new: true }
+            );            
+            return updatedClassDoc;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
         }
     }
 }

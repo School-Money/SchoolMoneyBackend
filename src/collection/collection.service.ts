@@ -7,12 +7,13 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CollectionPayload, CollectionUpdate } from 'src/interfaces/collection.interface';
+import { CollectionPayload, CollectionUpdate, GetCollectionDetails } from 'src/interfaces/collection.interface';
 import { BankAccount } from 'src/schemas/BankAccount.schema';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
 import { Parent } from 'src/schemas/Parent.schema';
+import { Payment } from 'src/schemas/Payment.schema';
 
 @Injectable()
 export class CollectionService {
@@ -27,6 +28,8 @@ export class CollectionService {
         private readonly childModel: Model<Child>,
         @InjectModel(BankAccount.name)
         private readonly bankAccountModel: Model<BankAccount>,
+        @InjectModel(Payment.name)
+        private readonly paymentModel: Model<Payment>
     ) {}
 
     async create(payload: CollectionPayload, parentId: string): Promise<Collection> {
@@ -129,6 +132,55 @@ export class CollectionService {
             );
 
             return collectionsWithCurrentAmount;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
+        }
+    }
+
+    async getCollectionDetails(collectionId: string, parentId: string): Promise<GetCollectionDetails> {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            const collection = await this.collectionModel.findById(collectionId)
+                .populate<{ creator: Parent }>('creator');
+            const payments = await this.paymentModel.find({ collection: collection._id })
+                .populate('parent').populate('child');
+
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            } else if (!collection) {
+                throw new NotFoundException('Collection not found');
+            }
+
+            const bankAccount = await this.bankAccountModel.findById(collection.bankAccount);
+            const classDoc = await this.classModel.findById(collection.class);
+            const parentChildren = await this.childModel.find({ parent: parent._id });
+            if (!bankAccount) {
+                throw new NotFoundException('Bank account not found');
+            } else if (!classDoc) {
+                throw new NotFoundException('Class not found');
+            } else if (!parentChildren.length) {
+                throw new NotFoundException('No child found for this parent');
+            } else if (!parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString())) {
+                throw new BadRequestException('Parent has no children in this class');
+            }
+
+            return {
+                _id: collection._id.toString(),
+                class: classDoc,
+                payments,
+                creator: collection.creator,
+                title: collection.title,
+                description: collection.description,
+                logo: collection.logo,
+                startDate: collection.startDate,
+                endDate: collection.endDate,
+                targetAmount: collection.targetAmount,
+                currentAmount: bankAccount.balance,
+            }
+
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);

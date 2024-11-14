@@ -10,11 +10,13 @@ import { BankAccount, BankAccountSchema } from "src/schemas/BankAccount.schema";
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: Payment.name, schema: PaymentSchema }]),
-        MongooseModule.forFeature([{ name: Collection.name, schema: CollectionSchema }]),
-        MongooseModule.forFeature([{ name: Parent.name, schema: ParentSchema }]),
-        MongooseModule.forFeature([{ name: Child.name, schema: ChildSchema }]),
-        MongooseModule.forFeature([ {name: BankAccount.name, schema: BankAccountSchema}]),
+        MongooseModule.forFeature([
+            { name: Payment.name, schema: PaymentSchema },
+            { name: Parent.name, schema: ParentSchema },
+            { name: Collection.name, schema: CollectionSchema },
+            { name: Child.name, schema: ChildSchema },
+            { name: BankAccount.name, schema: BankAccountSchema },
+        ]),
     ],
     providers: [PaymentService],
     controllers: [PaymentController],

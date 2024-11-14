@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ChildCreate, ChildUpdate } from 'src/interfaces/child.interface';
@@ -51,7 +51,26 @@ export class ChildService {
             const child = await this.childModel.findById(childUpdate.childId);
             if (!child) {
                 throw new NotFoundException('Child not found');
+            } else if (child.parent.toString() !== parent._id.toString()) {
+                throw new BadRequestException('Cannot update child of another parent');
             }
+            
+            if (child.class.toString() !== childUpdate.classId) {
+                const oldClass = await this.classModel.findById(child.class);
+                const parentChildrenInOldClass = await this.childModel.find({
+                    parent: parent._id,
+                    class: child.class,
+                });
+                
+                if (!oldClass) {
+                    throw new NotFoundException('Old class not found');
+                } else if (parent._id.toString() === oldClass.treasurer.toString()
+                    && !parentChildrenInOldClass.some((child) => child._id.toString() !== childUpdate.childId)
+                ) {
+                    throw new BadRequestException('Cannot change class of only child in class of treasurer parent');
+                }
+            }
+
             return await this.childModel.findByIdAndUpdate(childUpdate.childId, {
                 ...childUpdate,
                 parent: parent._id,
@@ -89,7 +108,24 @@ export class ChildService {
             const child = await this.childModel.findById(childDetails.childId);
             if (!child) {
                 throw new NotFoundException('Child not found');
+            } else if (child.parent.toString() !== parent._id.toString()) {
+                throw new BadRequestException('Cannot delete child of another parent');
             }
+
+            const childClass = await this.classModel.findById(child.class);
+            const parentChildrenInClass = await this.childModel.find({
+                parent: parent._id,
+                class: child.class,
+            });
+
+            if (!childClass) {
+                throw new NotFoundException('Class not found');
+            } else if (parent._id.toString() === childClass.treasurer.toString()
+                && !parentChildrenInClass.some((child) => child._id.toString() !== childDetails.childId)
+            ) {
+                throw new BadRequestException('Cannot delete only child in class of treasurer parent');
+            }
+
             return await this.childModel.findByIdAndDelete(childDetails.childId);
         } catch (error) {
             if (error instanceof NotFoundException) {
