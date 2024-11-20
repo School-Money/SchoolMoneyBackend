@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
-import { PaymentCreatePayload, PaymentDto, PaymentDtoMadeByParent, WithdrawPaymentPayload } from "src/interfaces/payment.interface";
+import { CreatePaymentDto, PaymentCreatePayload, PaymentDto, PaymentDtoMadeByParent, WithdrawPaymentPayload } from "src/interfaces/payment.interface";
 import { BankAccount } from "src/schemas/BankAccount.schema";
 import { Child } from "src/schemas/Child.schema";
 import { Collection } from "src/schemas/Collection.schema";
@@ -67,7 +67,7 @@ export class PaymentService {
         }
     }
 
-    async create(paymentCreatePayload: PaymentCreatePayload, parentId: string): Promise<Payment> {
+    async create(paymentCreatePayload: PaymentCreatePayload, parentId: string): Promise<CreatePaymentDto> {
         try {
             this.validatePaymentCreatePayload(paymentCreatePayload);
 
@@ -80,24 +80,32 @@ export class PaymentService {
 
             this.validateRelatedEntitiesCreatePayload(parent, collection, child, bankAccount, paymentCreatePayload);
 
-            const paymentStartString = paymentCreatePayload.amount > 0 ? 'Payment' : 'Payout';
-            const payment = this.paymentModel.create({
-                ...paymentCreatePayload,
-                collection: collection._id,
-                child: child._id,
-                parent: parent._id,
-                description: `${paymentStartString} for ${child.firstName} ${child.lastName},
-                    for ${collection.title} collection`
-            });
-
             if (paymentCreatePayload.amount > 0) {
+                const paymentStartString = paymentCreatePayload.amount > 0 ? 'Payment' : 'Payout';
+                const payment = await this.paymentModel.create({
+                    ...paymentCreatePayload,
+                    collection: collection._id,
+                    child: child._id,
+                    parent: parent._id,
+                    description: `${paymentStartString} for ${child.firstName} ${child.lastName},
+                        for ${collection.title} collection`
+                });
+
                 await this.bankAccountModel.updateOne(
                     { _id: bankAccount._id },
                     { $inc: { balance: paymentCreatePayload.amount } }
                 );
-            }
 
-            return payment;
+                return payment;
+            }
+            return await this.paymentModel.create({
+                ...paymentCreatePayload,
+                collection: collection._id,
+                child: null,
+                parent: parent._id,
+                description: `Payout made by the treasurer ${parent.firstName} ${parent.lastName},
+                    for ${collection.title} collection`
+            });
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
@@ -122,10 +130,13 @@ export class PaymentService {
                 collection,
                 child,
                 bankAccount,
-            ] = await this.findRelatedEntitiesCreatePayload({
-                collectionId: payment.collection.toString(),
-                childId: payment.child.toString(),
-            }, parentId);
+            ] = await this.findRelatedEntitiesCreatePayload(
+                {
+                    collectionId: payment.collection.toString(),
+                    childId: payment.child.toString(),
+                },
+                parentId
+            );
 
             this.validateRelatedEntitiesWithdrawPayload(parent, collection, child, bankAccount, payment);
 
@@ -192,7 +203,7 @@ export class PaymentService {
             throw new NotFoundException('Parent not found');
         } else if (!collection) {
             throw new NotFoundException('Collection not found');
-        } else if (!child) {
+        } else if (!child && parent._id.toString() !== collection.creator.toString()) {
             throw new NotFoundException('Child not found');
         } else if (!bankAccount) {
             throw new NotFoundException('Bank account not found');

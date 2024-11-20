@@ -20,7 +20,7 @@ export class ClassService {
             if (!treasurer) {
                 throw new NotFoundException('Treasurer not found');
             }
-            return this.classModel.create({ ...classInfo, treasurer: treasurer._id });
+            return await this.classModel.create({ ...classInfo, treasurer: treasurer._id });
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
