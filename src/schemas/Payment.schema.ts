@@ -20,11 +20,11 @@ export class Payment {
     parent: Types.ObjectId;
 
     @Prop({
-        required: true,
+        required: false,
         ref: 'Child',
         type: Types.ObjectId,
     })
-    child: Types.ObjectId;
+    child: Types.ObjectId | null;
 
     @Prop({
         required: true,
