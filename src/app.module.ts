@@ -1,19 +1,20 @@
-import { Module } from '@nestjs/common';
-import { AppService } from './app.service';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthController } from './auth/auth.controller';
-import { AuthService } from './auth/auth.service';
-import { AuthModule } from './auth/auth.module';
-import { ParentModule } from './parent/parent.module';
-import { ClassModule } from './class/class.module';
-import { ChildModule } from './child/child.module';
-import { CollectionModule } from './collection/collection.module';
-import { PaymentModule } from './payment/payment.module';
-import { MulterModule } from '@nestjs/platform-express';
-import { v2 as cloudinary } from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import { DefaultImageModule } from './default-image/default-image.module';
+import { Module } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { MongooseModule } from "@nestjs/mongoose";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { AuthController } from "./auth/auth.controller";
+import { AuthService } from "./auth/auth.service";
+import { AuthModule } from "./auth/auth.module";
+import { ParentModule } from "./parent/parent.module";
+import { ClassModule } from "./class/class.module";
+import { ChildModule } from "./child/child.module";
+import { CollectionModule } from "./collection/collection.module";
+import { PaymentModule } from "./payment/payment.module";
+import { MulterModule } from "@nestjs/platform-express";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { DefaultImageModule } from "./default-image/default-image.module";
+import { ChatModule } from "./chat/chat.module";
 
 @Module({
     imports: [
@@ -24,7 +25,7 @@ import { DefaultImageModule } from './default-image/default-image.module';
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: (configService: ConfigService) => ({
-                uri: configService.get<string>('MONGO_URI'),
+                uri: configService.get<string>("MONGO_URI"),
             }),
         }),
         MulterModule.registerAsync({
@@ -34,11 +35,11 @@ import { DefaultImageModule } from './default-image/default-image.module';
                 storage: new CloudinaryStorage({
                     cloudinary: cloudinary,
                     params: async (req, file) => {
-                            const { entity, id } = req.params;
-                            const fileExtension = file.mimetype.split('/')[1];
-                            const filename = file.originalname.split('.')[0];
+                        const { entity, id } = req.params;
+                        const fileExtension = file.mimetype.split("/")[1];
+                        const filename = file.originalname.split(".")[0];
                         return {
-                            folder: 'uploads',
+                            folder: "uploads",
                             format: fileExtension,
                             public_id: `${entity}-${id}-${filename}`,
                         };
@@ -53,6 +54,7 @@ import { DefaultImageModule } from './default-image/default-image.module';
         CollectionModule,
         PaymentModule,
         DefaultImageModule,
+        ChatModule,
     ],
     controllers: [AuthController],
     providers: [AppService, AuthService],
