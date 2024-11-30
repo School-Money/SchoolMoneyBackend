@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 
@@ -7,15 +7,17 @@ import { AuthGuard } from 'src/auth/auth.guard';
 export class ChatController {
     constructor(private readonly chatService: ChatService) {}
 
-    @Get('/private/create')
-    async getMessages(@Body() payload: PrivateChatRoomGetMessages, @Req() req) {
+    @Get('/private')
+    async getMessages(@Query() query: PrivateChatRoomGetMessages, @Req() req) {
         const { id: userId } = req.user;
-        const { receiverId } = payload;
+        const { receiverId } = query;
         return await this.chatService.getPrivateMessages(userId, receiverId);
     }
 
-    @Post('/send')
-    async sendMessage() {
-        return await this.chatService.sendMessage();
+    @Post('/private')
+    async sendMessage(@Query() query: PrivateChatRoomGetMessages, @Req() req) {
+        const { id: userId } = req.user;
+        const { receiverId } = query;
+        return await this.chatService.sendMessage(userId, receiverId);
     }
 }
