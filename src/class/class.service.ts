@@ -36,9 +36,6 @@ export class ClassService {
                 throw new NotFoundException('Parent not found');
             }
             const myChildren = await this.childModel.find({ parent: parent._id });
-            if (!myChildren.length) {
-                return [];
-            }
             const myClasses = await this.classModel.find({
                 _id: { $in: myChildren.map((child) => child.class) },
             });
@@ -47,11 +44,15 @@ export class ClassService {
                 class: { $in: myClasses.map((classDoc) => classDoc._id) },
             });
 
+            const treasuredClasses = await this.classModel.find({ treasurer: parent._id });
+            myClasses.push(...treasuredClasses);
+
             return myClasses.map((classDoc) => {
                 const children = childrenInMyClasses.filter(
                     (child) => child.class.toHexString() === classDoc._id.toHexString(),
                 );
-                return { ...classDoc.toObject(), childrenAmount: children.length };
+                const isTreasurer = classDoc.treasurer.toHexString() === parentId;
+                return { ...classDoc.toObject(), childrenAmount: children.length, isTreasurer };
             });
         } catch (error) {
             if (error instanceof NotFoundException) {
