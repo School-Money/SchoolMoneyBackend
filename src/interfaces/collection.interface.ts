@@ -1,7 +1,7 @@
-import { Class } from "src/schemas/Class.schema";
-import { Collection } from "src/schemas/Collection.schema";
-import { Parent } from "src/schemas/Parent.schema";
-import { Payment } from "src/schemas/Payment.schema";
+import { Class } from 'src/schemas/Class.schema';
+import { Collection } from 'src/schemas/Collection.schema';
+import { Parent } from 'src/schemas/Parent.schema';
+import { Payment } from 'src/schemas/Payment.schema';
 
 export interface CollectionPayload {
     title: string;

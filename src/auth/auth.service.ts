@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ParentLogin, ParentRegister } from 'src/interfaces/parent.interface';
 import { ParentService } from 'src/parent/parent.service';
@@ -11,13 +11,23 @@ export class AuthService {
     ) {}
 
     async registerUser(payload: ParentRegister): Promise<{ message: string }> {
-        const { email, password, firstName, lastName } = payload;
+        const { email, firstName, lastName, password, repeatPassword } = payload;
+
+        if (!email || !firstName || !lastName || !password || !repeatPassword) {
+            throw new BadRequestException('All fields are required');
+        }
+
+        if (password !== repeatPassword) {
+            throw new BadRequestException('Passwords do not match');
+        }
+
         try {
             await this.parentService.create({
                 email,
-                password,
                 firstName,
                 lastName,
+                password,
+                repeatPassword,
             });
         } catch (error) {
             if (error.code === 11000) {
@@ -25,7 +35,6 @@ export class AuthService {
             }
             throw error;
         }
-
         return { message: 'Parent registered successfully' };
     }
 

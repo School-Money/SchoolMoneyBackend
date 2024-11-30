@@ -7,10 +7,10 @@ export interface ClassCreate extends ClassDetails {
 }
 
 export interface PassTreasurerToParentPayload {
-    newTreasurerId: string,
-    classId: string
+    newTreasurerId: string;
+    classId: string;
 }
 
 export interface PassTreasurerToParentParams extends PassTreasurerToParentPayload {
-    currentTreasurerId: string,
+    currentTreasurerId: string;
 }

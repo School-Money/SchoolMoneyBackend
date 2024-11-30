@@ -48,7 +48,9 @@ export class ClassService {
             });
 
             return myClasses.map((classDoc) => {
-                const children = childrenInMyClasses.filter((child) => child.class.toHexString() === classDoc._id.toHexString());
+                const children = childrenInMyClasses.filter(
+                    (child) => child.class.toHexString() === classDoc._id.toHexString(),
+                );
                 return { ...classDoc.toObject(), childrenAmount: children.length };
             });
         } catch (error) {
@@ -78,9 +80,7 @@ export class ClassService {
         }
     }
 
-    async passTreasurerToParent(
-        passTreasurerToParentParams: PassTreasurerToParentParams
-    ): Promise<Class> {
+    async passTreasurerToParent(passTreasurerToParentParams: PassTreasurerToParentParams): Promise<Class> {
         try {
             const { currentTreasurerId, newTreasurerId, classId } = passTreasurerToParentParams;
 
@@ -99,15 +99,17 @@ export class ClassService {
             const newTreasurerChildren = await this.childModel.find({ parent: newTreasurer._id });
             if (!newTreasurerChildren.length) {
                 throw new NotFoundException('New treasurer has no children');
-            } else if (!newTreasurerChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString())) {
+            } else if (
+                !newTreasurerChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString())
+            ) {
                 throw new UnauthorizedException('New treasurer has no children in this class');
             }
 
             const updatedClassDoc = await this.classModel.findByIdAndUpdate(
                 classId,
                 { treasurer: newTreasurer._id },
-                { new: true }
-            );            
+                { new: true },
+            );
             return updatedClassDoc;
         } catch (error) {
             if (error instanceof NotFoundException) {

@@ -41,7 +41,7 @@ export class ParentService {
     async findOne(parentEmail: string): Promise<Parent | undefined> {
         return this.parentModel.findOne({ email: parentEmail }).exec();
     }
-    
+
     async getParentsInClass(parentId: string, classId: string): Promise<Parent[]> {
         try {
             const classDoc = await this.classModel.findById(classId);

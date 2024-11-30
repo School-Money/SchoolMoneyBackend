@@ -3,6 +3,7 @@ export interface ParentRegister {
     lastName: string;
     email: string;
     password: string;
+    repeatPassword: string;
 }
 
 export interface ParentLogin {

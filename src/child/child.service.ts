@@ -54,18 +54,19 @@ export class ChildService {
             } else if (child.parent.toString() !== parent._id.toString()) {
                 throw new BadRequestException('Cannot update child of another parent');
             }
-            
+
             if (child.class.toString() !== childUpdate.classId) {
                 const oldClass = await this.classModel.findById(child.class);
                 const parentChildrenInOldClass = await this.childModel.find({
                     parent: parent._id,
                     class: child.class,
                 });
-                
+
                 if (!oldClass) {
                     throw new NotFoundException('Old class not found');
-                } else if (parent._id.toString() === oldClass.treasurer.toString()
-                    && !parentChildrenInOldClass.some((child) => child._id.toString() !== childUpdate.childId)
+                } else if (
+                    parent._id.toString() === oldClass.treasurer.toString() &&
+                    !parentChildrenInOldClass.some((child) => child._id.toString() !== childUpdate.childId)
                 ) {
                     throw new BadRequestException('Cannot change class of only child in class of treasurer parent');
                 }
@@ -120,8 +121,9 @@ export class ChildService {
 
             if (!childClass) {
                 throw new NotFoundException('Class not found');
-            } else if (parent._id.toString() === childClass.treasurer.toString()
-                && !parentChildrenInClass.some((child) => child._id.toString() !== childDetails.childId)
+            } else if (
+                parent._id.toString() === childClass.treasurer.toString() &&
+                !parentChildrenInClass.some((child) => child._id.toString() !== childDetails.childId)
             ) {
                 throw new BadRequestException('Cannot delete only child in class of treasurer parent');
             }
