@@ -1,7 +1,12 @@
 import { Body, Controller, Post, UseGuards, Request, Get, Patch } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { ClassCreate, ClassDetails, PassTreasurerToParentPayload } from 'src/interfaces/class.interface';
+import {
+    ClassCreate,
+    ClassDetails,
+    GetClassInviteCodePayload,
+    PassTreasurerToParentPayload,
+} from 'src/interfaces/class.interface';
 
 @Controller('classes')
 @UseGuards(AuthGuard)
@@ -22,9 +27,10 @@ export class ClassController {
     }
 
     @Get('invite')
-    async getInviteCode(@Request() req) {
+    async getInviteCode(@Request() req, @Body() payload: GetClassInviteCodePayload) {
         const { id: treasurerId } = req.user;
-        return await this.classService.getInviteCode(treasurerId);
+        const { classId } = payload;
+        return await this.classService.getInviteCode(treasurerId, classId);
     }
 
     @Patch('passTreasurer')

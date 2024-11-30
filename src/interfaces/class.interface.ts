@@ -14,3 +14,7 @@ export interface PassTreasurerToParentPayload {
 export interface PassTreasurerToParentParams extends PassTreasurerToParentPayload {
     currentTreasurerId: string;
 }
+
+export interface GetClassInviteCodePayload {
+    classId: string;
+}
