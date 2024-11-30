@@ -18,6 +18,7 @@ export class ClassController {
     @Get()
     async getMyClasses(@Request() req) {
         const { id: parentId } = req.user;
+        console.info(parentId);
         return await this.classService.get(parentId);
     }
 
