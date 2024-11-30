@@ -1,0 +1,3 @@
+interface PrivateChatRoomCreate {
+    receiverId: string;
+}
