@@ -61,13 +61,13 @@ export class ClassService {
         }
     }
 
-    async getInviteCode(treasurerId: string) {
+    async getInviteCode(treasurerId: string, classId: string) {
         try {
             const treasurer = await this.parentModel.findById(treasurerId);
             if (!treasurer) {
                 throw new NotFoundException('Treasurer not found');
             }
-            const classDoc = await this.classModel.findOne({ treasurer: treasurer._id });
+            const classDoc = await this.classModel.findOne({ treasurer: treasurer._id, id: classId });
             if (!classDoc) {
                 throw new NotFoundException('Class not found');
             }
