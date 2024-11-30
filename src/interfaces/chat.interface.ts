@@ -1,3 +1,3 @@
-interface PrivateChatRoomCreate {
+interface PrivateChatRoomGetMessages {
     receiverId: string;
 }
