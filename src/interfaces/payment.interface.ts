@@ -1,7 +1,7 @@
-import { Types } from "mongoose";
-import { Child } from "src/schemas/Child.schema";
-import { Collection } from "src/schemas/Collection.schema";
-import { Parent } from "src/schemas/Parent.schema";
+import { Types } from 'mongoose';
+import { Child } from 'src/schemas/Child.schema';
+import { Collection } from 'src/schemas/Collection.schema';
+import { Parent } from 'src/schemas/Parent.schema';
 
 export interface PaymentCreatePayload {
     collectionId: string;

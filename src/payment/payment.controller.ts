@@ -1,8 +1,13 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
-import { PaymentService } from "./payment.service";
-import { Payment } from "src/schemas/Payment.schema";
-import { AuthGuard } from "src/auth/auth.guard";
-import { PaymentCreatePayload, PaymentDto, PaymentDtoMadeByParent, WithdrawPaymentPayload } from "src/interfaces/payment.interface";
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { PaymentService } from './payment.service';
+import { Payment } from 'src/schemas/Payment.schema';
+import { AuthGuard } from 'src/auth/auth.guard';
+import {
+    PaymentCreatePayload,
+    PaymentDto,
+    PaymentDtoMadeByParent,
+    WithdrawPaymentPayload,
+} from 'src/interfaces/payment.interface';
 
 @UseGuards(AuthGuard)
 @Controller('payments')

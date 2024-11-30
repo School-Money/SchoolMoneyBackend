@@ -1,12 +1,18 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
-import { CreatePaymentDto, PaymentCreatePayload, PaymentDto, PaymentDtoMadeByParent, WithdrawPaymentPayload } from "src/interfaces/payment.interface";
-import { BankAccount } from "src/schemas/BankAccount.schema";
-import { Child } from "src/schemas/Child.schema";
-import { Collection } from "src/schemas/Collection.schema";
-import { Parent } from "src/schemas/Parent.schema";
-import { Payment } from "src/schemas/Payment.schema";
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import {
+    CreatePaymentDto,
+    PaymentCreatePayload,
+    PaymentDto,
+    PaymentDtoMadeByParent,
+    WithdrawPaymentPayload,
+} from 'src/interfaces/payment.interface';
+import { BankAccount } from 'src/schemas/BankAccount.schema';
+import { Child } from 'src/schemas/Child.schema';
+import { Collection } from 'src/schemas/Collection.schema';
+import { Parent } from 'src/schemas/Parent.schema';
+import { Payment } from 'src/schemas/Payment.schema';
 
 @Injectable()
 export class PaymentService {
@@ -25,17 +31,19 @@ export class PaymentService {
                 throw new NotFoundException('Parent not found');
             }
 
-            const myChildren = await this.childModel.find({ parent: parent._id })
+            const myChildren = await this.childModel.find({ parent: parent._id });
 
             const myCollections = await this.collectionModel.find({
                 class: { $in: myChildren.map((child) => child.class) },
-            });            
+            });
 
-            const payments = await this.paymentModel.find({
-                collection: { $in: myCollections.map((collection) => collection._id) },
-            }).populate<{ collection: Collection }>('collection')
-            .populate<{ child: Child }>('child')
-            .populate<{ parent: Parent }>('parent', '-password');
+            const payments = await this.paymentModel
+                .find({
+                    collection: { $in: myCollections.map((collection) => collection._id) },
+                })
+                .populate<{ collection: Collection }>('collection')
+                .populate<{ child: Child }>('child')
+                .populate<{ parent: Parent }>('parent', '-password');
 
             return payments;
         } catch (error) {
@@ -52,11 +60,13 @@ export class PaymentService {
             if (!parent) {
                 throw new NotFoundException('Parent not found');
             }
-            
-            const payments = await this.paymentModel.find({
-                parent: parent._id,
-            }).populate<{ collection: Collection }>('collection')
-            .populate<{ child: Child }>('child');
+
+            const payments = await this.paymentModel
+                .find({
+                    parent: parent._id,
+                })
+                .populate<{ collection: Collection }>('collection')
+                .populate<{ child: Child }>('child');
 
             return payments;
         } catch (error) {
@@ -71,12 +81,10 @@ export class PaymentService {
         try {
             this.validatePaymentCreatePayload(paymentCreatePayload);
 
-            const [
-                parent,
-                collection,
-                child,
-                bankAccount,
-            ] = await this.findRelatedEntitiesCreatePayload(paymentCreatePayload, parentId);
+            const [parent, collection, child, bankAccount] = await this.findRelatedEntitiesCreatePayload(
+                paymentCreatePayload,
+                parentId,
+            );
 
             this.validateRelatedEntitiesCreatePayload(parent, collection, child, bankAccount, paymentCreatePayload);
 
@@ -88,12 +96,12 @@ export class PaymentService {
                     child: child._id,
                     parent: parent._id,
                     description: `${paymentStartString} for ${child.firstName} ${child.lastName},
-                        for ${collection.title} collection`
+                        for ${collection.title} collection`,
                 });
 
                 await this.bankAccountModel.updateOne(
                     { _id: bankAccount._id },
-                    { $inc: { balance: paymentCreatePayload.amount } }
+                    { $inc: { balance: paymentCreatePayload.amount } },
                 );
 
                 return payment;
@@ -104,7 +112,7 @@ export class PaymentService {
                 child: null,
                 parent: parent._id,
                 description: `Payout made by the treasurer ${parent.firstName} ${parent.lastName},
-                    for ${collection.title} collection`
+                    for ${collection.title} collection`,
             });
         } catch (error) {
             if (error instanceof NotFoundException) {
@@ -125,17 +133,12 @@ export class PaymentService {
                 throw new NotFoundException('Payment not found');
             }
 
-            const [
-                parent,
-                collection,
-                child,
-                bankAccount,
-            ] = await this.findRelatedEntitiesCreatePayload(
+            const [parent, collection, child, bankAccount] = await this.findRelatedEntitiesCreatePayload(
                 {
                     collectionId: payment.collection.toString(),
                     childId: payment.child.toString(),
                 },
-                parentId
+                parentId,
             );
 
             this.validateRelatedEntitiesWithdrawPayload(parent, collection, child, bankAccount, payment);
@@ -152,10 +155,7 @@ export class PaymentService {
                 amount: -payment.amount,
             });
 
-            await this.bankAccountModel.updateOne(
-                { _id: bankAccount._id },
-                { $inc: { balance: -payment.amount } }
-            );
+            await this.bankAccountModel.updateOne({ _id: bankAccount._id }, { $inc: { balance: -payment.amount } });
 
             return withdrawnPayment;
         } catch (error) {
@@ -168,7 +168,7 @@ export class PaymentService {
 
     private findRelatedEntitiesCreatePayload(
         paymentCreatePayload: Omit<PaymentCreatePayload, 'amount'>,
-        parentId: string
+        parentId: string,
     ) {
         return Promise.all([
             this.parentModel.findById(parentId),
@@ -197,7 +197,7 @@ export class PaymentService {
         collection: Collection | null,
         child: Child | null,
         bankAccount: BankAccount | null,
-        paymentCreatePayload: PaymentCreatePayload
+        paymentCreatePayload: PaymentCreatePayload,
     ) {
         if (!parent) {
             throw new NotFoundException('Parent not found');
@@ -215,7 +215,7 @@ export class PaymentService {
             throw new NotFoundException('Child not in the same class as collection');
         } else if (paymentCreatePayload.amount < 0 && collection.creator.toString() !== child.parent.toString()) {
             throw new NotFoundException('Only creator of collection can withdraw money');
-        } else if (paymentCreatePayload.amount < 0 && (-paymentCreatePayload.amount > bankAccount.balance)) {
+        } else if (paymentCreatePayload.amount < 0 && -paymentCreatePayload.amount > bankAccount.balance) {
             throw new NotFoundException('Insufficient funds');
         }
     }
@@ -225,7 +225,7 @@ export class PaymentService {
         collection: Collection | null,
         child: Child | null,
         bankAccount: BankAccount | null,
-        payment: Payment | null
+        payment: Payment | null,
     ) {
         if (!parent) {
             throw new NotFoundException('Parent not found');

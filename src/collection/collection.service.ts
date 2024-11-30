@@ -29,7 +29,7 @@ export class CollectionService {
         @InjectModel(BankAccount.name)
         private readonly bankAccountModel: Model<BankAccount>,
         @InjectModel(Payment.name)
-        private readonly paymentModel: Model<Payment>
+        private readonly paymentModel: Model<Payment>,
     ) {}
 
     async create(payload: CollectionPayload, parentId: string): Promise<Collection> {
@@ -128,7 +128,7 @@ export class CollectionService {
                         ...collection.toObject(),
                         currentAmount: bankAccount.balance,
                     };
-                })
+                }),
             );
 
             return collectionsWithCurrentAmount;
@@ -143,10 +143,13 @@ export class CollectionService {
     async getCollectionDetails(collectionId: string, parentId: string): Promise<GetCollectionDetails> {
         try {
             const parent = await this.parentModel.findById(parentId);
-            const collection = await this.collectionModel.findById(collectionId)
+            const collection = await this.collectionModel
+                .findById(collectionId)
                 .populate<{ creator: Parent }>('creator', '-password');
-            const payments = await this.paymentModel.find({ collection: collection._id })
-                .populate('parent', '-password').populate('child');
+            const payments = await this.paymentModel
+                .find({ collection: collection._id })
+                .populate('parent', '-password')
+                .populate('child');
 
             if (!parent) {
                 throw new NotFoundException('Parent not found');
@@ -179,8 +182,7 @@ export class CollectionService {
                 endDate: collection.endDate,
                 targetAmount: collection.targetAmount,
                 currentAmount: bankAccount.balance,
-            }
-
+            };
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw new NotFoundException(error.message);
