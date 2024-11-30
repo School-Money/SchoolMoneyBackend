@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Collection, Model } from 'mongoose';
 import { BankAccount } from 'src/schemas/BankAccount.schema';
@@ -30,8 +30,18 @@ export class ChatService {
         private readonly classChatRoomModel: Model<ClassChatRoom>,
     ) {}
 
-    async createPrivateChat() {
-        const chatRoom = this.privateChatRoomModel.create({});
+    async getPrivateMessages(userId: string, receiverId: string) {
+        // First, we need to check if the users exist
+        const user = await this.parentModel.findById(userId);
+        const receiver = await this.parentModel.findById(receiverId);
+        if (!user || !receiver) {
+            throw new NotFoundException('User not found');
+        }
+
+        // Then, we need to check if they have a chat room
+        const chatRoom = await this.privateChatRoomModel.findOne({
+            participants: { $all: [userId, receiverId] },
+        });
     }
 
     async sendMessage() {
