@@ -1,4 +1,10 @@
-import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+    ForbiddenException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClassCreate, PassTreasurerToParentParams } from 'src/interfaces/class.interface';
@@ -70,11 +76,15 @@ export class ClassService {
             if (!treasurer) {
                 throw new NotFoundException('Treasurer not found');
             }
-            const classDoc = await this.classModel.findOne({ treasurer: treasurer._id, id: classId });
+            const classDoc = await this.classModel.findById(classId);
             if (!classDoc) {
                 throw new NotFoundException('Class not found');
             }
-            return classDoc._id;
+            const classDocWithTreasurer = await this.classModel.findOne({ treasurer: treasurer._id, id: classDoc._id });
+            if (!classDocWithTreasurer) {
+                throw new ForbiddenException('You are not the treasurer of this class');
+            }
+            return classDocWithTreasurer._id;
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
