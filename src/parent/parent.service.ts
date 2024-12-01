@@ -42,6 +42,10 @@ export class ParentService {
         return this.parentModel.findOne({ email: parentEmail }).exec();
     }
 
+    async getUserInfo(parentId: string): Promise<Parent> {
+        return this.parentModel.findById(parentId).exec();
+    }
+
     async getParentsInClass(parentId: string, classId: string): Promise<Parent[]> {
         try {
             const classDoc = await this.classModel.findById(classId);

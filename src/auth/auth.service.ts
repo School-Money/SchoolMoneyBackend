@@ -50,4 +50,13 @@ export class AuthService {
         });
         return { accessToken };
     }
+
+    async getUserInfo(userId: string) {
+        try {
+            const parent = await this.parentService.getUserInfo(userId);
+            return { email: parent.email, firstName: parent.firstName, lastName: parent.lastName };
+        } catch (error) {
+            throw new UnauthorizedException('Invalid credentials');
+        }
+    }
 }

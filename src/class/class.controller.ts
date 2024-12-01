@@ -4,6 +4,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import {
     ClassCreate,
     ClassDetails,
+    GetClassDetailsPayload,
     GetClassInviteCodePayload,
     PassTreasurerToParentPayload,
 } from 'src/interfaces/class.interface';
@@ -32,6 +33,13 @@ export class ClassController {
         const { id: treasurerId } = req.user;
         const { classId } = payload;
         return await this.classService.getInviteCode(treasurerId, classId);
+    }
+
+    @Get('details')
+    async getClassDetails(@Request() req, @Body() payload: GetClassDetailsPayload) {
+        const { id: parentId } = req.user;
+        const { classId } = payload;
+        return await this.classService.getClassDetails(parentId, classId);
     }
 
     @Patch('passTreasurer')
