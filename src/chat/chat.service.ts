@@ -30,11 +30,11 @@ export class ChatService {
         }
 
         let chatRoom = await this.privateChatRoomModel.findOne({
-            participants: { $all: [userId, receiverId] },
+            participants: { $all: [user._id, receiver._id] },
         });
         if (!chatRoom) {
             chatRoom = await this.privateChatRoomModel.create({
-                participants: [userId, receiverId],
+                participants: [user._id, receiver._id],
                 messages: [],
             });
         }
@@ -49,11 +49,11 @@ export class ChatService {
         }
 
         let chatRoom = await this.privateChatRoomModel.findOne({
-            participants: { $all: [userId, receiverId] },
+            participants: { $all: [user._id, receiver._id] },
         });
         if (!chatRoom) {
             chatRoom = await this.privateChatRoomModel.create({
-                participants: [userId, receiverId],
+                participants: [user._id, receiver._id],
                 messages: [],
             });
         }
@@ -78,11 +78,11 @@ export class ChatService {
         }
 
         let chatRoom = await this.privateChatRoomModel.findOne({
-            participants: { $all: [userId, admin._id] },
+            participants: { $all: [user._id, admin._id] },
         });
         if (!chatRoom) {
             chatRoom = await this.privateChatRoomModel.create({
-                participants: [userId, admin._id],
+                participants: [user._id, admin._id],
                 messages: [],
             });
         }
@@ -101,11 +101,11 @@ export class ChatService {
         }
 
         let chatRoom = await this.privateChatRoomModel.findOne({
-            participants: { $all: [userId, admin._id] },
+            participants: { $all: [user._id, admin._id] },
         });
         if (!chatRoom) {
             chatRoom = await this.privateChatRoomModel.create({
-                participants: [userId, admin._id],
+                participants: [user._id, admin._id],
                 messages: [],
             });
         }
@@ -126,7 +126,7 @@ export class ChatService {
         }
 
         let chatRoom = await this.classChatRoomModel.findOne({
-            class: classId,
+            class: classDoc._id,
         });
         if (!chatRoom) {
             chatRoom = await this.classChatRoomModel.create({
@@ -143,9 +143,8 @@ export class ChatService {
         if (!user || !classDoc) {
             throw new NotFoundException('User or class not found');
         }
-
         let chatRoom = await this.classChatRoomModel.findOne({
-            class: classId,
+            class: classDoc._id,
         });
         if (!chatRoom) {
             chatRoom = await this.classChatRoomModel.create({
