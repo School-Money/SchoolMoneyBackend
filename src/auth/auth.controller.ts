@@ -18,7 +18,7 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Get('user-info')
+    @Get('user-details')
     async getUserInfo(@Request() req) {
         const { id: userId } = req.user;
         return this.authService.getUserInfo(userId);
