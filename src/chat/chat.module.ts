@@ -6,15 +6,20 @@ import { Class, ClassSchema } from 'src/schemas/Class.schema';
 import { Parent, ParentSchema } from 'src/schemas/Parent.schema';
 import { PrivateChatRoom, PrivateChatRoomSchema } from 'src/schemas/PrivateChatRoom.schema';
 import { ClassChatRoom, ClassChatRoomSchema } from 'src/schemas/ClassChatRoom.schema';
+import { Admin, AdminSchema } from 'src/schemas/Admin.schema';
+import { ClassService } from 'src/class/class.service';
+import { Child, ChildSchema } from 'src/schemas/Child.schema';
 
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: Class.name, schema: ClassSchema }]),
         MongooseModule.forFeature([{ name: Parent.name, schema: ParentSchema }]),
+        MongooseModule.forFeature([{ name: Child.name, schema: ChildSchema }]),
         MongooseModule.forFeature([{ name: ClassChatRoom.name, schema: ClassChatRoomSchema }]),
         MongooseModule.forFeature([{ name: PrivateChatRoom.name, schema: PrivateChatRoomSchema }]),
+        MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]),
     ],
     controllers: [ChatController],
-    providers: [ChatService],
+    providers: [ChatService, ClassService],
 })
 export class ChatModule {}
