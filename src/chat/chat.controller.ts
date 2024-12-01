@@ -4,6 +4,9 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { ChatMessageSend, ClassChatRoomRequest, PrivateChatRoomRequest } from 'src/interfaces/chat.interface';
 import { ClassService } from 'src/class/class.service';
 
+/**
+ * This is a not preffered way of chat, as @see ChatGateway is a better way to implement chat, left for zadyma purposes
+ **/
 @UseGuards(AuthGuard)
 @Controller('chat')
 export class ChatController {
