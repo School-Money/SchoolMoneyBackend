@@ -8,10 +8,10 @@ import {
     PaymentDtoMadeByParent,
     WithdrawPaymentPayload,
 } from 'src/interfaces/payment.interface';
-import { BankAccount } from 'src/schemas/BankAccount.schema';
-import { Child } from 'src/schemas/Child.schema';
-import { Collection } from 'src/schemas/Collection.schema';
-import { Parent } from 'src/schemas/Parent.schema';
+import { BankAccount, BankAccountDocument } from 'src/schemas/BankAccount.schema';
+import { Child, ChildDocument } from 'src/schemas/Child.schema';
+import { Collection, CollectionDocument } from 'src/schemas/Collection.schema';
+import { Parent, ParentDocument } from 'src/schemas/Parent.schema';
 import { Payment } from 'src/schemas/Payment.schema';
 
 @Injectable()
@@ -193,10 +193,10 @@ export class PaymentService {
     }
 
     private validateRelatedEntitiesCreatePayload(
-        parent: Parent | null,
-        collection: Collection | null,
-        child: Child | null,
-        bankAccount: BankAccount | null,
+        parent: ParentDocument | null,
+        collection: CollectionDocument | null,
+        child: ChildDocument | null,
+        bankAccount: BankAccountDocument | null,
         paymentCreatePayload: PaymentCreatePayload,
     ) {
         if (!parent) {

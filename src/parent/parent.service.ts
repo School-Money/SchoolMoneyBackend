@@ -38,7 +38,7 @@ export class ParentService {
         return newParent;
     }
 
-    async findOne(parentEmail: string): Promise<Parent | undefined> {
+    async findOne(parentEmail: string) {
         return this.parentModel.findOne({ email: parentEmail }).exec();
     }
 
