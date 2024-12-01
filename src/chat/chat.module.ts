@@ -9,6 +9,7 @@ import { ClassChatRoom, ClassChatRoomSchema } from 'src/schemas/ClassChatRoom.sc
 import { Admin, AdminSchema } from 'src/schemas/Admin.schema';
 import { ClassService } from 'src/class/class.service';
 import { Child, ChildSchema } from 'src/schemas/Child.schema';
+import { ChatGateway } from './chat.gateway';
 
 @Module({
     imports: [
@@ -20,6 +21,6 @@ import { Child, ChildSchema } from 'src/schemas/Child.schema';
         MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]),
     ],
     controllers: [ChatController],
-    providers: [ChatService, ClassService],
+    providers: [ChatService, ClassService, ChatGateway],
 })
 export class ChatModule {}
