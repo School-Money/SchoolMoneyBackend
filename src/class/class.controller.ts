@@ -27,7 +27,7 @@ export class ClassController {
         return await this.classService.get(parentId);
     }
 
-    @Get('invite')
+    @Post('invite')
     async getInviteCode(@Request() req, @Body() payload: GetClassInviteCodePayload) {
         const { id: treasurerId } = req.user;
         const { classId } = payload;
