@@ -78,11 +78,14 @@ export class ClassService {
             if (!classDoc) {
                 throw new NotFoundException('Class not found');
             }
-            const classDocWithTreasurer = await this.classModel.findOne({ treasurer: treasurer._id, id: classDoc._id });
+            const classDocWithTreasurer = await this.classModel.findOne({
+                treasurer: treasurer._id,
+                _id: classDoc._id,
+            });
             if (!classDocWithTreasurer) {
                 throw new ForbiddenException('You are not the treasurer of this class');
             }
-            return classDocWithTreasurer._id;
+            return { inviteCode: classDocWithTreasurer._id };
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
