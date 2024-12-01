@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { ClassCreate, PassTreasurerToParentParams } from 'src/interfaces/class.interface';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
+import { Collection } from 'src/schemas/Collection.schema';
 import { Parent } from 'src/schemas/Parent.schema';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class ClassService {
         @InjectModel(Class.name) private readonly classModel: Model<Class>,
         @InjectModel(Parent.name) private readonly parentModel: Model<Parent>,
         @InjectModel(Child.name) private readonly childModel: Model<Child>,
+        @InjectModel(Collection.name) private readonly collectionModel: Model<Collection>,
     ) {}
 
     async create(classInfo: ClassCreate) {
@@ -117,6 +119,54 @@ export class ClassService {
                 throw new NotFoundException(error.message);
             }
             throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
+        }
+    }
+
+    async getClassDetails(parentId: string, classId: string) {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            }
+
+            const classDoc = await this.classModel.findById(classId);
+            if (!classDoc) {
+                throw new NotFoundException('Class not found');
+            }
+
+            const childrenInClass = await this.childModel.find({ class: classDoc._id });
+            if (!childrenInClass.length) {
+                throw new NotFoundException('No children found in this class');
+            }
+
+            const treasurerData = await this.parentModel.findById(classDoc.treasurer);
+            if (!treasurerData) {
+                throw new NotFoundException('TreasurerData not found');
+            }
+
+            const classCollections = await this.collectionModel.find({ class: classDoc._id });
+
+            const { lastName, firstName, avatar } = treasurerData.toObject();
+            const treasurer = { lastName, firstName, avatar };
+
+            return {
+                className: classDoc.name,
+                children: childrenInClass.map((child) => {
+                    const { firstName, lastName, avatar } = child;
+                    return { firstName, lastName, avatar };
+                }),
+                treasurer: treasurer,
+                collections: classCollections.map((collection) => {
+                    const { title, description, logo, startDate, endDate, targetAmount } = collection;
+                    return { title, description, logo, startDate, endDate, targetAmount };
+                }),
+                isTreasurer: classDoc.treasurer.toHexString() === parentId,
+            };
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException(`Could not reach database: ${error.message}`);
         }
     }
 }
