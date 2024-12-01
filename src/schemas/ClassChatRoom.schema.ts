@@ -10,7 +10,7 @@ export class ClassChatRoom extends BaseChatRoom {
         required: true,
         type: Types.ObjectId,
     })
-    classId: Types.ObjectId;
+    class: Types.ObjectId;
 }
 
 export const ClassChatRoomSchema = SchemaFactory.createForClass(ClassChatRoom);
