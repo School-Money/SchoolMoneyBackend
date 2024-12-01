@@ -44,7 +44,7 @@ export class ClassService {
                 throw new NotFoundException('Parent not found');
             }
             const myChildren = await this.childModel.find({ parent: parent._id });
-            const myClasses = await this.classModel.find({
+            let myClasses = await this.classModel.find({
                 _id: { $in: myChildren.map((child) => child.class) },
             });
 
@@ -54,6 +54,10 @@ export class ClassService {
 
             const treasuredClasses = await this.classModel.find({ treasurer: parent._id });
             myClasses.push(...treasuredClasses);
+
+            myClasses = myClasses.filter((classDoc, index, self) => {
+                return index === self.findIndex((t) => t._id.toHexString() === classDoc._id.toHexString());
+            });
 
             return myClasses.map((classDoc) => {
                 const children = childrenInMyClasses.filter(
