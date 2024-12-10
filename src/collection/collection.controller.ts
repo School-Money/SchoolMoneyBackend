@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CollectionPayload, CollectionUpdate, GetCollectionDetails } from 'src/interfaces/collection.interface';
 import { CollectionService } from './collection.service';
@@ -34,5 +34,13 @@ export class CollectionController {
     async getCollectionDetails(@Req() req, @Param('collectionId') collectionId: string): Promise<GetCollectionDetails> {
         const { id: parentId } = req.user;
         return await this.collectionService.getCollectionDetails(collectionId, parentId);
+    }
+
+    @Delete(':collectionId')
+    async closeCollection(@Req() req, @Param('collectionId') collectionId: string): Promise<void> {
+        const { id: parentId } = req.user;
+        await this.collectionService.closeCollection(collectionId, parentId);
+
+        return;
     }
 }

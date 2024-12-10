@@ -58,6 +58,7 @@ Here you can find all endpoint that are currently done and you can use them.
 | /collections               | PATCH       | ✅     | Update collection                          |
 | /collections               | GET         | ✅     | Get all collections for parent             |
 | /collections/:collectionId | GET         | ✅     | Get collection details                     |
+| /collections/:collectionId | DELETE      | ✅     | Close collection                           |
 | /classes                   | POST        | ✅     | Create class                               |
 | /classes                   | GET         | ✅     | Get classes for parent                     |
 | /classes/invite            | GET         | ✅     | Get inviteCode to class by treasurerId     |

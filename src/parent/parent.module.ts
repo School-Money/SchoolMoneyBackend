@@ -6,6 +6,7 @@ import { Parent, ParentSchema } from 'src/schemas/Parent.schema';
 import { BankAccount, BankAccountSchema } from 'src/schemas/BankAccount.schema';
 import { Child, ChildSchema } from 'src/schemas/Child.schema';
 import { Class, ClassSchema } from 'src/schemas/Class.schema';
+import { Admin, AdminSchema } from 'src/schemas/Admin.schema';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { Class, ClassSchema } from 'src/schemas/Class.schema';
             { name: BankAccount.name, schema: BankAccountSchema },
             { name: Child.name, schema: ChildSchema },
             { name: Class.name, schema: ClassSchema },
+            { name: Admin.name, schema: AdminSchema },
         ]),
     ],
     providers: [ParentService],

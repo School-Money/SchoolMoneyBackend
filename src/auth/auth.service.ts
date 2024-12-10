@@ -38,17 +38,22 @@ export class AuthService {
         return { message: 'Parent registered successfully' };
     }
 
-    async loginUser(payload: ParentLogin): Promise<{ accessToken: string }> {
+    async loginUser(payload: ParentLogin): Promise<{ accessToken: string, isAdmin: boolean }> {
         const { email, password } = payload;
         const parent = await this.parentService.findOne(email);
         if (!parent || parent.password !== password) {
             throw new UnauthorizedException('Invalid credentials');
         }
-        const accessToken = await this.jwtService.signAsync({
-            email: parent.email,
-            id: parent._id,
-        });
-        return { accessToken };
+        
+        const [accessToken, isAdmin] = await Promise.all([
+            this.jwtService.signAsync({
+                email: parent.email,
+                id: parent._id,
+            }),
+            this.parentService.isParentAdmin(parent),
+        ]);
+
+        return { accessToken, isAdmin };
     }
 
     async getUserInfo(userId: string) {

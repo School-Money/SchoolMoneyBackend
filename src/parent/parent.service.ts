@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ParentRegister } from 'src/interfaces/parent.interface';
+import { Admin } from 'src/schemas/Admin.schema';
 import { BankAccount } from 'src/schemas/BankAccount.schema';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
@@ -15,6 +16,7 @@ export class ParentService {
         private readonly bankAccountModel: Model<BankAccount>,
         @InjectModel(Child.name) private readonly childModel: Model<Child>,
         @InjectModel(Class.name) private readonly classModel: Model<Class>,
+        @InjectModel(Admin.name) private readonly adminModel: Model<Admin>,
     ) {}
 
     async create(parent: ParentRegister): Promise<Parent> {
@@ -68,5 +70,9 @@ export class ParentService {
             }
             throw new BadRequestException(`Database operation failed: ${error.message}`);
         }
+    }
+
+    async isParentAdmin(parent: Parent): Promise<boolean> {
+        return !!(await this.adminModel.findOne({ parent: parent._id }));
     }
 }

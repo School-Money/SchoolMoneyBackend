@@ -190,4 +190,32 @@ export class CollectionService {
             throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
         }
     }
+
+    async closeCollection(collectionId: string, parentId: string): Promise<Collection> {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            }
+
+            const collection = await this.collectionModel.findById(collectionId);
+            if (!collection) {
+                throw new NotFoundException('Collection not found');
+            }
+
+            if (collection.creator.toString() !== parent._id.toString()) {
+                throw new UnauthorizedException('You are not the creator of this collection');
+            }
+
+            collection.endDate = new Date();
+            await collection.save();
+
+            return collection;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw new NotFoundException(error.message);
+            }
+            throw new InternalServerErrorException(`Database operation failed: ${error.message}`);
+        }
+    }
 }
