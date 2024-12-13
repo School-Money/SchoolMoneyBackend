@@ -35,9 +35,9 @@ export class Parent extends Document {
     email: string;
 
     @Prop({
-        default: 'avatar.jpg',
+        default: null,
     })
-    avatar: string;
+    avatar: string | null;
 
     @Prop({
         required: true,

@@ -87,11 +87,10 @@ export class ImageService {
 
             return document[updatedField];
         } catch (error) {
-            console.error(error); // Debugging: Log any errors
+            console.error(error);
             throw new BadRequestException(`Image upload failed: ${error.message}`);
         }
     }
-
 
     async getImage(
         entity: string,

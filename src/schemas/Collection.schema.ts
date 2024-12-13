@@ -34,9 +34,9 @@ export class Collection {
     description: string;
 
     @Prop({
-        default: 'class.jpg',
+        default: null,
     })
-    logo: string;
+    logo: string | null;
 
     @Prop({
         required: true,

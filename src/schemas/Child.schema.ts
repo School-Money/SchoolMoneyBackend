@@ -39,9 +39,9 @@ export class Child {
     birthDate: Date;
 
     @Prop({
-        required: true,
+        default: null,
     })
-    avatar: string;
+    avatar: string | null;
 
     @Prop({
         default: Date.now(),

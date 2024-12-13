@@ -13,7 +13,7 @@ import { PaymentModule } from './payment/payment.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import { ImageModule } from './image/image.module';
+import { DefaultImageModule } from './default-image/default-image.module';
 
 @Module({
     imports: [
@@ -28,30 +28,31 @@ import { ImageModule } from './image/image.module';
             }),
         }),
         MulterModule.registerAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: (_configService: ConfigService) => ({
-            storage: new CloudinaryStorage({
-            cloudinary: cloudinary,
-            params: async (req, file) => {
-                const { entity, id } = req.params;
-                const fileExtension = file.mimetype.split('/')[1];
-                const filename = file.originalname.split('.')[0];
-                return {
-                folder: 'uploads',
-                format: fileExtension,
-                public_id: `${entity}-${id}-${filename}`,
-                };
-            },
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (_configService: ConfigService) => ({
+                storage: new CloudinaryStorage({
+                    cloudinary: cloudinary,
+                    params: async (req, file) => {
+                            const { entity, id } = req.params;
+                            const fileExtension = file.mimetype.split('/')[1];
+                            const filename = file.originalname.split('.')[0];
+                        return {
+                            folder: 'uploads',
+                            format: fileExtension,
+                            public_id: `${entity}-${id}-${filename}`,
+                        };
+                    },
+                }),
             }),
         }),
-    }),
         AuthModule,
         ParentModule,
         ClassModule,
         ChildModule,
         CollectionModule,
         PaymentModule,
+        DefaultImageModule,
     ],
     controllers: [AuthController],
     providers: [AppService, AuthService],

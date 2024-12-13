@@ -79,3 +79,5 @@ Here you can find all endpoint that are currently done and you can use them.
 | /parents/:classId                | GET         | ✅     | Get parents in class                       |
 | /parents/avatar                  | PATCH       | ✅     | Change parent's avatar                     |
 | /parents/avatar                  | GET         | ✅     | Get parent's avatar file                   |
+| /default-images/avatar           | GET         | ✅     | Get default avatar file                    |
+| /default-images/logo             | GET         | ✅     | Get get default logo file                  |

@@ -22,5 +22,4 @@ export interface ChildCreateDetails {
     lastName: string;
     //unix timestamp
     birthDate?: number;
-    avatar: string;
 }
