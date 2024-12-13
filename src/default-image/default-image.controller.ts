@@ -6,6 +6,10 @@ import { PassThrough } from 'stream';
 
 @Controller('default-images')
 export class DefaultImageController {
+  private readonly avatarUrl: string = 
+    `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099384/default-avatar.jpg`;
+  private readonly logoUrl: string =
+    `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099330/default-logo.png`
   constructor(private readonly configService: ConfigService) {}
 
   private async fetchImage(url: string, res: Response) {
@@ -31,13 +35,13 @@ export class DefaultImageController {
 
   @Get('avatar')
   async getDefaultAvatar(@Res() res: Response) {
-    const defaultAvatar = this.configService.get<string>('DEFAULT_AVATAR');
+    const defaultAvatar = this.avatarUrl;
     await this.fetchImage(defaultAvatar, res);
   }
 
   @Get('logo')
   async getDefaultLogo(@Res() res: Response) {
-    const defaultLogo = this.configService.get<string>('DEFAULT_LOGO');
+    const defaultLogo = this.logoUrl;
     await this.fetchImage(defaultLogo, res);
   }
 }
