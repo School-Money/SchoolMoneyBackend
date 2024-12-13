@@ -49,27 +49,33 @@ $ npm run start:prod
 
 Here you can find all endpoint that are currently done and you can use them.
 
-| Path                       | HTTP Method | Status | Description                                |
-| -------------------------- | ----------- | ------ | ------------------------------------------ |
-| /auth/register             | POST        | ✅     | Register account                           |
-| /auth/login                | POST        | ✅     | Login account                              |
-| /auth/user-details         | GET         | ✅     | Get user details of logged user            |
-| /collections               | POST        | ✅     | Create collection                          |
-| /collections               | PATCH       | ✅     | Update collection                          |
-| /collections               | GET         | ✅     | Get all collections for parent             |
-| /collections/:collectionId | GET         | ✅     | Get collection details                     |
-| /collections/:collectionId | DELETE      | ✅     | Close collection                           |
-| /classes                   | POST        | ✅     | Create class                               |
-| /classes                   | GET         | ✅     | Get classes for parent                     |
-| /classes/invite            | GET         | ✅     | Get inviteCode to class by treasurerId     |
-| /classes/passTreasurer     | PATCH       | ✅     | Pass treasurer from parent to other parent |
-| /classes/details           | GET         | ✅     | Get details about class                    |
-| /children                  | POST        | ✅     | Create child                               |
-| /children                  | PATCH       | ✅     | Update child                               |
-| /children                  | GET         | ✅     | Get children for parent                    |
-| /children                  | DELETE      | ✅     | Delete child                               |
-| /payments                  | GET         | ✅     | Get payments in parent's children classes  |
-| /payments                  | POST        | ✅     | Create payment                             |
-| /payments/withdraw         | POST        | ✅     | Withdraw payment                           |
-| /payments/parent           | GET         | ✅     | Get payments created by parent             |
-| /parents/:classId          | GET         | ✅     | Get parents in class                       |
+| Path                             | HTTP Method | Status | Description                                |
+| --------------------------       | ----------- | ------ | ------------------------------------------ |
+| /auth/register                   | POST        | ✅     | Register account                           |
+| /auth/login                      | POST        | ✅     | Login account                              |
+| /auth/user-details               | GET         | ✅     | Get user details of logged user            |
+| /collections                     | POST        | ✅     | Create collection                          |
+| /collections                     | PATCH       | ✅     | Update collection                          |
+| /collections                     | GET         | ✅     | Get all collections for parent             |
+| /collections/:collectionId       | GET         | ✅     | Get collection details                     |
+| /collections/:collectionId       | DELETE      | ✅     | Close collection                           |
+| /collections/:collectionId/logo  | PATCH       | ✅     | Change collection's logo                   |
+| /collections/:collectionId/logo  | GET         | ✅     | Get collection's avatar file               |
+| /classes                         | POST        | ✅     | Create class                               |
+| /classes                         | GET         | ✅     | Get classes for parent                     |
+| /classes/invite                  | GET         | ✅     | Get inviteCode to class by treasurerId     |
+| /classes/passTreasurer           | PATCH       | ✅     | Pass treasurer from parent to other parent |
+| /classes/details                 | GET         | ✅     | Get details about class                    |
+| /children                        | POST        | ✅     | Create child                               |
+| /children                        | PATCH       | ✅     | Update child                               |
+| /children                        | GET         | ✅     | Get children for parent                    |
+| /children                        | DELETE      | ✅     | Delete child                               |
+| /children/:childId/avatar        | PATCH       | ✅     | Change child's avatar                      |
+| /children/:childId/avatar        | GET         | ✅     | Get child's avatar file                    |
+| /payments                        | GET         | ✅     | Get payments in parent's children classes  |
+| /payments                        | POST        | ✅     | Create payment                             |
+| /payments/withdraw               | POST        | ✅     | Withdraw payment                           |
+| /payments/parent                 | GET         | ✅     | Get payments created by parent             |
+| /parents/:classId                | GET         | ✅     | Get parents in class                       |
+| /parents/avatar                  | PATCH       | ✅     | Change parent's avatar                     |
+| /parents/avatar                  | GET         | ✅     | Get parent's avatar file                   |

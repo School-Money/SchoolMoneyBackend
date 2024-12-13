@@ -10,6 +10,10 @@ import { ClassModule } from './class/class.module';
 import { ChildModule } from './child/child.module';
 import { CollectionModule } from './collection/collection.module';
 import { PaymentModule } from './payment/payment.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { ImageModule } from './image/image.module';
 
 @Module({
     imports: [
@@ -23,6 +27,25 @@ import { PaymentModule } from './payment/payment.module';
                 uri: configService.get<string>('MONGO_URI'),
             }),
         }),
+        MulterModule.registerAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (_configService: ConfigService) => ({
+            storage: new CloudinaryStorage({
+            cloudinary: cloudinary,
+            params: async (req, file) => {
+                const { entity, id } = req.params;
+                const fileExtension = file.mimetype.split('/')[1];
+                const filename = file.originalname.split('.')[0];
+                return {
+                folder: 'uploads',
+                format: fileExtension,
+                public_id: `${entity}-${id}-${filename}`,
+                };
+            },
+            }),
+        }),
+    }),
         AuthModule,
         ParentModule,
         ClassModule,

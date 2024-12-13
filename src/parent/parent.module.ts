@@ -7,6 +7,8 @@ import { BankAccount, BankAccountSchema } from 'src/schemas/BankAccount.schema';
 import { Child, ChildSchema } from 'src/schemas/Child.schema';
 import { Class, ClassSchema } from 'src/schemas/Class.schema';
 import { Admin, AdminSchema } from 'src/schemas/Admin.schema';
+import { ImageModule } from 'src/image/image.module';
+import { Collection, CollectionSchema } from 'src/schemas/Collection.schema';
 
 @Module({
     imports: [
@@ -16,7 +18,9 @@ import { Admin, AdminSchema } from 'src/schemas/Admin.schema';
             { name: Child.name, schema: ChildSchema },
             { name: Class.name, schema: ClassSchema },
             { name: Admin.name, schema: AdminSchema },
+            { name: Collection.name, schema: CollectionSchema },
         ]),
+        ImageModule,
     ],
     providers: [ParentService],
     controllers: [ParentController],

@@ -8,6 +8,7 @@ import { Class, ClassSchema } from 'src/schemas/Class.schema';
 import { Child, ChildSchema } from 'src/schemas/Child.schema';
 import { BankAccount, BankAccountSchema } from 'src/schemas/BankAccount.schema';
 import { Payment, PaymentSchema } from 'src/schemas/Payment.schema';
+import { ImageModule } from 'src/image/image.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { Payment, PaymentSchema } from 'src/schemas/Payment.schema';
             { name: BankAccount.name, schema: BankAccountSchema },
             { name: Payment.name, schema: PaymentSchema },
         ]),
+        ImageModule,
     ],
     controllers: [CollectionController],
     providers: [CollectionService],

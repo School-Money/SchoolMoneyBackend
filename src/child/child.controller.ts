@@ -1,12 +1,18 @@
-import { Body, Controller, Post, UseGuards, Request, Get, Delete, Patch } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Get, Delete, Patch, Req, Res, UploadedFile, UseInterceptors, Param } from '@nestjs/common';
 import { ChildService } from './child.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { ChildCreate, ChildCreateDetails, ChildUpdate, ChildUpdateDetails } from 'src/interfaces/child.interface';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageService } from 'src/image/image.service';
+import { Response } from 'express';
 
 @Controller('children')
 @UseGuards(AuthGuard)
 export class ChildController {
-    constructor(private readonly childService: ChildService) {}
+    constructor(
+        private readonly childService: ChildService,
+        private readonly imageService: ImageService,
+    ) {}
 
     @Post()
     async createChild(@Request() req, @Body() classInfo: ChildCreateDetails) {
@@ -32,5 +38,31 @@ export class ChildController {
     async deleteChild(@Request() req, @Body() childDetails: { childId: string }) {
         const { id: parentId } = req.user;
         return await this.childService.delete({ ...childDetails, parentId });
+    }
+
+    @Patch(':childId/avatar')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadChildAvatar(
+        @Req() req,
+        @Param('childId') childId: string,
+        @UploadedFile() file: Express.Multer.File,
+    ): Promise<string> {
+        const { id: parentId } = req.user;
+        return await this.imageService.uploadImage('child', childId, file, parentId);
+    }
+        
+    @Get(':childId/avatar')
+    async getChildAvatar(
+        @Req() req,
+        @Param('childId') childId: string,
+        @Res() res: Response,
+    ) {
+        const { id: parentId } = req.user;
+        const { stream, contentType } = await this.imageService.getImage('child', childId, parentId);
+            
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Cache-Control', 'public, max-age=31536000');
+    
+        stream.pipe(res);
     }
 }
