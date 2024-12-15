@@ -139,6 +139,27 @@ export class ClassService {
         }
     }
 
+    async isParentInClass(parentId: string, classId: string) {
+        try {
+            const parent = await this.parentModel.findById(parentId);
+            if (!parent) {
+                throw new NotFoundException('Parent not found');
+            }
+            const classDoc = await this.classModel.findById(classId);
+            if (!classDoc) {
+                throw new NotFoundException('Class not found');
+            }
+            const isTreasurer = classDoc.treasurer.toHexString() === parentId;
+            const children = await this.childModel.find({ parent: parent._id, class: classDoc._id });
+            return !!children.length || isTreasurer;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException(`Failed to check access to class: ${error.message}`);
+        }
+    }
+
     async getClassDetails(parentId: string, classId: string) {
         try {
             const parent = await this.parentModel.findById(parentId);
