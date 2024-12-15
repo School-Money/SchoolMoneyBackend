@@ -6,7 +6,7 @@ import { Admin } from 'src/schemas/Admin.schema';
 import { BankAccount } from 'src/schemas/BankAccount.schema';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
-import { Parent } from 'src/schemas/Parent.schema';
+import { Parent, ParentDocument } from 'src/schemas/Parent.schema';
 
 @Injectable()
 export class ParentService {
@@ -72,7 +72,7 @@ export class ParentService {
         }
     }
 
-    async isParentAdmin(parent: Parent): Promise<boolean> {
+    async isParentAdmin(parent: ParentDocument): Promise<boolean> {
         return !!(await this.adminModel.findOne({ parent: parent._id }));
     }
 }
