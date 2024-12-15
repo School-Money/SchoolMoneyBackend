@@ -46,6 +46,11 @@ export class Parent {
     bankAccount: Types.ObjectId;
 
     @Prop({
+        default: false,
+    })
+    isBlocked: boolean;
+
+    @Prop({
         default: Date.now(),
     })
     createdAt: Date;

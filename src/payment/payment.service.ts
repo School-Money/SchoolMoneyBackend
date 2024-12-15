@@ -201,7 +201,7 @@ export class PaymentService {
     ) {
         if (!parent) {
             throw new NotFoundException('Parent not found');
-        } else if (!collection) {
+        } else if (!collection || collection.isBlocked) {
             throw new NotFoundException('Collection not found');
         } else if (!child && parent._id.toString() !== collection.creator.toString()) {
             throw new NotFoundException('Child not found');
@@ -229,7 +229,7 @@ export class PaymentService {
     ) {
         if (!parent) {
             throw new NotFoundException('Parent not found');
-        } else if (!collection) {
+        } else if (!collection || collection.isBlocked) {
             throw new NotFoundException('Collection not found');
         } else if (!child) {
             throw new NotFoundException('Child not found');

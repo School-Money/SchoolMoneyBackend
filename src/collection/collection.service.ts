@@ -77,7 +77,7 @@ export class CollectionService {
             }
 
             const collection = await this.collectionModel.findById(payload.collectionId);
-            if (!collection) {
+            if (!collection || collection.isBlocked) {
                 throw new NotFoundException('Collection not found');
             }
 
@@ -182,6 +182,7 @@ export class CollectionService {
                 endDate: collection.endDate,
                 targetAmount: collection.targetAmount,
                 currentAmount: bankAccount.balance,
+                isBlocked: collection.isBlocked,
             };
         } catch (error) {
             if (error instanceof NotFoundException) {

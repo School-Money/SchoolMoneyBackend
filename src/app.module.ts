@@ -15,6 +15,7 @@ import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { DefaultImageModule } from "./default-image/default-image.module";
 import { ChatModule } from "./chat/chat.module";
+import { AdminModule } from "./admin/admin.module";
 
 @Module({
     imports: [
@@ -55,6 +56,7 @@ import { ChatModule } from "./chat/chat.module";
         PaymentModule,
         DefaultImageModule,
         ChatModule,
+        AdminModule,
     ],
     controllers: [AuthController],
     providers: [AppService, AuthService],

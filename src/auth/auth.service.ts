@@ -41,7 +41,7 @@ export class AuthService {
     async loginUser(payload: ParentLogin): Promise<{ accessToken: string, isAdmin: boolean }> {
         const { email, password } = payload;
         const parent = await this.parentService.findOne(email);
-        if (!parent || parent.password !== password) {
+        if (!parent || parent.password !== password || parent.isBlocked) {
             throw new UnauthorizedException('Invalid credentials');
         }
         

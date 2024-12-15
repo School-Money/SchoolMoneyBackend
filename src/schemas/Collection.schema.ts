@@ -59,6 +59,11 @@ export class Collection {
         min: 0,
     })
     targetAmount: number;
+
+    @Prop({
+        default: false,
+    })
+    isBlocked: boolean;
 }
 
 export const CollectionSchema = SchemaFactory.createForClass(Collection);

@@ -35,4 +35,5 @@ export interface GetCollectionDetails {
     endDate: Date;
     targetAmount: number;
     currentAmount: number;
+    isBlocked: boolean;
 }
