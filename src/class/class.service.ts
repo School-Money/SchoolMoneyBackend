@@ -193,8 +193,8 @@ export class ClassService {
                 }),
                 treasurer: treasurer,
                 collections: classCollections.map((collection) => {
-                    const { title, description, logo, startDate, endDate, targetAmount } = collection;
-                    return { title, description, logo, startDate, endDate, targetAmount };
+                    const { _id, title, description, logo, startDate, endDate, targetAmount } = collection;
+                    return { id: _id, title, description, logo, startDate, endDate, targetAmount };
                 }),
                 isTreasurer: classDoc.treasurer.toHexString() === parentId,
             };
