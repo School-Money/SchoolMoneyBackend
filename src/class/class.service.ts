@@ -174,9 +174,6 @@ export class ClassService {
             }
 
             const childrenInClass = await this.childModel.find({ class: classDoc._id });
-            if (!childrenInClass.length) {
-                throw new NotFoundException('No children found in this class');
-            }
 
             const treasurerData = await this.parentModel.findById(classDoc.treasurer);
             if (!treasurerData) {
