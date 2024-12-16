@@ -65,7 +65,7 @@ Here you can find all endpoint that are currently done and you can use them.
 | /classes                               | GET         | ✅     | Get classes for parent                     |
 | /classes/invite                        | GET         | ✅     | Get inviteCode to class by treasurerId     |
 | /classes/passTreasurer                 | PATCH       | ✅     | Pass treasurer from parent to other parent |
-| /classes/details                       | GET         | ✅     | Get details about class                    |
+| /classes/details                       | POST        | ✅     | Get details about class                    |
 | /children                              | POST        | ✅     | Create child                               |
 | /children                              | PATCH       | ✅     | Update child                               |
 | /children                              | GET         | ✅     | Get children for parent                    |
