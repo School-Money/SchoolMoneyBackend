@@ -43,6 +43,7 @@ export class ClassService {
             if (!parent) {
                 throw new NotFoundException('Parent not found');
             }
+            
             const myChildren = await this.childModel.find({ parent: parent._id });
             let myClasses = await this.classModel.find({
                 _id: { $in: myChildren.map((child) => child.class) },

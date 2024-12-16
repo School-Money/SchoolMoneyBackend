@@ -44,6 +44,10 @@ export class ParentService {
         return this.parentModel.findOne({ email: parentEmail }).exec();
     }
 
+    async findById(parentId: string) {
+        return this.parentModel.findById(parentId).exec();
+    }
+
     async getUserInfo(parentId: string): Promise<Parent> {
         return this.parentModel.findById(parentId).exec();
     }

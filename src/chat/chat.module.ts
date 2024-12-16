@@ -11,6 +11,7 @@ import { ClassService } from 'src/class/class.service';
 import { Child, ChildSchema } from 'src/schemas/Child.schema';
 import { ChatGateway } from './chat.gateway';
 import { CollectionSchema, Collection } from 'src/schemas/Collection.schema';
+import { ParentModule } from 'src/parent/parent.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { CollectionSchema, Collection } from 'src/schemas/Collection.schema';
         MongooseModule.forFeature([{ name: PrivateChatRoom.name, schema: PrivateChatRoomSchema }]),
         MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]),
         MongooseModule.forFeature([{ name: Collection.name, schema: CollectionSchema }]),
+        ParentModule,
     ],
     controllers: [ChatController],
     providers: [ChatService, ClassService, ChatGateway],

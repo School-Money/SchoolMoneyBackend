@@ -6,6 +6,7 @@ import { Child, ChildSchema } from 'src/schemas/Child.schema';
 import { Parent, ParentSchema } from 'src/schemas/Parent.schema';
 import { Class, ClassSchema } from 'src/schemas/Class.schema';
 import { ImageModule } from 'src/image/image.module';
+import { ParentModule } from 'src/parent/parent.module';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { ImageModule } from 'src/image/image.module';
             { name: Class.name, schema: ClassSchema }
         ]),
         ImageModule,
+        ParentModule,
     ],
     controllers: [ChildController],
     providers: [ChildService],

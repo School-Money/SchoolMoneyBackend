@@ -7,13 +7,13 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
-        ParentModule,
         ConfigModule.forRoot(),
         JwtModule.register({
             global: true,
             secret: process.env.SECRET_KEY,
             signOptions: { expiresIn: '60m' },
         }),
+        ParentModule,
     ],
     controllers: [AuthController],
     providers: [AuthService, Logger],
