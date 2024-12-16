@@ -89,4 +89,12 @@ export class ParentService {
             { $inc: { balance: amount } }
         );
     }
+
+    async getParentBalance(parentId: string): Promise<number> {
+        const bankAccount = await this.bankAccountModel.findOne({ owner: Types.ObjectId.createFromHexString(parentId) });
+        if (!bankAccount) {
+            throw new BadRequestException('Bank account not found');
+        }
+        return bankAccount.balance;
+    }
 }

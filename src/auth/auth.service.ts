@@ -58,8 +58,11 @@ export class AuthService {
 
     async getUserInfo(userId: string) {
         try {
-            const parent = await this.parentService.getUserInfo(userId);
-            return { _id: userId, email: parent.email, firstName: parent.firstName, lastName: parent.lastName };
+            const [parent, balance] = await Promise.all([
+                this.parentService.getUserInfo(userId),
+                this.parentService.getParentBalance(userId),
+            ]);
+            return { _id: userId, email: parent.email, firstName: parent.firstName, lastName: parent.lastName, balance };
         } catch (error) {
             throw new UnauthorizedException('Invalid credentials');
         }

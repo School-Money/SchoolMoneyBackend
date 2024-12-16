@@ -18,9 +18,9 @@ export class ParentController {
     async uploadParentAvatar(
         @Req() req,
         @UploadedFile() file: Express.Multer.File,
-        ): Promise<string> {
-            const { id: parentId } = req.user;
-            return await this.imageService.uploadImage('parent', parentId, file, parentId);
+    ): Promise<string> {
+        const { id: parentId } = req.user;
+        return await this.imageService.uploadImage('parent', parentId, file, parentId);
     }
     
     @Get('avatar')
@@ -36,7 +36,6 @@ export class ParentController {
 
         stream.pipe(res);
     }
-
     
     @Patch('balance')
     async updateParentBalance(
