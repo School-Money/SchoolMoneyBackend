@@ -188,8 +188,8 @@ export class ClassService {
             return {
                 className: classDoc.name,
                 children: childrenInClass.map((child) => {
-                    const { firstName, lastName, avatar } = child;
-                    return { firstName, lastName, avatar };
+                    const { _id, firstName, lastName, avatar } = child;
+                    return { _id, firstName, lastName, avatar };
                 }),
                 treasurer: treasurer,
                 collections: classCollections.map((collection) => {
