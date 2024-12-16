@@ -34,10 +34,10 @@ export class ChildController {
         return await this.childService.get(parentId);
     }
 
-    @Delete()
-    async deleteChild(@Request() req, @Body() childDetails: { childId: string }) {
+    @Delete(':childId')
+    async deleteChild(@Request() req, @Param('childId') childId: string) {
         const { id: parentId } = req.user;
-        return await this.childService.delete({ ...childDetails, parentId });
+        return await this.childService.delete({ childId, parentId });
     }
 
     @Patch(':childId/avatar')

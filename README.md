@@ -69,7 +69,7 @@ Here you can find all endpoint that are currently done and you can use them.
 | /children                              | POST        | ✅     | Create child                               |
 | /children                              | PATCH       | ✅     | Update child                               |
 | /children                              | GET         | ✅     | Get children for parent                    |
-| /children                              | DELETE      | ✅     | Delete child                               |
+| /children/:childId                     | DELETE      | ✅     | Delete child                               |
 | /children/:childId/avatar              | PATCH       | ✅     | Change child's avatar                      |
 | /children/:childId/avatar              | GET         | ✅     | Get child's avatar file                    |
 | /payments                              | GET         | ✅     | Get payments in parent's children classes  |
