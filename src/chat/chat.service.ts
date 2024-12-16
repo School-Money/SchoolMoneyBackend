@@ -38,6 +38,9 @@ export class ChatService {
                 messages: [],
             });
         }
+        chatRoom.messages = chatRoom.messages.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         return chatRoom;
     }
 
@@ -63,6 +66,9 @@ export class ChatService {
             createdAt: new Date(),
         });
         await chatRoom.save();
+        chatRoom.messages = chatRoom.messages.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         return chatRoom;
     }
 
@@ -86,6 +92,9 @@ export class ChatService {
                 messages: [],
             });
         }
+        chatRoom.messages = chatRoom.messages.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         return chatRoom;
     }
 
@@ -115,6 +124,9 @@ export class ChatService {
             createdAt: new Date(),
         });
         await chatRoom.save();
+        chatRoom.messages = chatRoom.messages.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         return chatRoom;
     }
 
@@ -134,6 +146,9 @@ export class ChatService {
                 messages: [],
             });
         }
+        chatRoom.messages = chatRoom.messages.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         return chatRoom;
     }
 
@@ -158,6 +173,9 @@ export class ChatService {
             createdAt: new Date(),
         });
         await chatRoom.save();
+        chatRoom.messages = chatRoom.messages.sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         return chatRoom;
     }
 }
