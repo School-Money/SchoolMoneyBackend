@@ -3,8 +3,6 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { GetParentsDto } from "src/interfaces/admin.interface";
 import { Admin } from "src/schemas/Admin.schema";
-import { BankAccount } from "src/schemas/BankAccount.schema";
-import { Child } from "src/schemas/Child.schema";
 import { Class } from "src/schemas/Class.schema";
 import { Collection } from "src/schemas/Collection.schema";
 import { Parent } from "src/schemas/Parent.schema";
@@ -13,9 +11,6 @@ import { Parent } from "src/schemas/Parent.schema";
 export class AdminService {
     constructor(
         @InjectModel(Parent.name) private readonly parentModel: Model<Parent>,
-        @InjectModel(BankAccount.name)
-        private readonly bankAccountModel: Model<BankAccount>,
-        @InjectModel(Child.name) private readonly childModel: Model<Child>,
         @InjectModel(Class.name) private readonly classModel: Model<Class>,
         @InjectModel(Admin.name) private readonly adminModel: Model<Admin>,
         @InjectModel(Collection.name) private readonly collectionModel: Model<Collection>,
