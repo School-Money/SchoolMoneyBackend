@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Patch, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ParentService } from './parent.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -35,6 +35,16 @@ export class ParentController {
         res.setHeader('Cache-Control', 'public, max-age=31536000');
 
         stream.pipe(res);
+    }
+
+    
+    @Patch('balance')
+    async updateParentBalance(
+        @Req() req,
+        @Body() body: { amount: number },
+    ) {
+        const { id: parentId } = req.user;
+        return this.parentService.updateParentBalance(parentId, body.amount);
     }
 
     @Get(':classId')

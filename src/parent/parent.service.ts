@@ -75,4 +75,14 @@ export class ParentService {
     async isParentAdmin(parent: ParentDocument): Promise<boolean> {
         return !!(await this.adminModel.findOne({ parent: parent._id }));
     }
+
+    async updateParentBalance(parentId: string, amount: number): Promise<void> {
+        if (amount <= 0) {
+            throw new BadRequestException('Amount must be greater than 0');
+        }
+        await this.bankAccountModel.updateOne(
+            { owner: Types.ObjectId.createFromHexString(parentId) },
+            { $inc: { balance: amount } }
+        );
+    }
 }

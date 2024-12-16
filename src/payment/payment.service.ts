@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import {
@@ -187,7 +187,7 @@ export class PaymentService {
             throw new NotFoundException('Child ID is required');
         } else if (!paymentCreatePayload.amount) {
             throw new NotFoundException('Amount is required');
-        } else if (paymentCreatePayload.amount === 0) {
+        } else if (paymentCreatePayload.amount <= 0) {
             throw new NotFoundException('Amount must be greater than 0');
         }
     }
@@ -200,23 +200,25 @@ export class PaymentService {
         paymentCreatePayload: PaymentCreatePayload,
     ) {
         if (!parent) {
-            throw new NotFoundException('Parent not found');
+            throw new BadRequestException('Parent not found');
         } else if (!collection || collection.isBlocked) {
-            throw new NotFoundException('Collection not found');
+            throw new BadRequestException('Collection not found');
         } else if (!child && parent._id.toString() !== collection.creator.toString()) {
-            throw new NotFoundException('Child not found');
+            throw new BadRequestException('Child not found');
         } else if (!bankAccount) {
-            throw new NotFoundException('Bank account not found');
+            throw new BadRequestException('Bank account not found');
         }
 
         if (collection.startDate.getTime() > Date.now() || collection.endDate.getTime() < Date.now()) {
-            throw new NotFoundException('Collection is not active');
+            throw new BadRequestException('Collection is not active');
         } else if (collection.class.toString() !== child.class.toString()) {
-            throw new NotFoundException('Child not in the same class as collection');
+            throw new BadRequestException('Child not in the same class as collection');
+        } else if (paymentCreatePayload.amount > bankAccount.balance) {
+            throw new BadRequestException('Insufficient funds');
         } else if (paymentCreatePayload.amount < 0 && collection.creator.toString() !== child.parent.toString()) {
-            throw new NotFoundException('Only creator of collection can withdraw money');
+            throw new BadRequestException('Only creator of collection can withdraw money');
         } else if (paymentCreatePayload.amount < 0 && -paymentCreatePayload.amount > bankAccount.balance) {
-            throw new NotFoundException('Insufficient funds');
+            throw new BadRequestException('Insufficient funds');
         }
     }
 
@@ -228,27 +230,27 @@ export class PaymentService {
         payment: Payment | null,
     ) {
         if (!parent) {
-            throw new NotFoundException('Parent not found');
+            throw new BadRequestException('Parent not found');
         } else if (!collection || collection.isBlocked) {
-            throw new NotFoundException('Collection not found');
+            throw new BadRequestException('Collection not found');
         } else if (!child) {
-            throw new NotFoundException('Child not found');
+            throw new BadRequestException('Child not found');
         } else if (!bankAccount) {
-            throw new NotFoundException('Bank account not found');
+            throw new BadRequestException('Bank account not found');
         }
 
         if (collection.startDate.getTime() > Date.now() || collection.endDate.getTime() < Date.now()) {
-            throw new NotFoundException('Collection is not active');
+            throw new BadRequestException('Collection is not active');
         } else if (collection.class.toString() !== child.class.toString()) {
-            throw new NotFoundException('Child not in the same class as collection');
+            throw new BadRequestException('Child not in the same class as collection');
         } else if (payment.amount > bankAccount.balance) {
-            throw new NotFoundException('Insufficient funds');
+            throw new BadRequestException('Insufficient funds');
         }
     }
 
     private validateWithdrawPaymentPayload(withdrawPaymentPayload: WithdrawPaymentPayload) {
         if (!withdrawPaymentPayload.paymentId) {
-            throw new NotFoundException('Payment ID is required');
+            throw new BadRequestException('Payment ID is required');
         }
     }
 }
