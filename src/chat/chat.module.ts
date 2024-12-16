@@ -12,16 +12,20 @@ import { Child, ChildSchema } from 'src/schemas/Child.schema';
 import { ChatGateway } from './chat.gateway';
 import { CollectionSchema, Collection } from 'src/schemas/Collection.schema';
 import { ParentModule } from 'src/parent/parent.module';
+import { BankAccount, BankAccountSchema } from 'src/schemas/BankAccount.schema';
 
 @Module({
     imports: [
-        MongooseModule.forFeature([{ name: Class.name, schema: ClassSchema }]),
-        MongooseModule.forFeature([{ name: Parent.name, schema: ParentSchema }]),
-        MongooseModule.forFeature([{ name: Child.name, schema: ChildSchema }]),
-        MongooseModule.forFeature([{ name: ClassChatRoom.name, schema: ClassChatRoomSchema }]),
-        MongooseModule.forFeature([{ name: PrivateChatRoom.name, schema: PrivateChatRoomSchema }]),
-        MongooseModule.forFeature([{ name: Admin.name, schema: AdminSchema }]),
-        MongooseModule.forFeature([{ name: Collection.name, schema: CollectionSchema }]),
+        MongooseModule.forFeature([
+            { name: Class.name, schema: ClassSchema },
+            { name: Parent.name, schema: ParentSchema },
+            { name: Child.name, schema: ChildSchema },
+            { name: PrivateChatRoom.name, schema: PrivateChatRoomSchema },
+            { name: ClassChatRoom.name, schema: ClassChatRoomSchema },
+            { name: Admin.name, schema: AdminSchema },
+            { name: Collection.name, schema: CollectionSchema },
+            { name: BankAccount.name, schema: BankAccountSchema },
+        ]),
         ParentModule,
     ],
     controllers: [ChatController],
