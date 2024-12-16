@@ -182,10 +182,11 @@ export class ClassService {
 
             const classCollections = await this.collectionModel.find({ class: classDoc._id });
 
-            const { lastName, firstName, avatar } = treasurerData.toObject();
-            const treasurer = { lastName, firstName, avatar };
+            const { _id, lastName, firstName, avatar } = treasurerData.toObject();
+            const treasurer = { _id, lastName, firstName, avatar };
 
             return {
+                _id: classDoc._id,
                 className: classDoc.name,
                 children: childrenInClass.map((child) => {
                     const { _id, firstName, lastName, avatar } = child;
