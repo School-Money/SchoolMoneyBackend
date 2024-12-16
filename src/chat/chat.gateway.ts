@@ -51,6 +51,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.clientRooms.set(client.id, roomId);
         this.activeUsers.set(client.id, userId);
         console.log(`Client ${client.id} joined room ${roomId}`);
+        this.server.to(roomId).emit('receiveMessage', chatRoom.messages);
     }
 
     @UseGuards(AuthGuard)
@@ -120,7 +121,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         client.join(roomId);
         this.clientRooms.set(client.id, roomId);
         this.activeUsers.set(client.id, userId);
-        console.log(`Client ${client.id} joined room ${roomId}`);
+        this.server.to(roomId).emit('receiveMessage', chatRoom.messages);
     }
 
     @UseGuards(AuthGuard)

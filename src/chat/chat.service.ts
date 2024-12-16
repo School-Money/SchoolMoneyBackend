@@ -63,6 +63,7 @@ export class ChatService {
         chatRoom.messages.push({
             sender: user._id,
             content,
+            senderName: `${user.firstName} ${user.lastName}`,
             createdAt: new Date(),
         });
         await chatRoom.save();
@@ -121,6 +122,7 @@ export class ChatService {
         chatRoom.messages.push({
             sender: user._id,
             content,
+            senderName: `${user.firstName} ${user.lastName}`,
             createdAt: new Date(),
         });
         await chatRoom.save();
@@ -167,12 +169,17 @@ export class ChatService {
                 messages: [],
             });
         }
+        const senderName = `${user.firstName} ${user.lastName}`;
+        console.log(senderName);
         chatRoom.messages.push({
             sender: user._id,
             content,
+            senderName,
             createdAt: new Date(),
         });
-        await chatRoom.save();
+        console.log(JSON.stringify(chatRoom, null, 2));
+        const response = await chatRoom.save();
+        console.log(JSON.stringify(response, null, 2));
         chatRoom.messages = chatRoom.messages.sort(
             (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
         );
