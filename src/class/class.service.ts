@@ -8,6 +8,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ClassCreate, PassTreasurerToParentParams } from 'src/interfaces/class.interface';
+import { BankAccount } from 'src/schemas/BankAccount.schema';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
@@ -20,6 +21,7 @@ export class ClassService {
         @InjectModel(Parent.name) private readonly parentModel: Model<Parent>,
         @InjectModel(Child.name) private readonly childModel: Model<Child>,
         @InjectModel(Collection.name) private readonly collectionModel: Model<Collection>,
+        @InjectModel(BankAccount.name) private readonly bankAccountModel: Model<BankAccount>,
     ) {}
 
     async create(classInfo: ClassCreate) {
@@ -185,6 +187,16 @@ export class ClassService {
             const { _id, lastName, firstName, avatar } = treasurerData.toObject();
             const treasurer = { _id, lastName, firstName, avatar };
 
+            const collections = await Promise.all(
+                classCollections.map(async (collection) => {
+                    const bankAccount = await this.bankAccountModel.findById(collection.bankAccount);
+                    return {
+                        ...collection.toObject(),
+                        currentAmount: bankAccount.balance,
+                    };
+                }),
+            )
+
             return {
                 _id: classDoc._id,
                 className: classDoc.name,
@@ -193,10 +205,7 @@ export class ClassService {
                     return { _id, firstName, lastName, avatar };
                 }),
                 treasurer: treasurer,
-                collections: classCollections.map((collection) => {
-                    const { _id, title, description, logo, startDate, endDate, targetAmount } = collection;
-                    return { _id, title, description, logo, startDate, endDate, targetAmount };
-                }),
+                collections,
                 isTreasurer: classDoc.treasurer.toHexString() === parentId,
             };
         } catch (error) {
