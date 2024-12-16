@@ -49,15 +49,15 @@ export class ClassService {
                 _id: { $in: myChildren.map((child) => child.class) },
             });
 
-            const childrenInMyClasses = await this.childModel.find({
-                class: { $in: myClasses.map((classDoc) => classDoc._id) },
-            });
-
             const treasuredClasses = await this.classModel.find({ treasurer: parent._id });
             myClasses.push(...treasuredClasses);
 
             myClasses = myClasses.filter((classDoc, index, self) => {
                 return index === self.findIndex((t) => t._id.toHexString() === classDoc._id.toHexString());
+            });
+
+            const childrenInMyClasses = await this.childModel.find({
+                class: { $in: myClasses.map((classDoc) => classDoc._id) },
             });
 
             return myClasses.map((classDoc) => {
