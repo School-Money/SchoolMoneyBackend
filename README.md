@@ -80,8 +80,6 @@ Here you can find all endpoint that are currently done and you can use them.
 | /parents/avatar                        | PATCH       | ✅     | Change parent's avatar                     |
 | /parents/avatar                        | GET         | ✅     | Get parent's avatar file                   |
 | /parents/balance                       | PATCH       | ✅     | Update parent's account balance            |
-| /default-images/avatar                 | GET         | ✅     | Get default avatar file                    |
-| /default-images/logo                   | GET         | ✅     | Get get default logo file                  |
 | /admin/parents                         | GET         | ✅     | Get all parents                            |
 | /admin/parents/block/:parentId         | PATCH       | ✅     | Block parent's account                     |
 | /admin/classes                         | GET         | ✅     | Get all classes                            |

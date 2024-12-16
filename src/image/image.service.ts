@@ -7,14 +7,21 @@ import { Parent } from 'src/schemas/Parent.schema';
 import { Collection } from 'src/schemas/Collection.schema';
 import { PassThrough } from 'stream';
 import * as https from 'https';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ImageService {
+    private readonly avatarUrl: string = 
+        `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099384/default-avatar.jpg`;
+    private readonly logoUrl: string =
+        `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099330/default-logo.png`
+
   constructor(
     @Inject('CLOUDINARY') private readonly cloudinary: typeof cloudinaryV2,
     @InjectModel('Child') private readonly childModel: Model<Child>,
     @InjectModel('Parent') private readonly parentModel: Model<Parent>,
     @InjectModel('Collection') private readonly collectionModel: Model<Collection>,
+    private readonly configService: ConfigService,
   ) {}
 
     private getModel(entity: string): Model<any> {
@@ -108,7 +115,8 @@ export class ImageService {
             }
 
             const field = entity === 'collection' ? 'logo' : 'avatar';
-            const imageUrl = document[field];
+            const defaultUrl = entity === 'collection' ? this.logoUrl : this.avatarUrl;
+            const imageUrl = document[field] ?? defaultUrl;
 
             if (!imageUrl) {
                 throw new NotFoundException(`Image for ${entity} with id ${id} not found.`);

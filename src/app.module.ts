@@ -13,7 +13,6 @@ import { PaymentModule } from "./payment/payment.module";
 import { MulterModule } from "@nestjs/platform-express";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { DefaultImageModule } from "./default-image/default-image.module";
 import { ChatModule } from "./chat/chat.module";
 import { AdminModule } from "./admin/admin.module";
 
@@ -54,7 +53,6 @@ import { AdminModule } from "./admin/admin.module";
         ChildModule,
         CollectionModule,
         PaymentModule,
-        DefaultImageModule,
         ChatModule,
         AdminModule,
     ],

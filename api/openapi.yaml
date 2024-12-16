@@ -675,48 +675,6 @@ paths:
           description: Not found. The collection or its logo does not exist.
         '500':
           description: Server error.
-  /default-images/avatar:
-    get:
-      summary: Retrieve the default avatar image
-      description: Streams the default avatar image.
-      operationId: getDefaultAvatar
-      responses:
-        '200':
-          description: The default avatar image.
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-                description: The default avatar image in PNG format.
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-                description: The default avatar image in JPEG format.
-        '500':
-          description: Server error.
-  /default-images/logo:
-    get:
-      summary: Retrieve the default logo image
-      description: Streams the default logo image.
-      operationId: getDefaultLogo
-      responses:
-        '200':
-          description: The default logo image.
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-                description: The default logo image in PNG format.
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-                description: The default logo image in JPEG format.
-        '500':
-          description: Server error.
   /parents/avatar:
     patch:
       summary: Upload a parent avatar
