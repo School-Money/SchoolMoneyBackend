@@ -59,7 +59,7 @@ export class AuthService {
     async getUserInfo(userId: string) {
         try {
             const parent = await this.parentService.getUserInfo(userId);
-            return { id: userId, email: parent.email, firstName: parent.firstName, lastName: parent.lastName };
+            return { _id: userId, email: parent.email, firstName: parent.firstName, lastName: parent.lastName };
         } catch (error) {
             throw new UnauthorizedException('Invalid credentials');
         }
