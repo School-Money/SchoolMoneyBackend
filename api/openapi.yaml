@@ -1574,9 +1574,7 @@ components:
           description: The unique identifier of the collection.
           example: "6732020bc70fc650c5345263"
         class:
-          type: string
-          description: The ID of the class associated with the collection.
-          example: "6760912e3aa833ba37bff1f1"
+          $ref: '#/components/schemas/Class'
         creator:
           type: string
           description: The ID of the parent who created the collection.

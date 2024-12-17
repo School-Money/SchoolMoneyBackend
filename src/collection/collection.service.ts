@@ -98,7 +98,7 @@ export class CollectionService {
         }
     }
 
-    async getCollections(parentId: string): Promise<Collection[]> {
+    async getCollections(parentId: string) {
         try {
             const parent = await this.parentModel.findById(parentId);
             if (!parent) {
@@ -119,7 +119,7 @@ export class CollectionService {
                 class: {
                     $in: parentChildClasses,
                 },
-            });
+            }).populate<{class: Class}>('class');
 
             const collectionsWithCurrentAmount = await Promise.all(
                 collections.map(async (collection) => {
