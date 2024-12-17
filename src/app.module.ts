@@ -36,7 +36,7 @@ import { AdminModule } from "./admin/admin.module";
                     cloudinary: cloudinary,
                     params: async (req, file) => {
                         const { entity, id } = req.params;
-                        const fileExtension = file.mimetype.split("/")[1];
+                        const fileExtension = file.originalname.split('.').pop();
                         const filename = file.originalname.split(".")[0];
                         return {
                             folder: "uploads",

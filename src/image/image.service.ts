@@ -64,7 +64,7 @@ export class ImageService {
                 throw new BadRequestException(`You do not have permission to upload an image.`);
             }
 
-            const fileExtension = file.mimetype.split('/')[1];
+            const fileExtension = file.originalname.split('.').pop();
             const filename = file.originalname.split('.')[0];
             const publicId = `${entity}-${id}-${filename}`;
 
