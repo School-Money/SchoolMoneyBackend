@@ -6,7 +6,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ClassCreate, PassTreasurerToParentParams } from 'src/interfaces/class.interface';
 import { BankAccount } from 'src/schemas/BankAccount.schema';
 import { Child } from 'src/schemas/Child.schema';
@@ -214,5 +214,21 @@ export class ClassService {
             }
             throw new InternalServerErrorException(`Could not reach database: ${error.message}`);
         }
+    }
+
+    async getParentsInClass(parentId:string, classId: string) {
+        const parent = await this.parentModel.findById(parentId);
+        const childrenInClass = await this.childModel.find(
+            { class: Types.ObjectId.createFromHexString(classId) }
+        );
+        if (!parent || !childrenInClass?.length) {
+            return [];            
+        } else if (!childrenInClass.some((child) => child.parent.toHexString() === parent._id.toHexString())) {
+            return [];
+        }
+
+        return await this.parentModel.find(
+            { _id: { $in: childrenInClass.map((child) => child.parent) } }
+        );
     }
 }

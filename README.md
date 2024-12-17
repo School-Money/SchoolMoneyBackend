@@ -63,6 +63,7 @@ Here you can find all endpoint that are currently done and you can use them.
 | /collections/:collectionId/logo                  |    GET      |   ✅   | Get collection's avatar file                              |
 | /classes                                         |    POST     |   ✅   | Create class                                              |
 | /classes                                         |    GET      |   ✅   | Get classes for parent                                    |
+| /classes/:classId/parents                        |    GET      |   ✅   | Get parents in a class                                    |
 | /classes/invite                                  |    GET      |   ✅   | Get inviteCode to class by treasurerId                    |
 | /classes/passTreasurer                           |    PATCH    |   ✅   | Pass treasurer from parent to other parent                |
 | /classes/details                                 |    POST     |   ✅   | Get details about class                                   |

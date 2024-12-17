@@ -650,6 +650,7 @@ paths:
           description: Not found. The class with the given ID does not exist.
         '500':
           description: Server error.
+
   /classes/passTreasurer:
     patch:
       summary: Pass treasurer role to another parent
@@ -678,6 +679,38 @@ paths:
           description: Not found. The class or new treasurer does not exist.
         '500':
           description: Server error.
+
+  /classes/{classId}/parents:
+    get:
+      summary: Get parents in a specific class
+      description: Retrieves a list of parents associated with a specific class.
+      operationId: getClassParents
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          description: The unique ID of the class for which to retrieve the parents.
+          schema:
+            type: string
+            example: "6760912e3aa833ba37bff1f1"
+      responses:
+        '200':
+          description: Successfully retrieved the list of parents in the class.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Parent'
+        '401':
+          description: Unauthorized. The user is not authenticated.
+        '403':
+          description: Forbidden. The user does not have permission to view the parents in this class.
+        '404':
+          description: Not found. The class with the given ID does not exist.
+        '500':
+          description: Internal server error.
+
   /collections:
     post:
       summary: Create a new collection

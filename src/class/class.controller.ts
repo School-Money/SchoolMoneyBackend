@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request, Get, Patch } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Get, Patch, Param } from '@nestjs/common';
 import { ClassService } from './class.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import {
@@ -45,5 +45,14 @@ export class ClassController {
     async passTreasurer(@Request() req, @Body() payload: PassTreasurerToParentPayload) {
         const { id: parentId } = req.user;
         return await this.classService.passTreasurerToParent({ ...payload, currentTreasurerId: parentId });
+    }
+
+    @Get(':classId/parents')
+    async getClassParents(
+        @Request() req,
+        @Param('classId') classId: string,
+    ) {
+        const { id: parentId } = req.user;
+        return await this.classService.getParentsInClass(parentId, classId);
     }
 }
