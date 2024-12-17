@@ -1670,10 +1670,8 @@ components:
         parent:
           $ref: '#/components/schemas/Parent'
         child:
-          type: string
+          $ref: '#/components/schemas/Child'
           nullable: true
-          description: The ID of the child associated with the payment, if applicable.
-          example: null
         amount:
           type: number
           format: float
