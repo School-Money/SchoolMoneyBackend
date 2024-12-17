@@ -1323,11 +1323,6 @@ components:
           description: The updated birth date of the child as a UNIX timestamp.
           format: int64
           example: 1514764800
-        avatar:
-          type: string
-          nullable: true
-          description: The updated avatar URL of the child.
-          example: "https://example.com/avatar.jpg"
       required:
         - childId
         - classId

@@ -13,7 +13,6 @@ export interface ChildUpdateDetails {
     lastName?: string;
     //unix timestamp
     birthDate?: number;
-    avatar?: string;
 }
 
 export interface ChildCreateDetails {
