@@ -64,6 +64,7 @@ export class ImageService {
                 throw new BadRequestException(`You do not have permission to upload an image.`);
             }
 
+            console.log('uploading image');
             console.log(file);
 
             const fileExtension = file.originalname.split('.').pop();
