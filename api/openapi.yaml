@@ -1287,6 +1287,14 @@ components:
           format: date-time
           description: The date and time the child was created.
           example: "2024-12-16T20:44:13.764Z"
+        classCode:
+          type: string
+          description: The class invite code (id) associated with the child.
+          example: "6760912e3aa833ba37bff1f1"
+        className:
+          type: string
+          description: The name of the class associated with the child.
+          example: "Math 101"
 
     ChildUpdateDetails:
       type: object

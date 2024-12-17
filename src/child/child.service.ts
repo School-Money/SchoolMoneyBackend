@@ -97,7 +97,18 @@ export class ChildService {
             if (!parent) {
                 throw new NotFoundException('Parent not found');
             }
-            return await this.childModel.find({ parent: parent._id });
+            const children = await this.childModel.find({ parent: parent._id });
+            const childrenClassesId = children.map((child) => child.class);
+            const childrenClasses = await this.classModel.find({ _id: { $in: childrenClassesId } });
+
+            return children.map((child) => {
+                const childClass = childrenClasses.find((classDoc) => classDoc._id.toString() === child.class.toString());
+                return {
+                    ...child.toObject(),
+                    classCode: childClass._id,
+                    className: childClass.name,
+                };
+            });
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
