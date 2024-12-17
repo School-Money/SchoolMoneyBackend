@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { ParentRegister } from 'src/interfaces/parent.interface';
@@ -10,6 +11,9 @@ import { Parent, ParentDocument } from 'src/schemas/Parent.schema';
 
 @Injectable()
 export class ParentService {
+    private readonly avatarUrl: string = 
+        `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099384/default-avatar.jpg`;
+
     constructor(
         @InjectModel(Parent.name) private readonly parentModel: Model<Parent>,
         @InjectModel(BankAccount.name)
@@ -17,6 +21,7 @@ export class ParentService {
         @InjectModel(Child.name) private readonly childModel: Model<Child>,
         @InjectModel(Class.name) private readonly classModel: Model<Class>,
         @InjectModel(Admin.name) private readonly adminModel: Model<Admin>,
+        private readonly configService: ConfigService,
     ) {}
 
     async create(parent: ParentRegister): Promise<Parent> {
@@ -33,6 +38,7 @@ export class ParentService {
         const newParent = await this.parentModel.create({
             ...parent,
             bankAccount: bankAccount._id,
+            avatar: this.avatarUrl,
         });
 
         await this.bankAccountModel.updateOne({ _id: bankAccount._id }, { owner: newParent._id });

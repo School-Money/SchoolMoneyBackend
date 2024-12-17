@@ -5,6 +5,7 @@ import {
     NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CollectionPayload, CollectionUpdate, GetCollectionDetails } from 'src/interfaces/collection.interface';
@@ -17,6 +18,9 @@ import { Payment } from 'src/schemas/Payment.schema';
 
 @Injectable()
 export class CollectionService {
+    private readonly logoUrl: string =
+        `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099330/default-logo.png`;
+
     constructor(
         @InjectModel(Collection.name)
         private readonly collectionModel: Model<Collection>,
@@ -30,6 +34,7 @@ export class CollectionService {
         private readonly bankAccountModel: Model<BankAccount>,
         @InjectModel(Payment.name)
         private readonly paymentModel: Model<Payment>,
+        private readonly configService: ConfigService,
     ) {}
 
     async create(payload: CollectionPayload, parentId: string): Promise<Collection> {
@@ -56,6 +61,7 @@ export class CollectionService {
                 creator: parent._id,
                 class: classDoc._id,
                 bankAccount: bankAccount._id,
+                logo: this.logoUrl,
             });
 
             await this.bankAccountModel.updateOne({ _id: bankAccount._id }, { owner: newCollection._id });

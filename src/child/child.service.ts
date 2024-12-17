@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ChildCreate, ChildUpdate } from 'src/interfaces/child.interface';
@@ -8,10 +9,14 @@ import { Parent } from 'src/schemas/Parent.schema';
 
 @Injectable()
 export class ChildService {
+    private readonly avatarUrl: string = 
+        `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099384/default-avatar.jpg`;
+
     constructor(
         @InjectModel(Child.name) private readonly childModel: Model<Child>,
         @InjectModel(Class.name) private readonly classModel: Model<Class>,
         @InjectModel(Parent.name) private readonly parentModel: Model<Parent>,
+        private readonly configService: ConfigService,
     ) {}
 
     async create(childCreate: ChildCreate) {
@@ -29,6 +34,7 @@ export class ChildService {
                 birthDate: new Date(childCreate.birthDate * 1000),
                 parent: parent._id,
                 class: classDoc._id,
+                avatar: this.avatarUrl,
             });
         } catch (error) {
             if (error instanceof NotFoundException) {
