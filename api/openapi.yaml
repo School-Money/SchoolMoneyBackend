@@ -1408,11 +1408,11 @@ components:
         _id:
           type: string
           description: The unique identifier of the class.
-          example: "6760912e3aa833ba37bff1f1"
+          example: "6732020bc70fc650c5345263"
         className:
           type: string
           description: The name of the class.
-          example: "Math 101"
+          example: "Kretole 3B"
         children:
           type: array
           description: A list of children in the class.
@@ -1422,20 +1422,20 @@ components:
               _id:
                 type: string
                 description: The unique identifier of the child.
-                example: "6760912e3aa833ba37bff1f1"
+                example: "675889be1b6aeccfe2e83c5a"
               firstName:
                 type: string
                 description: The first name of the child.
-                example: "Jane"
+                example: "Tomek"
               lastName:
                 type: string
                 description: The last name of the child.
-                example: "Doe"
+                example: "Tomowiak"
               avatar:
                 type: string
                 nullable: true
                 description: The avatar of the child, if available.
-                example: null
+                example: "https://example.com/avatar.jpg"
         treasurer:
           type: object
           description: Details of the class treasurer.
@@ -1443,15 +1443,15 @@ components:
             _id:
               type: string
               description: The unique identifier of the treasurer.
-              example: "675ef643801ef10491d529a2"
+              example: "6731f2d9f69993ce229ddefc"
             firstName:
               type: string
               description: The first name of the treasurer.
-              example: "John"
+              example: "Alex"
             lastName:
               type: string
               description: The last name of the treasurer.
-              example: "Doe"
+              example: "Galus"
             avatar:
               type: string
               nullable: true
@@ -1466,7 +1466,15 @@ components:
               _id:
                 type: string
                 description: The unique identifier of the collection.
+                example: "67323a67764a284d9422c635"
+              class:
+                type: string
+                description: The ID of the class associated with the collection.
                 example: "6732020bc70fc650c5345263"
+              creator:
+                type: string
+                description: The unique identifier of the creator of the collection.
+                example: "6731f2d9f69993ce229ddefc"
               title:
                 type: string
                 description: The title of the collection.
@@ -1480,25 +1488,79 @@ components:
                 nullable: true
                 description: The logo of the collection, if available.
                 example: null
+              bankAccount:
+                type: string
+                description: The bank account associated with the collection.
+                example: "6734dd8e9406fce481c3fdac"
               startDate:
                 type: string
                 format: date-time
                 description: The start date of the collection.
-                example: "2024-01-01T00:00:00.000Z"
+                example: "2024-11-11T13:26:41.000Z"
               endDate:
                 type: string
                 format: date-time
                 description: The end date of the collection.
-                example: "2024-12-31T23:59:59.000Z"
+                example: "2024-12-11T12:26:37.000Z"
               targetAmount:
                 type: number
                 format: float
                 description: The target amount for the collection.
-                example: 5000.00
+                example: 100
+              isBlocked:
+                type: boolean
+                description: Indicates whether the collection is blocked.
+                example: false
+              currentAmount:
+                type: number
+                format: float
+                description: The current amount available in the collection.
+                example: 0
         isTreasurer:
           type: boolean
           description: Indicates whether the authenticated user is the treasurer of the class.
-          example: true
+          example: false
+        parents:
+          type: array
+          description: A list of parents associated with the class.
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+                description: The unique identifier of the parent.
+                example: "6734dd8e9406fce481c3fdae"
+              firstName:
+                type: string
+                description: The first name of the parent.
+                example: "Black"
+              lastName:
+                type: string
+                description: The last name of the parent.
+                example: "Elon"
+              email:
+                type: string
+                description: The email of the parent.
+                example: "black@elon.pl"
+              avatar:
+                type: string
+                nullable: true
+                description: The avatar of the parent, if available.
+                example: "https://example.com/avatar.png"
+              bankAccount:
+                type: string
+                description: The bank account associated with the parent.
+                example: "6734dd8e9406fce481c3fdac"
+              createdAt:
+                type: string
+                format: date-time
+                description: The date when the parent was created.
+                example: "2024-11-13T17:07:43.961Z"
+              isBlocked:
+                type: boolean
+                description: Indicates whether the parent is blocked.
+                example: false
+
     PassTreasurerToParentPayload:
       type: object
       properties:

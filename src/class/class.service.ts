@@ -197,6 +197,8 @@ export class ClassService {
                 }),
             )
 
+            const parentsInClass = await this.getParentsInClass(parentId, classId);
+
             return {
                 _id: classDoc._id,
                 className: classDoc.name,
@@ -207,6 +209,7 @@ export class ClassService {
                 treasurer: treasurer,
                 collections,
                 isTreasurer: classDoc.treasurer.toHexString() === parentId,
+                parents: parentsInClass,
             };
         } catch (error) {
             if (error instanceof NotFoundException) {
