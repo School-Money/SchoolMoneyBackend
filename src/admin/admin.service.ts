@@ -1,14 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
-import { GetParentsDto } from "src/interfaces/admin.interface";
-import { Admin } from "src/schemas/Admin.schema";
-import { BankAccount } from "src/schemas/BankAccount.schema";
-import { Child } from "src/schemas/Child.schema";
-import { Class } from "src/schemas/Class.schema";
-import { Collection } from "src/schemas/Collection.schema";
-import { Parent } from "src/schemas/Parent.schema";
-import { Payment } from "src/schemas/Payment.schema";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { GetParentsDto } from 'src/interfaces/admin.interface';
+import { Admin } from 'src/schemas/Admin.schema';
+import { BankAccount } from 'src/schemas/BankAccount.schema';
+import { Child } from 'src/schemas/Child.schema';
+import { Class } from 'src/schemas/Class.schema';
+import { Collection } from 'src/schemas/Collection.schema';
+import { Parent } from 'src/schemas/Parent.schema';
+import { Payment } from 'src/schemas/Payment.schema';
 
 @Injectable()
 export class AdminService {
@@ -30,7 +30,9 @@ export class AdminService {
             this.adminModel.find(),
         ]);
 
-        const parentsNotAdmins = parents.filter((parent) => !admins.some((admin) => admin.parent.toString() === parent._id.toString()));
+        const parentsNotAdmins = parents.filter(
+            (parent) => !admins.some((admin) => admin.parent.toString() === parent._id.toString()),
+        );
         if (!parentsNotAdmins.length) {
             return [];
         }
@@ -39,7 +41,7 @@ export class AdminService {
             return {
                 ...parent.toObject(),
                 isTreasurer: classes.some((classItem) => classItem.treasurer.toString() === parent._id.toString()),
-            }
+            };
         });
     }
 
@@ -48,7 +50,7 @@ export class AdminService {
         if (!parent) {
             return;
         }
-        await this.childModel.updateMany({ parent: parent._id }, { isBlocked: !parent.isBlocked });
+        await parent.updateOne({ isBlocked: !parent.isBlocked });
     }
 
     async getClasses(): Promise<Class[]> {
@@ -76,9 +78,10 @@ export class AdminService {
     }
 
     async getChildrenForCollection(collectionId: string): Promise<Child[]> {
-        const payments = await this.paymentModel.find({ collection: Types.ObjectId.createFromHexString(collectionId) })
+        const payments = await this.paymentModel
+            .find({ collection: Types.ObjectId.createFromHexString(collectionId) })
             .populate<{ child: Child }>('child');
-        
+
         return payments.map((payment) => payment.child);
     }
 
@@ -98,16 +101,20 @@ export class AdminService {
             return [];
         }
 
-        const query = collectionId ? 
-            { collection: Types.ObjectId.createFromHexString(collectionId) } : { collection: { $in: collectionIds } };
+        const query = collectionId
+            ? { collection: Types.ObjectId.createFromHexString(collectionId) }
+            : { collection: { $in: collectionIds } };
 
         return this.paymentModel.find(query);
     }
 
     async getPaymentsForCollection(collectionId: string, childId?: string): Promise<Payment[]> {
-        const query = childId ? 
-            { collection: Types.ObjectId.createFromHexString(collectionId), child: Types.ObjectId.createFromHexString(childId) } : 
-            { collection: Types.ObjectId.createFromHexString(collectionId) };
+        const query = childId
+            ? {
+                  collection: Types.ObjectId.createFromHexString(collectionId),
+                  child: Types.ObjectId.createFromHexString(childId),
+              }
+            : { collection: Types.ObjectId.createFromHexString(collectionId) };
 
         return this.paymentModel.find(query);
     }
