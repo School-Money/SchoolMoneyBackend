@@ -25,13 +25,13 @@ paths:
   /admin/parents/block/{parentId}:
     patch:
       summary: Block a parent
-      description: Updates the blocked status of a parent to true.
+      description: Updates the blocked status of a parent to opposite value to the current one.
       operationId: blockParent
       parameters:
         - name: parentId
           in: path
           required: true
-          description: The ID of the parent to block.
+          description: The ID of the parent to block/unblock.
           schema:
             type: string
       responses:
@@ -109,13 +109,13 @@ paths:
   /admin/collections/block/{collectionId}:
     patch:
       summary: Block a collection
-      description: Blocks a collection by setting its `isBlocked` field to `true`.
+      description: Switches block on a collection.
       operationId: blockCollection
       parameters:
         - name: collectionId
           in: path
           required: true
-          description: The ID of the collection to block.
+          description: The ID of the collection to block/unblock.
           schema:
             type: string
       responses:

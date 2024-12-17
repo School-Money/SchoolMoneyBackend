@@ -18,10 +18,10 @@ export class AdminController {
     }
 
     @Patch('parents/block/:parentId')
-    async blockParent(
+    async switchParentBlockedStatus(
         @Param('parentId') parentId: string,
     ) {
-        return await this.adminService.blockParent(parentId);
+        return await this.adminService.switchParentBlockedStatus(parentId);
     }
 
     @Get('classes')
@@ -35,10 +35,10 @@ export class AdminController {
     }
 
     @Patch('collections/block/:collectionId')
-    async blockCollection(
+    async switchCollectionBlockedStatus(
         @Param('collectionId') collectionId: string,
     ) {
-        return await this.adminService.blockCollection(collectionId);
+        return await this.adminService.switchCollectionBlockedStatus(collectionId);
     }
 
     @Get('collections/:classId')

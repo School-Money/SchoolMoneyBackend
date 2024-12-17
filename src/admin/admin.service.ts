@@ -43,8 +43,12 @@ export class AdminService {
         });
     }
 
-    async blockParent(parentId: string): Promise<void> {
-        await this.parentModel.updateOne({ _id: parentId }, { isBlocked: true });
+    async switchParentBlockedStatus(parentId: string): Promise<void> {
+        const parent = await this.parentModel.findById(parentId);
+        if (!parent) {
+            return;
+        }
+        await this.childModel.updateMany({ parent: parent._id }, { isBlocked: !parent.isBlocked });
     }
 
     async getClasses(): Promise<Class[]> {
@@ -59,8 +63,12 @@ export class AdminService {
         return this.collectionModel.find({ class: Types.ObjectId.createFromHexString(classId) });
     }
 
-    async blockCollection(collectionId: string): Promise<void> {
-        await this.collectionModel.updateOne({ _id: collectionId }, { isBlocked: true });
+    async switchCollectionBlockedStatus(collectionId: string): Promise<void> {
+        const collection = await this.collectionModel.findById(collectionId);
+        if (!collection) {
+            return;
+        }
+        await this.paymentModel.updateMany({ collection: collection._id }, { isBlocked: !collection.isBlocked });
     }
 
     async getBankAccounts(): Promise<BankAccount[]> {

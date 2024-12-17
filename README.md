@@ -82,9 +82,9 @@ Here you can find all endpoint that are currently done and you can use them.
 | /parents/avatar                                  |    GET      |   ✅   | Get parent's avatar file                                  |
 | /parents/balance                                 |    PATCH    |   ✅   | Update parent's account balance                           |
 | /admin/parents                                   |    GET      |   ✅   | Get all parents                                           |
-| /admin/parents/block/:parentId                   |    PATCH    |   ✅   | Block parent's account                                    |
+| /admin/parents/block/:parentId                   |    PATCH    |   ✅   | Block/unblock parent's account                            |
 | /admin/classes                                   |    GET      |   ✅   | Get all classes                                           |
-| /admin/collections/block/:collectionId           |    PATCH    |   ✅   | Block collection                                          |
+| /admin/collections/block/:collectionId           |    PATCH    |   ✅   | Block/unblock collection                                  |
 | /admin/collections                               |    GET      |   ✅   | Get all collection                                        |
 | /admin/collections/:classId                      |    GET      |   ✅   | Get collections for a class                               |
 | /admin/bank-accounts                             |    GET      |   ✅   | Get all bank accounts                                     |
