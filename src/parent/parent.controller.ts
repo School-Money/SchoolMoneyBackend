@@ -19,6 +19,7 @@ export class ParentController {
         @Req() req,
         @UploadedFile() file: Express.Multer.File,
     ): Promise<string> {
+        console.log('controller file', file);
         const { id: parentId } = req.user;
         return await this.imageService.uploadImage('parent', parentId, file, parentId);
     }
