@@ -9,6 +9,7 @@ export class BaseChatRoom {
         type: [
             {
                 sender: Types.ObjectId,
+                senderName: String,
                 content: String,
                 createdAt: Date,
             },
@@ -16,6 +17,7 @@ export class BaseChatRoom {
     })
     messages: {
         sender: Types.ObjectId;
+        senderName: string;
         content: string;
         createdAt: Date;
     }[];
