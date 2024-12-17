@@ -73,4 +73,34 @@ export class AdminService {
         
         return payments.map((payment) => payment.child);
     }
+
+    async getPaymentsForParent(parentId: string): Promise<Payment[]> {
+        return this.paymentModel.find({ parent: Types.ObjectId.createFromHexString(parentId) });
+    }
+
+    async getPaymentsForBankAccount(bankAccountId: string): Promise<Payment[]> {
+        return this.paymentModel.find({ bankAccount: Types.ObjectId.createFromHexString(bankAccountId) });
+    }
+
+    async getPaymentsForClass(classId: string, collectionId?: string): Promise<Payment[]> {
+        const collections = await this.collectionModel.find({ class: Types.ObjectId.createFromHexString(classId) });
+        const collectionIds = collections.map((collection) => collection._id);
+
+        if (collectionId && !collectionIds.includes(Types.ObjectId.createFromHexString(collectionId))) {
+            return [];
+        }
+
+        const query = collectionId ? 
+            { collection: Types.ObjectId.createFromHexString(collectionId) } : { collection: { $in: collectionIds } };
+
+        return this.paymentModel.find(query);
+    }
+
+    async getPaymentsForCollection(collectionId: string, childId?: string): Promise<Payment[]> {
+        const query = childId ? 
+            { collection: Types.ObjectId.createFromHexString(collectionId), child: Types.ObjectId.createFromHexString(childId) } : 
+            { collection: Types.ObjectId.createFromHexString(collectionId) };
+
+        return this.paymentModel.find(query);
+    }
 }

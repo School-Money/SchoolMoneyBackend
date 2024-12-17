@@ -49,43 +49,46 @@ $ npm run start:prod
 
 Here you can find all endpoint that are currently done and you can use them.
 
-| Path                                   | HTTP Method | Status | Description                                |
-| --------------------------             | ----------- | ------ | ------------------------------------------ |
-| /auth/register                         | POST        | ✅     | Register account                           |
-| /auth/login                            | POST        | ✅     | Login account                              |
-| /auth/user-details                     | GET         | ✅     | Get user details of logged user            |
-| /collections                           | POST        | ✅     | Create collection                          |
-| /collections                           | PATCH       | ✅     | Update collection                          |
-| /collections                           | GET         | ✅     | Get all collections for parent             |
-| /collections/:collectionId             | GET         | ✅     | Get collection details                     |
-| /collections/:collectionId             | DELETE      | ✅     | Close collection                           |
-| /collections/:collectionId/logo        | PATCH       | ✅     | Change collection's logo                   |
-| /collections/:collectionId/logo        | GET         | ✅     | Get collection's avatar file               |
-| /classes                               | POST        | ✅     | Create class                               |
-| /classes                               | GET         | ✅     | Get classes for parent                     |
-| /classes/invite                        | GET         | ✅     | Get inviteCode to class by treasurerId     |
-| /classes/passTreasurer                 | PATCH       | ✅     | Pass treasurer from parent to other parent |
-| /classes/details                       | POST        | ✅     | Get details about class                    |
-| /children                              | POST        | ✅     | Create child                               |
-| /children                              | PATCH       | ✅     | Update child                               |
-| /children                              | GET         | ✅     | Get children for parent                    |
-| /children/:childId                     | DELETE      | ✅     | Delete child                               |
-| /children/:childId/avatar              | PATCH       | ✅     | Change child's avatar                      |
-| /children/:childId/avatar              | GET         | ✅     | Get child's avatar file                    |
-| /payments                              | GET         | ✅     | Get payments in parent's children classes  |
-| /payments                              | POST        | ✅     | Create payment                             |
-| /payments/withdraw                     | POST        | ✅     | Withdraw payment                           |
-| /payments/parent                       | GET         | ✅     | Get payments created by parent             |
-| /parents/:classId                      | GET         | ✅     | Get parents in class                       |
-| /parents/avatar                        | PATCH       | ✅     | Change parent's avatar                     |
-| /parents/avatar                        | GET         | ✅     | Get parent's avatar file                   |
-| /parents/balance                       | PATCH       | ✅     | Update parent's account balance            |
-| /admin/parents                         | GET         | ✅     | Get all parents                            |
-| /admin/parents/block/:parentId         | PATCH       | ✅     | Block parent's account                     |
-| /admin/classes                         | GET         | ✅     | Get all classes                            |
-| /admin/collections/block/:collectionId | PATCH       | ✅     | Block collection                           |
-| /admin/collections                     | GET         | ✅     | Get all collection                         |
-| /admin/collections/:classId            | GET         | ✅     | Get collections for a class                |
-| /admin/bank-accounts                   | GET         | ✅     | Get all bank accounts                      |
-| /admin/children/:collectionId          | GET         | ✅     | Get all children in a collection           |
-
+| Path                                             | HTTP Method | Status | Description                                               |
+| ------------------------------------------------ | ----------- | ------ | --------------------------------------------------------- |
+| /auth/register                                   |    POST     |   ✅   | Register account                                          |
+| /auth/login                                      |    POST     |   ✅   | Login account                                             |
+| /auth/user-details                               |    GET      |   ✅   | Get user details of logged user                           |
+| /collections                                     |    POST     |   ✅   | Create collection                                         |
+| /collections                                     |    PATCH    |   ✅   | Update collection                                         |
+| /collections                                     |    GET      |   ✅   | Get all collections for parent                            |
+| /collections/:collectionId                       |    GET      |   ✅   | Get collection details                                    |
+| /collections/:collectionId                       |    DELETE   |   ✅   | Close collection                                          |
+| /collections/:collectionId/logo                  |    PATCH    |   ✅   | Change collection's logo                                  |
+| /collections/:collectionId/logo                  |    GET      |   ✅   | Get collection's avatar file                              |
+| /classes                                         |    POST     |   ✅   | Create class                                              |
+| /classes                                         |    GET      |   ✅   | Get classes for parent                                    |
+| /classes/invite                                  |    GET      |   ✅   | Get inviteCode to class by treasurerId                    |
+| /classes/passTreasurer                           |    PATCH    |   ✅   | Pass treasurer from parent to other parent                |
+| /classes/details                                 |    POST     |   ✅   | Get details about class                                   |
+| /children                                        |    POST     |   ✅   | Create child                                              |
+| /children                                        |    PATCH    |   ✅   | Update child                                              |
+| /children                                        |    GET      |   ✅   | Get children for parent                                   |
+| /children/:childId                               |    DELETE   |   ✅   | Delete child                                              |
+| /children/:childId/avatar                        |    PATCH    |   ✅   | Change child's avatar                                     |
+| /children/:childId/avatar                        |    GET      |   ✅   | Get child's avatar file                                   |
+| /payments                                        |    GET      |   ✅   | Get payments in parent's children classes                 |
+| /payments                                        |    POST     |   ✅   | Create payment                                            |
+| /payments/withdraw                               |    POST     |   ✅   | Withdraw payment                                          |
+| /payments/parent                                 |    GET      |   ✅   | Get payments created by parent                            |
+| /parents/:classId                                |    GET      |   ✅   | Get parents in class                                      |
+| /parents/avatar                                  |    PATCH    |   ✅   | Change parent's avatar                                    |
+| /parents/avatar                                  |    GET      |   ✅   | Get parent's avatar file                                  |
+| /parents/balance                                 |    PATCH    |   ✅   | Update parent's account balance                           |
+| /admin/parents                                   |    GET      |   ✅   | Get all parents                                           |
+| /admin/parents/block/:parentId                   |    PATCH    |   ✅   | Block parent's account                                    |
+| /admin/classes                                   |    GET      |   ✅   | Get all classes                                           |
+| /admin/collections/block/:collectionId           |    PATCH    |   ✅   | Block collection                                          |
+| /admin/collections                               |    GET      |   ✅   | Get all collection                                        |
+| /admin/collections/:classId                      |    GET      |   ✅   | Get collections for a class                               |
+| /admin/bank-accounts                             |    GET      |   ✅   | Get all bank accounts                                     |
+| /admin/children/:collectionId                    |    GET      |   ✅   | Get all children in a collection                          |
+| /admin/report/parents/:parentId                  |    GET      |   ✅   | Get a pdf report for a parent                             |
+| /admin/report/bank-accounts/:bankAccountId       |    GET      |   ✅   | Get a pdf report for a bank account                       |
+| /admin/report/classes/:classId?collectionId      |    GET      |   ✅   | Get a pdf report for a class (may limit to a collection)  |
+| /admin/report/collections/:collectionId?childId  |    GET      |   ✅   | Get a pdf report for a collection (may limit to a child)  |

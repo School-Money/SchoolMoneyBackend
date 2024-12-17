@@ -174,6 +174,118 @@ paths:
         '500':
           description: Server error.
 
+  /admin/report/parents/{parentId}:
+    get:
+      summary: Generate PDF report for a specific parent
+      description: Generates and returns a PDF report containing all payments associated with a specific parent.
+      operationId: generateReportForParent
+      parameters:
+        - name: parentId
+          in: path
+          required: true
+          description: The ID of the parent for whom to generate the report.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PDF report generated successfully.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Parent not found.
+        '500':
+          description: Internal server error.
+
+  /admin/report/bank-accounts/{bankAccountId}:
+    get:
+      summary: Generate PDF report for a specific bank account
+      description: Generates and returns a PDF report containing all payments for a specific bank account.
+      operationId: generateReportForBankAccount
+      parameters:
+        - name: bankAccountId
+          in: path
+          required: true
+          description: The ID of the bank account for which to generate the report.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PDF report generated successfully.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Bank account not found.
+        '500':
+          description: Internal server error.
+
+  /admin/report/classes/{classId}:
+    get:
+      summary: Generate PDF report for a specific class
+      description: Generates and returns a PDF report containing all payments for a specific class. Can be filtered by collectionId.
+      operationId: generateReportForClass
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          description: The ID of the class for which to generate the report.
+          schema:
+            type: string
+        - name: collectionId
+          in: query
+          required: false
+          description: Optional collection ID to filter the payments.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PDF report generated successfully.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Class not found.
+        '500':
+          description: Internal server error.
+
+  /admin/report/collections/{collectionId}:
+    get:
+      summary: Generate PDF report for a specific collection
+      description: Generates and returns a PDF report containing all payments for a specific collection. Can be filtered by childId.
+      operationId: generateReportForCollection
+      parameters:
+        - name: collectionId
+          in: path
+          required: true
+          description: The ID of the collection for which to generate the report.
+          schema:
+            type: string
+        - name: childId
+          in: query
+          required: false
+          description: Optional child ID to filter the payments.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: PDF report generated successfully.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '404':
+          description: Collection not found.
+        '500':
+          description: Internal server error.
+
   /auth/register:
     post:
       summary: Register a new parent

@@ -10,6 +10,7 @@ import { AdminService } from "./admin.service";
 import { AdminController } from "./admin.controller";
 import { ParentModule } from "src/parent/parent.module";
 import { Payment, PaymentSchema } from "src/schemas/Payment.schema";
+import { ReportService } from "src/report/report.service";
 
 @Module({
     imports: [
@@ -24,7 +25,7 @@ import { Payment, PaymentSchema } from "src/schemas/Payment.schema";
         ]),
         ParentModule,
     ],
-    providers: [AdminService],
+    providers: [AdminService, ReportService],
     controllers: [AdminController],
 })
 export class AdminModule {}
