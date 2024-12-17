@@ -23,10 +23,14 @@ export interface CollectionsDto extends Collection {
     currentAmount: number;
 }
 
+export interface GetCollectionDetailsPayment extends Payment {
+    withdrawable: boolean;
+}
+
 export interface GetCollectionDetails {
     _id: string;
     class: Class;
-    payments: Payment[];
+    payments: GetCollectionDetailsPayment[];
     creator: Parent;
     title: string;
     description: string;

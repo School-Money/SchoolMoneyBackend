@@ -1686,6 +1686,10 @@ components:
           format: date-time
           description: The date of the payment.
           example: "2024-12-01T10:00:00.000Z"
+        withdrawable:
+          type: boolean
+          description: Indicates whether the payment can be withdrawn.
+          example: true
 
     Parent:
       type: object

@@ -38,6 +38,11 @@ export class Payment {
 
     @Prop({
         required: true,
+    })
+    withdrawn: boolean;
+
+    @Prop({
+        required: true,
         default: Date.now(),
     })
     createdAt: Date;

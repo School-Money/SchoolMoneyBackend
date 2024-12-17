@@ -179,7 +179,10 @@ export class CollectionService {
             return {
                 _id: collection._id.toString(),
                 class: classDoc,
-                payments,
+                payments: payments.map((payment) => ({
+                    ...payment.toObject(),
+                    withdrawable: payment.parent.toString() === parent._id.toString() && !payment.withdrawn,
+                })),
                 creator: collection.creator,
                 title: collection.title,
                 description: collection.description,

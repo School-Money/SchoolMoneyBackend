@@ -97,6 +97,7 @@ export class PaymentService {
                     parent: parent._id,
                     description: `${paymentStartString} for ${child.firstName} ${child.lastName},
                         for ${collection.title} collection`,
+                    withdrawn: false,
                 });
 
                 await this.bankAccountModel.updateOne(
@@ -113,6 +114,7 @@ export class PaymentService {
                 parent: parent._id,
                 description: `Payout made by the treasurer ${parent.firstName} ${parent.lastName},
                     for ${collection.title} collection`,
+                withdrawn: true,
             });
         } catch (error) {
             if (error instanceof NotFoundException) {
@@ -153,6 +155,7 @@ export class PaymentService {
             const withdrawnPayment = await this.paymentModel.create({
                 ...previousPaymentObj,
                 amount: -payment.amount,
+                withdrawn: true,
             });
 
             await this.bankAccountModel.updateOne({ _id: bankAccount._id }, { $inc: { balance: -payment.amount } });

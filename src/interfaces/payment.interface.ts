@@ -21,6 +21,7 @@ export interface CreatePaymentDto {
     amount: number;
     description: string;
     createdAt: Date;
+    withdrawn: boolean;
 }
 
 export interface PaymentDto {
