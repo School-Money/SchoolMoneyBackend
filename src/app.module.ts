@@ -15,7 +15,6 @@ import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { ChatModule } from "./chat/chat.module";
 import { AdminModule } from "./admin/admin.module";
-import { memoryStorage } from "multer";
 
 @Module({
     imports: [
@@ -32,11 +31,24 @@ import { memoryStorage } from "multer";
         MulterModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            useFactory: () => ({
-                storage: memoryStorage(),
-                limits: {
-                fileSize: 10 * 1024 * 1024,
-                },
+            useFactory: (_configService: ConfigService) => ({
+                storage: new CloudinaryStorage({
+                    cloudinary: cloudinary,
+                    params: async (req, file) => {
+                        console.log('app.module.ts');
+                        console.log(req);
+                        console.log(file);
+
+                        const { entity, id } = req.params;
+                        const fileExtension = file.originalname.split('.').pop();
+                        const filename = file.originalname.split(".")[0];
+                        return {
+                            folder: "uploads",
+                            format: fileExtension,
+                            public_id: `${entity}-${id}-${filename}`,
+                        };
+                    },
+                }),
             }),
         }),
         AuthModule,
