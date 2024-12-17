@@ -1,9 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Patch,
+    Req,
+    Res,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
+} from '@nestjs/common';
 import { ParentService } from './parent.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { ImageService } from 'src/image/image.service';
+import * as multer from 'multer';
 
 @UseGuards(AuthGuard)
 @Controller('parents')
@@ -14,35 +26,35 @@ export class ParentController {
     ) {}
 
     @Patch('avatar')
-    @UseInterceptors(FileInterceptor('file'))
-    async uploadParentAvatar(
-        @Req() req,
-        @UploadedFile() file: Express.Multer.File,
-    ): Promise<string> {
-        console.log('controller file', file);
+    @UseInterceptors(
+        FileInterceptor('file', {
+            storage: multer.memoryStorage(),
+            limits: {
+                fileSize: 1024 * 1024 * 5,
+            },
+        }),
+    )
+    async uploadParentAvatar(@Req() req, @UploadedFile() file: Express.Multer.File): Promise<string> {
+        console.log('Request headers:', req.headers);
+        console.log('Request body:', req.body);
+        console.log('Uploaded file:', file);
         const { id: parentId } = req.user;
         return await this.imageService.uploadImage('parent', parentId, file, parentId);
     }
-    
+
     @Get('avatar')
-    async getParentAvatar(
-        @Req() req,
-        @Res() res: Response,
-    ) {
+    async getParentAvatar(@Req() req, @Res() res: Response) {
         const { id: parentId } = req.user;
         const { stream, contentType } = await this.imageService.getImage('parent', parentId, parentId);
-        
+
         res.setHeader('Content-Type', contentType);
         res.setHeader('Cache-Control', 'public, max-age=31536000');
 
         stream.pipe(res);
     }
-    
+
     @Patch('balance')
-    async updateParentBalance(
-        @Req() req,
-        @Body() body: { amount: number },
-    ) {
+    async updateParentBalance(@Req() req, @Body() body: { amount: number }) {
         const { id: parentId } = req.user;
         return this.parentService.updateParentBalance(parentId, body.amount);
     }
