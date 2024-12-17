@@ -84,3 +84,8 @@ Here you can find all endpoint that are currently done and you can use them.
 | /admin/parents/block/:parentId         | PATCH       | ✅     | Block parent's account                     |
 | /admin/classes                         | GET         | ✅     | Get all classes                            |
 | /admin/collections/block/:collectionId | PATCH       | ✅     | Block collection                           |
+| /admin/collections                     | GET         | ✅     | Get all collection                         |
+| /admin/collections/:classId            | GET         | ✅     | Get collections for a class                |
+| /admin/bank-accounts                   | GET         | ✅     | Get all bank accounts                      |
+| /admin/children/:collectionId          | GET         | ✅     | Get all children in a collection           |
+

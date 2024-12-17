@@ -27,10 +27,34 @@ export class AdminController {
         return await this.adminService.getClasses();
     }
 
+    @Get('collections')
+    async getCollections() {
+        return await this.adminService.getCollections();
+    }
+
     @Patch('collections/block/:collectionId')
     async blockCollection(
         @Param('collectionId') collectionId: string,
     ) {
         return await this.adminService.blockCollection(collectionId);
+    }
+
+    @Get('collections/:classId')
+    async getCollectionsForClass(
+        @Param('classId') classId: string,
+    ) {
+        return await this.adminService.getCollectionsForClass(classId);
+    }
+
+    @Get('bank-accounts')
+    async getBankAccounts() {
+        return await this.adminService.getBankAccounts();
+    }
+
+    @Get('children/:collectionId')
+    async getChildrenForCollection(
+        @Param('collectionId') collectionId: string,
+    ) {
+        return await this.adminService.getChildrenForCollection(collectionId);
     }
 }

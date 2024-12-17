@@ -59,6 +59,53 @@ paths:
                   $ref: '#/components/schemas/Class'
         '500':
           description: Server error
+
+  /admin/collections:
+    get:
+      summary: Get all collections
+      description: Retrieves a list of all collections with their details, including class, creator, and financial information.
+      operationId: getCollections
+      responses:
+        '200':
+          description: A list of collections.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+        '500':
+          description: Server error.
+          
+  /admin/collections/{classId}:
+    get:
+      summary: Get collections for a specific class
+      description: Retrieves a list of collections associated with a specific class ID.
+      operationId: getCollectionsForClass
+      parameters:
+        - name: classId
+          in: path
+          required: true
+          description: The ID of the class whose collections are being retrieved.
+          schema:
+            type: string
+            example: "6760912e3aa833ba37bff1f1"
+      responses:
+        '200':
+          description: A list of collections for the specified class.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+        '400':
+          description: Bad request. Invalid class ID format.
+        '404':
+          description: Not found. No collections exist for the specified class ID.
+        '500':
+          description: Server error.
+
   /admin/collections/block/{collectionId}:
     patch:
       summary: Block a collection
@@ -80,6 +127,53 @@ paths:
           description: Not found. The collection with the given ID does not exist.
         '500':
           description: Server error.
+
+  /admin/bank-accounts:
+    get:
+      summary: Get all bank accounts
+      description: Retrieves a list of bank accounts with their details, including account number, balance, and owner.
+      operationId: getBankAccounts
+      responses:
+        '200':
+          description: A list of bank accounts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BankAccount'
+        '500':
+          description: Server error.    
+
+  /admin/children/{collectionId}:
+    get:
+      summary: Get children for a specific collection
+      description: Retrieves a list of children associated with a specific collection ID.
+      operationId: getChildrenForCollection
+      parameters:
+        - name: collectionId
+          in: path
+          required: true
+          description: The ID of the collection to retrieve children for.
+          schema:
+            type: string
+            example: "6732020bc70fc650c5345263"
+      responses:
+        '200':
+          description: A list of children associated with the specified collection.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Child'
+        '400':
+          description: Bad request. Invalid collection ID format.
+        '404':
+          description: Not found. No children exist for the specified collection ID.
+        '500':
+          description: Server error.
+
   /auth/register:
     post:
       summary: Register a new parent
@@ -106,6 +200,7 @@ paths:
           description: Bad request. Invalid input or validation error.
         '500':
           description: Server error.
+  
   /auth/login:
     post:
       summary: Login a parent
@@ -1670,3 +1765,28 @@ components:
           format: date-time
           description: The date the payment was made.
           example: "2024-12-01T10:00:00.000Z"
+    BankAccount:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the bank account.
+          example: "6749020bc70fc650c5345289"
+        accountNumber:
+          type: string
+          description: The 16-digit account number of the bank account.
+          example: "1234567812345678"
+        balance:
+          type: number
+          format: float
+          description: The current balance of the bank account.
+          example: 1500.75
+        owner:
+          type: string
+          description: The unique identifier of the owner associated with the bank account.
+          example: "675ef643801ef10491d529a2"
+      required:
+        - _id
+        - accountNumber
+        - balance
+        - owner
