@@ -165,6 +165,7 @@ export class PaymentService {
                 ...previousPaymentObj,
                 amount: -payment.amount,
                 withdrawn: true,
+                description: `Withdrawal of ${payment.amount} made by ${parent.firstName} ${parent.lastName} for ${collection.title} collection`,
             });
 
             await this.bankAccountModel.updateOne({ _id: bankAccount._id }, { $inc: { balance: -payment.amount } });
