@@ -35,9 +35,6 @@ export class ParentController {
         }),
     )
     async uploadParentAvatar(@Req() req, @UploadedFile() file: Express.Multer.File): Promise<string> {
-        console.log('Request headers:', req.headers);
-        console.log('Request body:', req.body);
-        console.log('Uploaded file:', file);
         const { id: parentId } = req.user;
         return await this.imageService.uploadImage('parent', parentId, file, parentId);
     }

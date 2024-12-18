@@ -35,10 +35,6 @@ import { AdminModule } from './admin/admin.module';
                 storage: new CloudinaryStorage({
                     cloudinary: cloudinary,
                     params: async (req, file) => {
-                        console.log('app.module.ts');
-                        console.log(req);
-                        console.log(file);
-
                         const { entity, id } = req.params;
                         const fileExtension = file.originalname.split('.').pop();
                         const filename = file.originalname.split('.')[0];
