@@ -4,7 +4,7 @@ import { Model, Types } from 'mongoose';
 import { GetParentsDto } from 'src/interfaces/admin.interface';
 import { Admin } from 'src/schemas/Admin.schema';
 import { BankAccount } from 'src/schemas/BankAccount.schema';
-import { Child } from 'src/schemas/Child.schema';
+import { Child, ChildDocument } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
 import { Parent } from 'src/schemas/Parent.schema';
@@ -80,9 +80,17 @@ export class AdminService {
     async getChildrenForCollection(collectionId: string): Promise<Child[]> {
         const payments = await this.paymentModel
             .find({ collection: Types.ObjectId.createFromHexString(collectionId) })
-            .populate<{ child: Child }>('child');
+            .populate<{ child: ChildDocument }>('child');
 
-        return payments.map((payment) => payment.child);
+        const uniqueChildrenMap = new Map<string, ChildDocument>();
+        payments.forEach((payment) => {
+            const child = payment.child;
+            if (child && !uniqueChildrenMap.has(child._id.toString())) {
+                uniqueChildrenMap.set(child._id.toString(), child);
+            }
+        });
+
+        return Array.from(uniqueChildrenMap.values());
     }
 
     async getPaymentsForParent(parentId: string): Promise<Payment[]> {
