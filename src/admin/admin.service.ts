@@ -70,7 +70,7 @@ export class AdminService {
         if (!collection) {
             return;
         }
-        await this.paymentModel.updateMany({ collection: collection._id }, { isBlocked: !collection.isBlocked });
+        await collection.updateOne({ isBlocked: !collection.isBlocked });
     }
 
     async getBankAccounts(): Promise<BankAccount[]> {

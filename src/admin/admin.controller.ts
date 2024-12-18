@@ -1,8 +1,8 @@
-import { Controller, Get, Header, Param, Patch, Query, Res, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "src/auth/auth.guard";
-import { AdminGuard } from "./admin.guard";
-import { AdminService } from "./admin.service";
-import { ReportService } from "src/report/report.service";
+import { Controller, Get, Header, Param, Patch, Query, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { AdminGuard } from './admin.guard';
+import { AdminService } from './admin.service';
+import { ReportService } from 'src/report/report.service';
 
 @UseGuards(AuthGuard, AdminGuard)
 @Controller('admin')
@@ -18,9 +18,7 @@ export class AdminController {
     }
 
     @Patch('parents/block/:parentId')
-    async switchParentBlockedStatus(
-        @Param('parentId') parentId: string,
-    ) {
+    async switchParentBlockedStatus(@Param('parentId') parentId: string) {
         return await this.adminService.switchParentBlockedStatus(parentId);
     }
 
@@ -35,16 +33,12 @@ export class AdminController {
     }
 
     @Patch('collections/block/:collectionId')
-    async switchCollectionBlockedStatus(
-        @Param('collectionId') collectionId: string,
-    ) {
+    async switchCollectionBlockedStatus(@Param('collectionId') collectionId: string) {
         return await this.adminService.switchCollectionBlockedStatus(collectionId);
     }
 
     @Get('collections/:classId')
-    async getCollectionsForClass(
-        @Param('classId') classId: string,
-    ) {
+    async getCollectionsForClass(@Param('classId') classId: string) {
         return await this.adminService.getCollectionsForClass(classId);
     }
 
@@ -54,19 +48,14 @@ export class AdminController {
     }
 
     @Get('children/:collectionId')
-    async getChildrenForCollection(
-        @Param('collectionId') collectionId: string,
-    ) {
+    async getChildrenForCollection(@Param('collectionId') collectionId: string) {
         return await this.adminService.getChildrenForCollection(collectionId);
     }
 
     @Get('report/parents/:parentId')
     @Header('Content-Type', 'application/pdf')
     @Header('Content-Disposition', 'attachment; filename=payments_report.pdf')
-    async generateReportForParent(
-        @Param('parentId') parentId: string,
-        @Res() res,
-    ) {
+    async generateReportForParent(@Param('parentId') parentId: string, @Res() res) {
         const payments = await this.adminService.getPaymentsForParent(parentId);
         const pdfStream = this.reportService.generatePaymentsPDF(payments);
         pdfStream.pipe(res);
@@ -75,10 +64,7 @@ export class AdminController {
     @Get('report/bank-accounts/:bankAccountId')
     @Header('Content-Type', 'application/pdf')
     @Header('Content-Disposition', 'attachment; filename=payments_report.pdf')
-    async generateReportForBankAccount(
-        @Param('bankAccountId') bankAccountId: string,
-        @Res() res,
-    ) {
+    async generateReportForBankAccount(@Param('bankAccountId') bankAccountId: string, @Res() res) {
         const payments = await this.adminService.getPaymentsForBankAccount(bankAccountId);
         const pdfStream = this.reportService.generatePaymentsPDF(payments);
         pdfStream.pipe(res);
