@@ -231,11 +231,11 @@ export class PaymentService {
 
         if (collection.startDate.getTime() > Date.now() || collection.endDate.getTime() < Date.now()) {
             throw new BadRequestException('Collection is not active');
-        } else if (collection.class.toString() !== child.class.toString()) {
+        } else if ((!child && parent._id.toString() !== collection.creator.toString()) && collection.class.toString() !== child?.class?.toString()) {
             throw new BadRequestException('Child not in the same class as collection');
         } else if (paymentCreatePayload.amount > parentBankAccount.balance) {
             throw new BadRequestException('Insufficient funds');
-        } else if (paymentCreatePayload.amount < 0 && collection.creator.toString() !== child.parent.toString()) {
+        } else if (paymentCreatePayload.amount < 0 && !child && parent._id.toString() !== collection.creator.toString()) {
             throw new BadRequestException('Only creator of collection can withdraw money');
         } else if (paymentCreatePayload.amount < 0 && -paymentCreatePayload.amount > bankAccount.balance) {
             throw new BadRequestException('Insufficient funds');
