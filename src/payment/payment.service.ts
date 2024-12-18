@@ -95,8 +95,7 @@ export class PaymentService {
                     collection: collection._id,
                     child: child._id,
                     parent: parent._id,
-                    description: `${paymentStartString} for ${child.firstName} ${child.lastName},
-                        for ${collection.title} collection`,
+                    description: `${paymentStartString} for ${child.firstName} ${child.lastName}, for ${collection.title} collection`,
                     withdrawn: false,
                 });
 
@@ -112,8 +111,7 @@ export class PaymentService {
                 collection: collection._id,
                 child: null,
                 parent: parent._id,
-                description: `Payout made by the treasurer ${parent.firstName} ${parent.lastName},
-                    for ${collection.title} collection`,
+                description: `Payout made by the treasurer ${parent.firstName} ${parent.lastName}, for ${collection.title} collection`,
                 withdrawn: true,
             });
         } catch (error) {
