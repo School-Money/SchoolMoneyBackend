@@ -39,6 +39,10 @@ export class CollectionService {
 
     async create(payload: CollectionPayload, parentId: string): Promise<Collection> {
         try {
+            if (payload.startDate >= payload.endDate) {
+                throw new BadRequestException('Start date cannot be greater than end date');
+            }
+
             const parent = await this.parentModel.findById(parentId);
             if (!parent) {
                 throw new NotFoundException('Parent not found');
@@ -77,6 +81,10 @@ export class CollectionService {
 
     async updateCollection(payload: CollectionUpdate, parentId: string): Promise<Collection> {
         try {
+            if (payload.startDate >= payload.endDate) {
+                throw new BadRequestException('Start date cannot be greater than end date');
+            }
+
             const parent = await this.parentModel.findById(parentId);
             if (!parent) {
                 throw new NotFoundException('Parent not found');
