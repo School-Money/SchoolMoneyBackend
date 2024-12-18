@@ -159,6 +159,8 @@ export class PaymentService {
                 },
             });
 
+            await this.paymentModel.updateOne({ _id: payment._id }, { withdrawn: true });
+
             const withdrawnPayment = await this.paymentModel.create({
                 ...previousPaymentObj,
                 amount: -payment.amount,
