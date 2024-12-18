@@ -187,7 +187,7 @@ export class PaymentService {
     private validatePaymentCreatePayload(paymentCreatePayload: PaymentCreatePayload) {
         if (!paymentCreatePayload.collectionId) {
             throw new NotFoundException('Collection ID is required');
-        } else if (!paymentCreatePayload.childId) {
+        } else if (!paymentCreatePayload.childId && paymentCreatePayload.amount > 0) {
             throw new NotFoundException('Child ID is required');
         } else if (!paymentCreatePayload.amount) {
             throw new NotFoundException('Amount is required');
