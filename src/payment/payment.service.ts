@@ -81,12 +81,12 @@ export class PaymentService {
         try {
             this.validatePaymentCreatePayload(paymentCreatePayload);
 
-            const [parent, collection, child, bankAccount] = await this.findRelatedEntitiesCreatePayload(
+            const [parent, collection, child, parentBankAccount, bankAccount] = await this.findRelatedEntitiesCreatePayload(
                 paymentCreatePayload,
                 parentId,
             );
 
-            this.validateRelatedEntitiesCreatePayload(parent, collection, child, bankAccount, paymentCreatePayload);
+            this.validateRelatedEntitiesCreatePayload(parent, collection, child, parentBankAccount, bankAccount, paymentCreatePayload);
 
             if (paymentCreatePayload.amount > 0) {
                 const paymentStartString = paymentCreatePayload.amount > 0 ? 'Payment' : 'Payout';
@@ -135,7 +135,7 @@ export class PaymentService {
                 throw new NotFoundException('Payment not found');
             }
 
-            const [parent, collection, child, bankAccount] = await this.findRelatedEntitiesCreatePayload(
+            const [parent, collection, child, parentBankAccount, bankAccount] = await this.findRelatedEntitiesCreatePayload(
                 {
                     collectionId: payment.collection.toString(),
                     childId: payment.child.toString(),
@@ -143,7 +143,7 @@ export class PaymentService {
                 parentId,
             );
 
-            this.validateRelatedEntitiesWithdrawPayload(parent, collection, child, bankAccount, payment);
+            this.validateRelatedEntitiesWithdrawPayload(parent, collection, child, parentBankAccount, bankAccount, payment);
 
             const previousPaymentObj = payment.toObject({
                 transform: (doc, ret) => {
@@ -178,6 +178,9 @@ export class PaymentService {
             this.collectionModel.findById(paymentCreatePayload.collectionId),
             this.childModel.findById(paymentCreatePayload.childId),
             this.bankAccountModel.findOne({
+                owner: Types.ObjectId.createFromHexString(parentId),
+            }),
+            this.bankAccountModel.findOne({
                 owner: Types.ObjectId.createFromHexString(paymentCreatePayload.collectionId),
             }),
         ]);
@@ -199,6 +202,7 @@ export class PaymentService {
         parent: ParentDocument | null,
         collection: CollectionDocument | null,
         child: ChildDocument | null,
+        parentBankAccount: BankAccountDocument | null,
         bankAccount: BankAccountDocument | null,
         paymentCreatePayload: PaymentCreatePayload,
     ) {
@@ -210,13 +214,15 @@ export class PaymentService {
             throw new BadRequestException('Child not found');
         } else if (!bankAccount) {
             throw new BadRequestException('Bank account not found');
+        } else if (!parentBankAccount) {
+            throw new BadRequestException('Parent bank account not found');
         }
 
         if (collection.startDate.getTime() > Date.now() || collection.endDate.getTime() < Date.now()) {
             throw new BadRequestException('Collection is not active');
         } else if (collection.class.toString() !== child.class.toString()) {
             throw new BadRequestException('Child not in the same class as collection');
-        } else if (paymentCreatePayload.amount > bankAccount.balance) {
+        } else if (paymentCreatePayload.amount > parentBankAccount.balance) {
             throw new BadRequestException('Insufficient funds');
         } else if (paymentCreatePayload.amount < 0 && collection.creator.toString() !== child.parent.toString()) {
             throw new BadRequestException('Only creator of collection can withdraw money');
@@ -229,6 +235,7 @@ export class PaymentService {
         parent: Parent | null,
         collection: Collection | null,
         child: Child | null,
+        parentBankAccount: BankAccount | null,
         bankAccount: BankAccount | null,
         payment: Payment | null,
     ) {
@@ -240,6 +247,10 @@ export class PaymentService {
             throw new BadRequestException('Child not found');
         } else if (!bankAccount) {
             throw new BadRequestException('Bank account not found');
+        } else if (!parentBankAccount) {
+            throw new BadRequestException('Parent bank account not found');
+        } else if (!payment) {
+            throw new BadRequestException('Payment not found');
         }
 
         if (collection.startDate.getTime() > Date.now() || collection.endDate.getTime() < Date.now()) {
