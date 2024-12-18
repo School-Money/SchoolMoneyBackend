@@ -104,8 +104,9 @@ export class AdminService {
     async getPaymentsForClass(classId: string, collectionId?: string): Promise<Payment[]> {
         const collections = await this.collectionModel.find({ class: Types.ObjectId.createFromHexString(classId) });
         const collectionIds = collections.map((collection) => collection._id);
+        const collectionIdsStrings = collectionIds.map((collectionId) => collectionId.toString());
 
-        if (collectionId && !collectionIds.includes(Types.ObjectId.createFromHexString(collectionId))) {
+        if (collectionId && !collectionIdsStrings.includes(collectionId)) {
             return [];
         }
 
