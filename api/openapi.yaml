@@ -1,1979 +1,1983 @@
 # you can paste it in https://editor.swagger.io/ to see the documentation
 openapi: 3.0.0
 info:
-  title: SchoolMoney API
-  version: 1.0.0
-  description: API for SchoolMoney project.
+    title: SchoolMoney API
+    version: 1.0.0
+    description: API for SchoolMoney project.
 
 paths:
-  /admin/parents:
-    get:
-      summary: Get all parents
-      description: Retrieves a list of parents with their details.
-      operationId: getParents
-      responses:
-        '200':
-          description: A list of parents.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/GetParentsDto'
-        '500':
-          description: Server error.
-  /admin/parents/block/{parentId}:
-    patch:
-      summary: Block a parent
-      description: Updates the blocked status of a parent to opposite value to the current one.
-      operationId: blockParent
-      parameters:
-        - name: parentId
-          in: path
-          required: true
-          description: The ID of the parent to block/unblock.
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No content. The operation was successful.
-        '400':
-          description: Bad request. Invalid parentId or request body.
-        '404':
-          description: Not found. Parent with the given ID does not exist.
-        '500':
-          description: Server error
-  /admin/classes:
-    get:
-      summary: Get all classes
-      description: Retrieves a list of classes with their details.
-      operationId: getClasses
-      responses:
-        '200':
-          description: A list of classes.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Class'
-        '500':
-          description: Server error
+    /admin/parents:
+        get:
+            summary: Get all parents
+            description: Retrieves a list of parents with their details.
+            operationId: getParents
+            responses:
+                '200':
+                    description: A list of parents.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/GetParentsDto'
+                '500':
+                    description: Server error.
+    /admin/parents/block/{parentId}:
+        patch:
+            summary: Block a parent
+            description: Updates the blocked status of a parent to opposite value to the current one.
+            operationId: blockParent
+            parameters:
+                - name: parentId
+                  in: path
+                  required: true
+                  description: The ID of the parent to block/unblock.
+                  schema:
+                      type: string
+            responses:
+                '204':
+                    description: No content. The operation was successful.
+                '400':
+                    description: Bad request. Invalid parentId or request body.
+                '404':
+                    description: Not found. Parent with the given ID does not exist.
+                '500':
+                    description: Server error
+    /admin/classes:
+        get:
+            summary: Get all classes
+            description: Retrieves a list of classes with their details.
+            operationId: getClasses
+            responses:
+                '200':
+                    description: A list of classes.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Class'
+                '500':
+                    description: Server error
 
-  /admin/collections:
-    get:
-      summary: Get all collections
-      description: Retrieves a list of all collections with their details, including class, creator, and financial information.
-      operationId: getCollections
-      responses:
-        '200':
-          description: A list of collections.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Collection'
-        '500':
-          description: Server error.
-          
-  /admin/collections/{classId}:
-    get:
-      summary: Get collections for a specific class
-      description: Retrieves a list of collections associated with a specific class ID.
-      operationId: getCollectionsForClass
-      parameters:
-        - name: classId
-          in: path
-          required: true
-          description: The ID of the class whose collections are being retrieved.
-          schema:
-            type: string
-            example: "6760912e3aa833ba37bff1f1"
-      responses:
-        '200':
-          description: A list of collections for the specified class.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Collection'
-        '400':
-          description: Bad request. Invalid class ID format.
-        '404':
-          description: Not found. No collections exist for the specified class ID.
-        '500':
-          description: Server error.
+    /admin/collections:
+        get:
+            summary: Get all collections
+            description: Retrieves a list of all collections with their details, including class, creator, and financial information.
+            operationId: getCollections
+            responses:
+                '200':
+                    description: A list of collections.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Collection'
+                '500':
+                    description: Server error.
 
-  /admin/collections/block/{collectionId}:
-    patch:
-      summary: Block a collection
-      description: Switches block on a collection.
-      operationId: blockCollection
-      parameters:
-        - name: collectionId
-          in: path
-          required: true
-          description: The ID of the collection to block/unblock.
-          schema:
-            type: string
-      responses:
-        '204':
-          description: No content. The collection was successfully blocked.
-        '400':
-          description: Bad request. Invalid collection ID.
-        '404':
-          description: Not found. The collection with the given ID does not exist.
-        '500':
-          description: Server error.
+    /admin/collections/{classId}:
+        get:
+            summary: Get collections for a specific class
+            description: Retrieves a list of collections associated with a specific class ID.
+            operationId: getCollectionsForClass
+            parameters:
+                - name: classId
+                  in: path
+                  required: true
+                  description: The ID of the class whose collections are being retrieved.
+                  schema:
+                      type: string
+                      example: '6760912e3aa833ba37bff1f1'
+            responses:
+                '200':
+                    description: A list of collections for the specified class.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Collection'
+                '400':
+                    description: Bad request. Invalid class ID format.
+                '404':
+                    description: Not found. No collections exist for the specified class ID.
+                '500':
+                    description: Server error.
 
-  /admin/bank-accounts:
-    get:
-      summary: Get all bank accounts
-      description: Retrieves a list of bank accounts with their details, including account number, balance, and owner.
-      operationId: getBankAccounts
-      responses:
-        '200':
-          description: A list of bank accounts.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BankAccount'
-        '500':
-          description: Server error.    
+    /admin/collections/block/{collectionId}:
+        patch:
+            summary: Block a collection
+            description: Switches block on a collection.
+            operationId: blockCollection
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  description: The ID of the collection to block/unblock.
+                  schema:
+                      type: string
+            responses:
+                '204':
+                    description: No content. The collection was successfully blocked.
+                '400':
+                    description: Bad request. Invalid collection ID.
+                '404':
+                    description: Not found. The collection with the given ID does not exist.
+                '500':
+                    description: Server error.
 
-  /admin/children/{collectionId}:
-    get:
-      summary: Get children for a specific collection
-      description: Retrieves a list of children associated with a specific collection ID.
-      operationId: getChildrenForCollection
-      parameters:
-        - name: collectionId
-          in: path
-          required: true
-          description: The ID of the collection to retrieve children for.
-          schema:
-            type: string
-            example: "6732020bc70fc650c5345263"
-      responses:
-        '200':
-          description: A list of children associated with the specified collection.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Child'
-        '400':
-          description: Bad request. Invalid collection ID format.
-        '404':
-          description: Not found. No children exist for the specified collection ID.
-        '500':
-          description: Server error.
+    /admin/bank-accounts:
+        get:
+            summary: Get all bank accounts
+            description: Retrieves a list of bank accounts with their details, including account number, balance, and owner.
+            operationId: getBankAccounts
+            responses:
+                '200':
+                    description: A list of bank accounts.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/BankAccount'
+                '500':
+                    description: Server error.
 
-  /admin/report/parents/{parentId}:
-    get:
-      summary: Generate PDF report for a specific parent
-      description: Generates and returns a PDF report containing all payments associated with a specific parent.
-      operationId: generateReportForParent
-      parameters:
-        - name: parentId
-          in: path
-          required: true
-          description: The ID of the parent for whom to generate the report.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: PDF report generated successfully.
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Parent not found.
-        '500':
-          description: Internal server error.
+    /admin/children/{collectionId}:
+        get:
+            summary: Get children for a specific collection
+            description: Retrieves a list of children associated with a specific collection ID.
+            operationId: getChildrenForCollection
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  description: The ID of the collection to retrieve children for.
+                  schema:
+                      type: string
+                      example: '6732020bc70fc650c5345263'
+            responses:
+                '200':
+                    description: A list of children associated with the specified collection.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Child'
+                '400':
+                    description: Bad request. Invalid collection ID format.
+                '404':
+                    description: Not found. No children exist for the specified collection ID.
+                '500':
+                    description: Server error.
 
-  /admin/report/bank-accounts/{bankAccountId}:
-    get:
-      summary: Generate PDF report for a specific bank account
-      description: Generates and returns a PDF report containing all payments for a specific bank account.
-      operationId: generateReportForBankAccount
-      parameters:
-        - name: bankAccountId
-          in: path
-          required: true
-          description: The ID of the bank account for which to generate the report.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: PDF report generated successfully.
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Bank account not found.
-        '500':
-          description: Internal server error.
+    /admin/report/parents/{parentId}:
+        get:
+            summary: Generate PDF report for a specific parent
+            description: Generates and returns a PDF report containing all payments associated with a specific parent.
+            operationId: generateReportForParent
+            parameters:
+                - name: parentId
+                  in: path
+                  required: true
+                  description: The ID of the parent for whom to generate the report.
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: PDF report generated successfully.
+                    content:
+                        application/pdf:
+                            schema:
+                                type: string
+                                format: binary
+                '404':
+                    description: Parent not found.
+                '500':
+                    description: Internal server error.
 
-  /admin/report/classes/{classId}:
-    get:
-      summary: Generate PDF report for a specific class
-      description: Generates and returns a PDF report containing all payments for a specific class. Can be filtered by collectionId.
-      operationId: generateReportForClass
-      parameters:
-        - name: classId
-          in: path
-          required: true
-          description: The ID of the class for which to generate the report.
-          schema:
-            type: string
-        - name: collectionId
-          in: query
-          required: false
-          description: Optional collection ID to filter the payments.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: PDF report generated successfully.
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Class not found.
-        '500':
-          description: Internal server error.
+    /admin/report/bank-accounts/{bankAccountId}:
+        get:
+            summary: Generate PDF report for a specific bank account
+            description: Generates and returns a PDF report containing all payments for a specific bank account.
+            operationId: generateReportForBankAccount
+            parameters:
+                - name: bankAccountId
+                  in: path
+                  required: true
+                  description: The ID of the bank account for which to generate the report.
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: PDF report generated successfully.
+                    content:
+                        application/pdf:
+                            schema:
+                                type: string
+                                format: binary
+                '404':
+                    description: Bank account not found.
+                '500':
+                    description: Internal server error.
 
-  /admin/report/collections/{collectionId}:
-    get:
-      summary: Generate PDF report for a specific collection
-      description: Generates and returns a PDF report containing all payments for a specific collection. Can be filtered by childId.
-      operationId: generateReportForCollection
-      parameters:
-        - name: collectionId
-          in: path
-          required: true
-          description: The ID of the collection for which to generate the report.
-          schema:
-            type: string
-        - name: childId
-          in: query
-          required: false
-          description: Optional child ID to filter the payments.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: PDF report generated successfully.
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
-        '404':
-          description: Collection not found.
-        '500':
-          description: Internal server error.
+    /admin/report/classes/{classId}:
+        get:
+            summary: Generate PDF report for a specific class
+            description: Generates and returns a PDF report containing all payments for a specific class. Can be filtered by collectionId.
+            operationId: generateReportForClass
+            parameters:
+                - name: classId
+                  in: path
+                  required: true
+                  description: The ID of the class for which to generate the report.
+                  schema:
+                      type: string
+                - name: collectionId
+                  in: query
+                  required: false
+                  description: Optional collection ID to filter the payments.
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: PDF report generated successfully.
+                    content:
+                        application/pdf:
+                            schema:
+                                type: string
+                                format: binary
+                '404':
+                    description: Class not found.
+                '500':
+                    description: Internal server error.
 
-  /auth/register:
-    post:
-      summary: Register a new parent
-      description: Registers a new parent in the system.
-      operationId: registerUser
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ParentRegister'
-      responses:
-        '200':
-          description: Parent registered successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Parent registered successfully
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '500':
-          description: Server error.
-  
-  /auth/login:
-    post:
-      summary: Login a parent
-      description: Authenticates a parent and returns an access token and role information.
-      operationId: loginParent
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ParentLogin'
-      responses:
-        '200':
-          description: Successfully authenticated.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  accessToken:
-                    type: string
-                    description: The JWT access token.
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                  isAdmin:
-                    type: boolean
-                    description: Indicates whether the parent has admin privileges.
-                    example: false
-        '400':
-          description: Bad request. Invalid input.
-        '401':
-          description: Unauthorized. Invalid email or password.
-        '500':
-          description: Server error.
-  /auth/user-details:
-    get:
-      summary: Get authenticated user's details
-      description: Retrieves the details of the authenticated user.
-      operationId: getUserDetails
-      responses:
-        '200':
-          description: Successfully retrieved user details.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                    description: The ID of the user.
-                    example: "64f1b2d0e23f5a1234567890"
-                  email:
-                    type: string
-                    description: The email address of the user.
-                    example: "user@example.com"
-                  firstName:
-                    type: string
-                    description: The first name of the user.
-                    example: "John"
-                  lastName:
-                    type: string
-                    description: The last name of the user.
-                    example: "Doe"
-                  balance:
-                    type: number
-                    description: Current balance of parent,
-                    example: 300
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-  /children:
-    post:
-      summary: Create a new child
-      description: Creates a new child and associates them with a parent and class.
-      operationId: createChild
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChildCreateDetails'
-      responses:
-        '201':
-          description: Child created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChildResponse'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-    patch:
-      summary: Update a child
-      description: Updates the details of an existing child associated with the authenticated parent.
-      operationId: updateChild
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ChildUpdateDetails'
-      responses:
-        '200':
-          description: Child updated successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChildResponse'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. Child with the given ID does not exist.
-        '500':
-          description: Server error.
-    get:
-      summary: Get children of the authenticated parent
-      description: Retrieves all children associated with the authenticated parent.
-      operationId: getMyChildren
-      responses:
-        '200':
-          description: A list of children.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ChildResponse'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-  /children/{childId}:
-    delete:
-      summary: Delete a child
-      description: Deletes a child associated with the authenticated parent and returns the deleted child's details.
-      operationId: deleteChild
-      parameters:
-        - name: childId
-          in: path
-          required: true
-          description: The ID of the child to delete.
-          schema:
-            type: string
-            example: "6760912e3aa833ba37bff1f1"
-      responses:
-        '200':
-          description: Child deleted successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChildResponse'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The child with the given ID does not exist.
-        '500':
-          description: Server error.
-  /children/{childId}/avatar:
-    patch:
-      summary: Upload a child's avatar
-      description: Uploads an avatar image for a specified child and returns the URL of the uploaded image.
-      operationId: uploadChildAvatar
-      parameters:
-        - name: childId
-          in: path
-          required: true
-          description: The ID of the child to upload the avatar for.
-          schema:
-            type: string
-            example: "6760912e3aa833ba37bff1f1"
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: The image file to upload.
-      responses:
-        '200':
-          description: Avatar uploaded successfully.
-          content:
-            application/json:
-              schema:
-                type: string
-                description: The URL of the uploaded avatar image.
-                example: "https://example.com/images/child-avatar.jpg"
-        '400':
-          description: Bad request. Invalid file or input.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The child with the given ID does not exist.
-        '500':
-          description: Server error.
-    get:
-      summary: Get a child's avatar
-      description: Retrieves the avatar image for a specified child and streams the file in the response.
-      operationId: getChildAvatar
-      parameters:
-        - name: childId
-          in: path
-          required: true
-          description: The ID of the child whose avatar is being retrieved.
-          schema:
-            type: string
-            example: "6760912e3aa833ba37bff1f1"
-      responses:
-        '200':
-          description: The child's avatar image.
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-                description: The avatar image in PNG format.
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-                description: The avatar image in JPEG format.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The child or their avatar does not exist.
-        '500':
-          description: Server error.
-  /classes:
-    post:
-      summary: Create a new class
-      description: Creates a new class and assigns the authenticated parent as the treasurer.
-      operationId: createClass
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClassDetails'
-      responses:
-        '201':
-          description: Class created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassResponse'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-    get:
-      summary: Get classes associated with the authenticated parent
-      description: Retrieves a list of classes associated with the authenticated parent, including additional details like children amount and treasurer status.
-      operationId: getMyClasses
-      responses:
-        '200':
-          description: A list of classes with additional details.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ClassResponseWithDetails'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-  /classes/invite:
-    post:
-      summary: Get an invite code for a class
-      description: Generates and returns an invite code for a class where the authenticated parent is the treasurer.
-      operationId: getClassInviteCode
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetClassInviteCodePayload'
-      responses:
-        '200':
-          description: Invite code retrieved successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  inviteCode:
-                    type: string
-                    description: The unique invite code for the class.
-                    example: "6760912e3aa833ba37bff1f1"
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user is not the treasurer of the class.
-        '404':
-          description: Not found. The class with the given ID does not exist.
-        '500':
-          description: Server error.
-  /classes/details:
-    post:
-      summary: Get class details
-      description: Retrieves detailed information about a class, including children, treasurer details, collections, and whether the user is the treasurer.
-      operationId: getClassDetails
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GetClassDetailsPayload'
-      responses:
-        '200':
-          description: Class details retrieved successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassDetailsResponse'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The class with the given ID does not exist.
-        '500':
-          description: Server error.
+    /admin/report/collections/{collectionId}:
+        get:
+            summary: Generate PDF report for a specific collection
+            description: Generates and returns a PDF report containing all payments for a specific collection. Can be filtered by childId.
+            operationId: generateReportForCollection
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  description: The ID of the collection for which to generate the report.
+                  schema:
+                      type: string
+                - name: childId
+                  in: query
+                  required: false
+                  description: Optional child ID to filter the payments.
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: PDF report generated successfully.
+                    content:
+                        application/pdf:
+                            schema:
+                                type: string
+                                format: binary
+                '404':
+                    description: Collection not found.
+                '500':
+                    description: Internal server error.
 
-  /classes/passTreasurer:
-    patch:
-      summary: Pass treasurer role to another parent
-      description: Transfers the treasurer role for a class to a new parent and returns the updated class details.
-      operationId: passTreasurer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PassTreasurerToParentPayload'
-      responses:
-        '200':
-          description: Treasurer role passed successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassResponse'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user is not the current treasurer of the class.
-        '404':
-          description: Not found. The class or new treasurer does not exist.
-        '500':
-          description: Server error.
+    /auth/register:
+        post:
+            summary: Register a new parent
+            description: Registers a new parent in the system.
+            operationId: registerUser
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ParentRegister'
+            responses:
+                '200':
+                    description: Parent registered successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: Parent registered successfully
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '500':
+                    description: Server error.
 
-  /classes/{classId}/parents:
-    get:
-      summary: Get parents in a specific class
-      description: Retrieves a list of parents associated with a specific class.
-      operationId: getClassParents
-      parameters:
-        - name: classId
-          in: path
-          required: true
-          description: The unique ID of the class for which to retrieve the parents.
-          schema:
-            type: string
-            example: "6760912e3aa833ba37bff1f1"
-      responses:
-        '200':
-          description: Successfully retrieved the list of parents in the class.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Parent'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user does not have permission to view the parents in this class.
-        '404':
-          description: Not found. The class with the given ID does not exist.
-        '500':
-          description: Internal server error.
+    /auth/login:
+        post:
+            summary: Login a parent
+            description: Authenticates a parent and returns an access token and role information.
+            operationId: loginParent
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ParentLogin'
+            responses:
+                '200':
+                    description: Successfully authenticated.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    accessToken:
+                                        type: string
+                                        description: The JWT access token.
+                                        example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+                                    isAdmin:
+                                        type: boolean
+                                        description: Indicates whether the parent has admin privileges.
+                                        example: false
+                '400':
+                    description: Bad request. Invalid input.
+                '401':
+                    description: Unauthorized. Invalid email or password.
+                '500':
+                    description: Server error.
+    /auth/user-details:
+        get:
+            summary: Get authenticated user's details
+            description: Retrieves the details of the authenticated user.
+            operationId: getUserDetails
+            responses:
+                '200':
+                    description: Successfully retrieved user details.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    _id:
+                                        type: string
+                                        description: The ID of the user.
+                                        example: '64f1b2d0e23f5a1234567890'
+                                    email:
+                                        type: string
+                                        description: The email address of the user.
+                                        example: 'user@example.com'
+                                    firstName:
+                                        type: string
+                                        description: The first name of the user.
+                                        example: 'John'
+                                    lastName:
+                                        type: string
+                                        description: The last name of the user.
+                                        example: 'Doe'
+                                    balance:
+                                        type: number
+                                        description: Current balance of parent,
+                                        example: 300
+                                    avatar:
+                                        type: string
+                                        description: The URL of the user's avatar image.
+                                        example: 'https://example.com/images/avatar.jpg'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+    /children:
+        post:
+            summary: Create a new child
+            description: Creates a new child and associates them with a parent and class.
+            operationId: createChild
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ChildCreateDetails'
+            responses:
+                '201':
+                    description: Child created successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChildResponse'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+        patch:
+            summary: Update a child
+            description: Updates the details of an existing child associated with the authenticated parent.
+            operationId: updateChild
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ChildUpdateDetails'
+            responses:
+                '200':
+                    description: Child updated successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChildResponse'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. Child with the given ID does not exist.
+                '500':
+                    description: Server error.
+        get:
+            summary: Get children of the authenticated parent
+            description: Retrieves all children associated with the authenticated parent.
+            operationId: getMyChildren
+            responses:
+                '200':
+                    description: A list of children.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ChildResponse'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+    /children/{childId}:
+        delete:
+            summary: Delete a child
+            description: Deletes a child associated with the authenticated parent and returns the deleted child's details.
+            operationId: deleteChild
+            parameters:
+                - name: childId
+                  in: path
+                  required: true
+                  description: The ID of the child to delete.
+                  schema:
+                      type: string
+                      example: '6760912e3aa833ba37bff1f1'
+            responses:
+                '200':
+                    description: Child deleted successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ChildResponse'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The child with the given ID does not exist.
+                '500':
+                    description: Server error.
+    /children/{childId}/avatar:
+        patch:
+            summary: Upload a child's avatar
+            description: Uploads an avatar image for a specified child and returns the URL of the uploaded image.
+            operationId: uploadChildAvatar
+            parameters:
+                - name: childId
+                  in: path
+                  required: true
+                  description: The ID of the child to upload the avatar for.
+                  schema:
+                      type: string
+                      example: '6760912e3aa833ba37bff1f1'
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                file:
+                                    type: string
+                                    format: binary
+                                    description: The image file to upload.
+            responses:
+                '200':
+                    description: Avatar uploaded successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                description: The URL of the uploaded avatar image.
+                                example: 'https://example.com/images/child-avatar.jpg'
+                '400':
+                    description: Bad request. Invalid file or input.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The child with the given ID does not exist.
+                '500':
+                    description: Server error.
+        get:
+            summary: Get a child's avatar
+            description: Retrieves the avatar image for a specified child and streams the file in the response.
+            operationId: getChildAvatar
+            parameters:
+                - name: childId
+                  in: path
+                  required: true
+                  description: The ID of the child whose avatar is being retrieved.
+                  schema:
+                      type: string
+                      example: '6760912e3aa833ba37bff1f1'
+            responses:
+                '200':
+                    description: The child's avatar image.
+                    content:
+                        image/png:
+                            schema:
+                                type: string
+                                format: binary
+                                description: The avatar image in PNG format.
+                        image/jpeg:
+                            schema:
+                                type: string
+                                format: binary
+                                description: The avatar image in JPEG format.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The child or their avatar does not exist.
+                '500':
+                    description: Server error.
+    /classes:
+        post:
+            summary: Create a new class
+            description: Creates a new class and assigns the authenticated parent as the treasurer.
+            operationId: createClass
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ClassDetails'
+            responses:
+                '201':
+                    description: Class created successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClassResponse'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+        get:
+            summary: Get classes associated with the authenticated parent
+            description: Retrieves a list of classes associated with the authenticated parent, including additional details like children amount and treasurer status.
+            operationId: getMyClasses
+            responses:
+                '200':
+                    description: A list of classes with additional details.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/ClassResponseWithDetails'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+    /classes/invite:
+        post:
+            summary: Get an invite code for a class
+            description: Generates and returns an invite code for a class where the authenticated parent is the treasurer.
+            operationId: getClassInviteCode
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/GetClassInviteCodePayload'
+            responses:
+                '200':
+                    description: Invite code retrieved successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    inviteCode:
+                                        type: string
+                                        description: The unique invite code for the class.
+                                        example: '6760912e3aa833ba37bff1f1'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user is not the treasurer of the class.
+                '404':
+                    description: Not found. The class with the given ID does not exist.
+                '500':
+                    description: Server error.
+    /classes/details:
+        post:
+            summary: Get class details
+            description: Retrieves detailed information about a class, including children, treasurer details, collections, and whether the user is the treasurer.
+            operationId: getClassDetails
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/GetClassDetailsPayload'
+            responses:
+                '200':
+                    description: Class details retrieved successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClassDetailsResponse'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The class with the given ID does not exist.
+                '500':
+                    description: Server error.
 
-  /collections:
-    post:
-      summary: Create a new collection
-      description: Creates a new collection associated with a specific class.
-      operationId: createCollection
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CollectionPayload'
-      responses:
-        '201':
-          description: Collection created successfully.
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Collection created successfully"
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user does not have permission to create a collection for the specified class.
-        '500':
-          description: Server error.
-    patch:
-      summary: Update a collection
-      description: Updates an existing collection associated with a specific class.
-      operationId: updateCollection
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CollectionUpdate'
-      responses:
-        '200':
-          description: Collection updated successfully.
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "Collection updated successfully"
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user does not have permission to update the collection.
-        '404':
-          description: Not found. The collection with the given ID does not exist.
-        '500':
-          description: Server error.
-    get:
-      summary: Get all collections
-      description: Retrieves all collections associated with the authenticated user, including their current amount.
-      operationId: getAllCollections
-      responses:
-        '200':
-          description: A list of collections with their details and current amount.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CollectionWithCurrentAmount'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-  /collections/{collectionId}:
-    get:
-      summary: Get details of a specific collection
-      description: Retrieves detailed information about a specific collection, including associated class, payments, creator, and financial details.
-      operationId: getCollectionDetails
-      parameters:
-        - name: collectionId
-          in: path
-          required: true
-          description: The unique ID of the collection.
-          schema:
-            type: string
-            example: "6732020bc70fc650c5345263"
-      responses:
-        '200':
-          description: Collection details retrieved successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetCollectionDetails'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The collection with the given ID does not exist.
-        '500':
-          description: Server error.
-    delete:
-      summary: Close a collection
-      description: Closes a collection associated with the authenticated parent and returns the details of the closed collection.
-      operationId: closeCollection
-      parameters:
-        - name: collectionId
-          in: path
-          required: true
-          description: The unique ID of the collection to close.
-          schema:
-            type: string
-            example: "6732020bc70fc650c5345263"
-      responses:
-        '200':
-          description: Collection closed successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Collection'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user does not have permission to close the collection.
-        '404':
-          description: Not found. The collection with the given ID does not exist.
-        '500':
-          description: Server error.
-  /collections/{collectionId}/logo:
-    patch:
-      summary: Upload a logo for a collection
-      description: Uploads a logo image for a specific collection and returns the URL of the uploaded image.
-      operationId: uploadCollectionLogo
-      parameters:
-        - name: collectionId
-          in: path
-          required: true
-          description: The unique ID of the collection for which the logo is being uploaded.
-          schema:
-            type: string
-            example: "6732020bc70fc650c5345263"
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: The image file to upload as the collection logo.
-      responses:
-        '200':
-          description: Logo uploaded successfully.
-          content:
-            application/json:
-              schema:
-                type: string
-                description: The URL of the uploaded logo image.
-                example: "https://example.com/images/collection-logo.jpg"
-        '400':
-          description: Bad request. Invalid file or input.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user does not have permission to upload a logo for the collection.
-        '404':
-          description: Not found. The collection with the given ID does not exist.
-        '500':
-          description: Server error.
-    get:
-      summary: Retrieve the logo of a collection
-      description: Streams the logo image of a specific collection.
-      operationId: getCollectionLogo
-      parameters:
-        - name: collectionId
-          in: path
-          required: true
-          description: The unique ID of the collection whose logo is being retrieved.
-          schema:
-            type: string
-            example: "6732020bc70fc650c5345263"
-      responses:
-        '200':
-          description: The logo image of the collection.
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-                description: The logo image in PNG format.
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-                description: The logo image in JPEG format.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user does not have permission to access the logo of the collection.
-        '404':
-          description: Not found. The collection or its logo does not exist.
-        '500':
-          description: Server error.
-  /parents/avatar:
-    patch:
-      summary: Upload a parent avatar
-      description: Uploads an avatar image for the authenticated parent and returns the URL of the uploaded image.
-      operationId: uploadParentAvatar
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: The image file to upload as the parent's avatar.
-      responses:
-        '200':
-          description: Avatar uploaded successfully.
-          content:
-            application/json:
-              schema:
-                type: string
-                description: The URL of the uploaded avatar image.
-                example: "https://example.com/images/parent-avatar.jpg"
-        '400':
-          description: Bad request. Invalid file or input.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-    get:
-      summary: Retrieve the avatar of the authenticated parent
-      description: Streams the avatar image of the authenticated parent.
-      operationId: getParentAvatar
-      responses:
-        '200':
-          description: The avatar image of the authenticated parent.
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
-                description: The avatar image in PNG format.
-            image/jpeg:
-              schema:
-                type: string
-                format: binary
-                description: The avatar image in JPEG format.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The parent's avatar does not exist.
-        '500':
-          description: Server error.
-  /parents/balance:
-    patch:
-      summary: Update parent balance
-      description: Updates the balance of the authenticated parent.
-      operationId: updateParentBalance
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                amount:
-                  type: number
-                  description: The amount to update the parent's balance by.
-                  example: 100.00
-              required:
-                - amount
-      responses:
-        '204':
-          description: Balance updated successfully. No content is returned.
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-  /parents/{classId}:
-    get:
-      summary: Get parents in a class
-      description: Retrieves a list of parents associated with a specific class.
-      operationId: getParentsInClass
-      parameters:
-        - name: classId
-          in: path
-          required: true
-          description: The unique ID of the class.
-          schema:
-            type: string
-            example: "6760912e3aa833ba37bff1f1"
-      responses:
-        '200':
-          description: A list of parents in the specified class.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Parent'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '403':
-          description: Forbidden. The user does not have permission to view the parents in this class.
-        '404':
-          description: Not found. The class with the given ID does not exist.
-        '500':
-          description: Server error.
-  /payments:
-    get:
-      summary: Get all payments
-      description: Retrieves a list of all payments associated with the authenticated parent.
-      operationId: getAllPayments
-      responses:
-        '200':
-          description: A list of payments associated with the authenticated parent.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PaymentDto'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
-    post:
-      summary: Create a payment
-      description: Creates a new payment associated with a collection and optionally a child.
-      operationId: createPayment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentCreatePayload'
-      responses:
-        '201':
-          description: Payment created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The collection or child does not exist.
-        '500':
-          description: Server error.
-  /payments/withdraw:
-    post:
-      summary: Withdraw a payment
-      description: Withdraws an existing payment by its ID and returns the withdrawn payment details.
-      operationId: withdrawPayment
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WithdrawPaymentPayload'
-      responses:
-        '200':
-          description: Payment withdrawn successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Payment'
-        '400':
-          description: Bad request. Invalid input or validation error.
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '404':
-          description: Not found. The payment with the given ID does not exist.
-        '500':
-          description: Server error.
-  /payments/parent:
-    get:
-      summary: Get payments made by the authenticated parent
-      description: Retrieves a list of payments made by the authenticated parent.
-      operationId: getPaymentsMadeByParent
-      responses:
-        '200':
-          description: A list of payments made by the parent.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PaymentDtoMadeByParent'
-        '401':
-          description: Unauthorized. The user is not authenticated.
-        '500':
-          description: Server error.
+    /classes/passTreasurer:
+        patch:
+            summary: Pass treasurer role to another parent
+            description: Transfers the treasurer role for a class to a new parent and returns the updated class details.
+            operationId: passTreasurer
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PassTreasurerToParentPayload'
+            responses:
+                '200':
+                    description: Treasurer role passed successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ClassResponse'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user is not the current treasurer of the class.
+                '404':
+                    description: Not found. The class or new treasurer does not exist.
+                '500':
+                    description: Server error.
+
+    /classes/{classId}/parents:
+        get:
+            summary: Get parents in a specific class
+            description: Retrieves a list of parents associated with a specific class.
+            operationId: getClassParents
+            parameters:
+                - name: classId
+                  in: path
+                  required: true
+                  description: The unique ID of the class for which to retrieve the parents.
+                  schema:
+                      type: string
+                      example: '6760912e3aa833ba37bff1f1'
+            responses:
+                '200':
+                    description: Successfully retrieved the list of parents in the class.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Parent'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to view the parents in this class.
+                '404':
+                    description: Not found. The class with the given ID does not exist.
+                '500':
+                    description: Internal server error.
+
+    /collections:
+        post:
+            summary: Create a new collection
+            description: Creates a new collection associated with a specific class.
+            operationId: createCollection
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CollectionPayload'
+            responses:
+                '201':
+                    description: Collection created successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                example: 'Collection created successfully'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to create a collection for the specified class.
+                '500':
+                    description: Server error.
+        patch:
+            summary: Update a collection
+            description: Updates an existing collection associated with a specific class.
+            operationId: updateCollection
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CollectionUpdate'
+            responses:
+                '200':
+                    description: Collection updated successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                example: 'Collection updated successfully'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to update the collection.
+                '404':
+                    description: Not found. The collection with the given ID does not exist.
+                '500':
+                    description: Server error.
+        get:
+            summary: Get all collections
+            description: Retrieves all collections associated with the authenticated user, including their current amount.
+            operationId: getAllCollections
+            responses:
+                '200':
+                    description: A list of collections with their details and current amount.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/CollectionWithCurrentAmount'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+    /collections/{collectionId}:
+        get:
+            summary: Get details of a specific collection
+            description: Retrieves detailed information about a specific collection, including associated class, payments, creator, and financial details.
+            operationId: getCollectionDetails
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  description: The unique ID of the collection.
+                  schema:
+                      type: string
+                      example: '6732020bc70fc650c5345263'
+            responses:
+                '200':
+                    description: Collection details retrieved successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GetCollectionDetails'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The collection with the given ID does not exist.
+                '500':
+                    description: Server error.
+        delete:
+            summary: Close a collection
+            description: Closes a collection associated with the authenticated parent and returns the details of the closed collection.
+            operationId: closeCollection
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  description: The unique ID of the collection to close.
+                  schema:
+                      type: string
+                      example: '6732020bc70fc650c5345263'
+            responses:
+                '200':
+                    description: Collection closed successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Collection'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to close the collection.
+                '404':
+                    description: Not found. The collection with the given ID does not exist.
+                '500':
+                    description: Server error.
+    /collections/{collectionId}/logo:
+        patch:
+            summary: Upload a logo for a collection
+            description: Uploads a logo image for a specific collection and returns the URL of the uploaded image.
+            operationId: uploadCollectionLogo
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  description: The unique ID of the collection for which the logo is being uploaded.
+                  schema:
+                      type: string
+                      example: '6732020bc70fc650c5345263'
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                file:
+                                    type: string
+                                    format: binary
+                                    description: The image file to upload as the collection logo.
+            responses:
+                '200':
+                    description: Logo uploaded successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                description: The URL of the uploaded logo image.
+                                example: 'https://example.com/images/collection-logo.jpg'
+                '400':
+                    description: Bad request. Invalid file or input.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to upload a logo for the collection.
+                '404':
+                    description: Not found. The collection with the given ID does not exist.
+                '500':
+                    description: Server error.
+        get:
+            summary: Retrieve the logo of a collection
+            description: Streams the logo image of a specific collection.
+            operationId: getCollectionLogo
+            parameters:
+                - name: collectionId
+                  in: path
+                  required: true
+                  description: The unique ID of the collection whose logo is being retrieved.
+                  schema:
+                      type: string
+                      example: '6732020bc70fc650c5345263'
+            responses:
+                '200':
+                    description: The logo image of the collection.
+                    content:
+                        image/png:
+                            schema:
+                                type: string
+                                format: binary
+                                description: The logo image in PNG format.
+                        image/jpeg:
+                            schema:
+                                type: string
+                                format: binary
+                                description: The logo image in JPEG format.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to access the logo of the collection.
+                '404':
+                    description: Not found. The collection or its logo does not exist.
+                '500':
+                    description: Server error.
+    /parents/avatar:
+        patch:
+            summary: Upload a parent avatar
+            description: Uploads an avatar image for the authenticated parent and returns the URL of the uploaded image.
+            operationId: uploadParentAvatar
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                file:
+                                    type: string
+                                    format: binary
+                                    description: The image file to upload as the parent's avatar.
+            responses:
+                '200':
+                    description: Avatar uploaded successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                description: The URL of the uploaded avatar image.
+                                example: 'https://example.com/images/parent-avatar.jpg'
+                '400':
+                    description: Bad request. Invalid file or input.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+        get:
+            summary: Retrieve the avatar of the authenticated parent
+            description: Streams the avatar image of the authenticated parent.
+            operationId: getParentAvatar
+            responses:
+                '200':
+                    description: The avatar image of the authenticated parent.
+                    content:
+                        image/png:
+                            schema:
+                                type: string
+                                format: binary
+                                description: The avatar image in PNG format.
+                        image/jpeg:
+                            schema:
+                                type: string
+                                format: binary
+                                description: The avatar image in JPEG format.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The parent's avatar does not exist.
+                '500':
+                    description: Server error.
+    /parents/balance:
+        patch:
+            summary: Update parent balance
+            description: Updates the balance of the authenticated parent.
+            operationId: updateParentBalance
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                amount:
+                                    type: number
+                                    description: The amount to update the parent's balance by.
+                                    example: 100.00
+                            required:
+                                - amount
+            responses:
+                '204':
+                    description: Balance updated successfully. No content is returned.
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+    /parents/{classId}:
+        get:
+            summary: Get parents in a class
+            description: Retrieves a list of parents associated with a specific class.
+            operationId: getParentsInClass
+            parameters:
+                - name: classId
+                  in: path
+                  required: true
+                  description: The unique ID of the class.
+                  schema:
+                      type: string
+                      example: '6760912e3aa833ba37bff1f1'
+            responses:
+                '200':
+                    description: A list of parents in the specified class.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Parent'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to view the parents in this class.
+                '404':
+                    description: Not found. The class with the given ID does not exist.
+                '500':
+                    description: Server error.
+    /payments:
+        get:
+            summary: Get all payments
+            description: Retrieves a list of all payments associated with the authenticated parent.
+            operationId: getAllPayments
+            responses:
+                '200':
+                    description: A list of payments associated with the authenticated parent.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PaymentDto'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
+        post:
+            summary: Create a payment
+            description: Creates a new payment associated with a collection and optionally a child.
+            operationId: createPayment
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/PaymentCreatePayload'
+            responses:
+                '201':
+                    description: Payment created successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Payment'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The collection or child does not exist.
+                '500':
+                    description: Server error.
+    /payments/withdraw:
+        post:
+            summary: Withdraw a payment
+            description: Withdraws an existing payment by its ID and returns the withdrawn payment details.
+            operationId: withdrawPayment
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/WithdrawPaymentPayload'
+            responses:
+                '200':
+                    description: Payment withdrawn successfully.
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Payment'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '404':
+                    description: Not found. The payment with the given ID does not exist.
+                '500':
+                    description: Server error.
+    /payments/parent:
+        get:
+            summary: Get payments made by the authenticated parent
+            description: Retrieves a list of payments made by the authenticated parent.
+            operationId: getPaymentsMadeByParent
+            responses:
+                '200':
+                    description: A list of payments made by the parent.
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/PaymentDtoMadeByParent'
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '500':
+                    description: Server error.
 
 components:
-  schemas:
-    GetParentsDto:
-      type: object
-      properties:
-        firstName:
-          type: string
-          description: The first name of the parent.
-          minLength: 2
-          maxLength: 30
-        lastName:
-          type: string
-          description: The last name of the parent.
-          minLength: 2
-          maxLength: 30
-        password:
-          type: string
-          description: The parent's password.
-          minLength: 8
-          maxLength: 30
-        email:
-          type: string
-          description: The parent's email.
-          format: email
-          minLength: 5
-          maxLength: 50
-        avatar:
-          type: string
-          nullable: true
-          description: The parent's avatar URL or null if not set.
-        bankAccount:
-          type: string
-          description: The ObjectId reference to the parent's bank account.
-        isBlocked:
-          type: boolean
-          description: Indicates if the parent is blocked.
-        createdAt:
-          type: string
-          format: date-time
-          description: The date when the parent was created.
-        isTreasurer:
-          type: boolean
-          description: Indicates if the parent is a treasurer.
-      required:
-        - firstName
-        - lastName
-        - password
-        - email
-        - bankAccount
-        - isBlocked
-        - createdAt
-        - isTreasurer
-    Class:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the child.
-          example: "6760912e3aa833ba37bff1f1"
-        name:
-          type: string
-          description: The name of the class.
-          minLength: 2
-          maxLength: 30
-        treasurer:
-          type: string
-          description: The ObjectId reference to the treasurer (parent).
-        createdAt:
-          type: string
-          format: date-time
-          description: The date when the class was created.
-      required:
-        - name
-        - treasurer
-        - createdAt
-    ParentRegister:
-      type: object
-      properties:
-        firstName:
-          type: string
-          description: The first name of the parent.
-        lastName:
-          type: string
-          description: The last name of the parent.
-        email:
-          type: string
-          description: The email address of the parent.
-          format: email
-        password:
-          type: string
-          description: The password for the parent.
-        repeatPassword:
-          type: string
-          description: The repeated password for validation.
-      required:
-        - firstName
-        - lastName
-        - email
-        - password
-        - repeatPassword
-    ParentLogin:
-      type: object
-      properties:
-        email:
-          type: string
-          description: The email address of the parent.
-          format: email
-        password:
-          type: string
-          description: The password for the parent.
-      required:
-        - email
-        - password
-    ChildCreateDetails:
-      type: object
-      properties:
-        inviteCode:
-          type: string
-          description: The invitation code for the child.
-        firstName:
-          type: string
-          description: The first name of the child.
-        lastName:
-          type: string
-          description: The last name of the child.
-        birthDate:
-          type: integer
-          description: The birth date of the child as a UNIX timestamp (optional).
-          format: int64
-      required:
-        - inviteCode
-        - firstName
-        - lastName
-
-    ChildResponse:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the child.
-          example: "6760912e3aa833ba37bff1f1"
-        parent:
-          type: string
-          description: The ID of the parent associated with the child.
-          example: "675ef643801ef10491d529a2"
-        class:
-          type: string
-          description: The ID of the class associated with the child.
-          example: "6732020bc70fc650c5345263"
-        firstName:
-          type: string
-          description: The first name of the child.
-          example: "Tomek"
-        lastName:
-          type: string
-          description: The last name of the child.
-          example: "Tomowiak"
-        birthDate:
-          type: string
-          format: date-time
-          description: The birth date of the child.
-          example: "2018-01-01T00:00:00.000Z"
-        avatar:
-          type: string
-          nullable: true
-          description: The avatar of the child, if available.
-          example: null
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time the child was created.
-          example: "2024-12-16T20:44:13.764Z"
-        classCode:
-          type: string
-          description: The class invite code (id) associated with the child.
-          example: "6760912e3aa833ba37bff1f1"
-        className:
-          type: string
-          description: The name of the class associated with the child.
-          example: "Math 101"
-
-    ChildUpdateDetails:
-      type: object
-      properties:
-        childId:
-          type: string
-          description: The unique ID of the child to update.
-          example: "6760912e3aa833ba37bff1f1"
-        classId:
-          type: string
-          description: The ID of the class associated with the child.
-          example: "6732020bc70fc650c5345263"
-        firstName:
-          type: string
-          nullable: true
-          description: The updated first name of the child.
-          example: "Tomek"
-        lastName:
-          type: string
-          nullable: true
-          description: The updated last name of the child.
-          example: "Tomowiak"
-        birthDate:
-          type: integer
-          nullable: true
-          description: The updated birth date of the child as a UNIX timestamp.
-          format: int64
-          example: 1514764800
-      required:
-        - childId
-        - classId
-    ClassDetails:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The name of the class.
-          minLength: 2
-          maxLength: 30
-          example: "Math 101"
-      required:
-        - name
-
-    ClassResponse:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the class.
-          example: "6760912e3aa833ba37bff1f1"
-        name:
-          type: string
-          description: The name of the class.
-          example: "Math 101"
-        treasurer:
-          type: string
-          description: The ID of the parent assigned as the treasurer.
-          example: "675ef643801ef10491d529a2"
-        createdAt:
-          type: string
-          format: date-time
-          description: The timestamp when the class was created.
-          example: "2024-12-16T20:44:13.764Z"
-    ClassResponseWithDetails:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the class.
-          example: "6760912e3aa833ba37bff1f1"
-        name:
-          type: string
-          description: The name of the class.
-          example: "Math 101"
-        treasurer:
-          type: string
-          description: The ID of the parent assigned as the treasurer.
-          example: "675ef643801ef10491d529a2"
-        createdAt:
-          type: string
-          format: date-time
-          description: The timestamp when the class was created.
-          example: "2024-12-16T20:44:13.764Z"
-        childrenAmount:
-          type: integer
-          description: The number of children in the class.
-          example: 25
-        isTreasurer:
-          type: boolean
-          description: Indicates whether the authenticated parent is the treasurer of the class.
-          example: true
-    GetClassInviteCodePayload:
-      type: object
-      properties:
-        classId:
-          type: string
-          description: The ID of the class for which the invite code is being requested.
-          example: "6760912e3aa833ba37bff1f1"
-      required:
-        - classId
-    GetClassDetailsPayload:
-      type: object
-      properties:
-        classId:
-          type: string
-          description: The ID of the class for which details are being requested.
-          example: "6760912e3aa833ba37bff1f1"
-      required:
-        - classId
-
-    ClassDetailsResponse:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the class.
-          example: "6760912e3aa833ba37bff1f1"
-        className:
-          type: string
-          description: The name of the class.
-          example: "Math 101"
-        children:
-          type: array
-          description: A list of children in the class.
-          items:
+    schemas:
+        GetParentsDto:
             type: object
             properties:
-              _id:
-                type: string
-                description: The unique identifier of the child.
-                example: "6760912e3aa833ba37bff1f1"
-              firstName:
-                type: string
-                description: The first name of the child.
-                example: "Jane"
-              lastName:
-                type: string
-                description: The last name of the child.
-                example: "Doe"
-              avatar:
-                type: string
-                nullable: true
-                description: The avatar of the child, if available.
-                example: null
-        treasurer:
-          type: object
-          description: Details of the class treasurer.
-          properties:
-            _id:
-              type: string
-              description: The unique identifier of the treasurer.
-              example: "675ef643801ef10491d529a2"
-            firstName:
-              type: string
-              description: The first name of the treasurer.
-              example: "John"
-            lastName:
-              type: string
-              description: The last name of the treasurer.
-              example: "Doe"
-            avatar:
-              type: string
-              nullable: true
-              description: The avatar of the treasurer, if available.
-              example: null
-        collections:
-          type: array
-          description: A list of collections associated with the class.
-          items:
+                firstName:
+                    type: string
+                    description: The first name of the parent.
+                    minLength: 2
+                    maxLength: 30
+                lastName:
+                    type: string
+                    description: The last name of the parent.
+                    minLength: 2
+                    maxLength: 30
+                password:
+                    type: string
+                    description: The parent's password.
+                    minLength: 8
+                    maxLength: 30
+                email:
+                    type: string
+                    description: The parent's email.
+                    format: email
+                    minLength: 5
+                    maxLength: 50
+                avatar:
+                    type: string
+                    nullable: true
+                    description: The parent's avatar URL or null if not set.
+                bankAccount:
+                    type: string
+                    description: The ObjectId reference to the parent's bank account.
+                isBlocked:
+                    type: boolean
+                    description: Indicates if the parent is blocked.
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date when the parent was created.
+                isTreasurer:
+                    type: boolean
+                    description: Indicates if the parent is a treasurer.
+            required:
+                - firstName
+                - lastName
+                - password
+                - email
+                - bankAccount
+                - isBlocked
+                - createdAt
+                - isTreasurer
+        Class:
             type: object
             properties:
-              _id:
-                type: string
-                description: The unique identifier of the collection.
-                example: "6732020bc70fc650c5345263"
-              title:
-                type: string
-                description: The title of the collection.
-                example: "Fundraiser 2024"
-              description:
-                type: string
-                description: A brief description of the collection.
-                example: "Raising funds for the school trip."
-              logo:
-                type: string
-                nullable: true
-                description: The logo of the collection, if available.
-                example: null
-              startDate:
-                type: string
-                format: date-time
-                description: The start date of the collection.
-                example: "2024-01-01T00:00:00.000Z"
-              endDate:
-                type: string
-                format: date-time
-                description: The end date of the collection.
-                example: "2024-12-31T23:59:59.000Z"
-              targetAmount:
-                type: number
-                format: float
-                description: The target amount for the collection.
-                example: 5000.00
-        isTreasurer:
-          type: boolean
-          description: Indicates whether the authenticated user is the treasurer of the class.
-          example: true
-    PassTreasurerToParentPayload:
-      type: object
-      properties:
-        newTreasurerId:
-          type: string
-          description: The ID of the new treasurer.
-          example: "675ef643801ef10491d529a2"
-        classId:
-          type: string
-          description: The ID of the class for which the treasurer role is being transferred.
-          example: "6760912e3aa833ba37bff1f1"
-      required:
-        - newTreasurerId
-        - classId
-    CollectionPayload:
-      type: object
-      properties:
-        title:
-          type: string
-          description: The title of the collection.
-          example: "School Fundraiser"
-        description:
-          type: string
-          description: A brief description of the collection.
-          example: "Raising funds for the school trip."
-        logo:
-          type: string
-          description: The URL of the logo associated with the collection.
-          example: "https://example.com/logo.png"
-        startDate:
-          type: integer
-          format: int64
-          description: The start date of the collection as a Unix timestamp in milliseconds.
-          example: 1700000000000
-        endDate:
-          type: integer
-          format: int64
-          description: The end date of the collection as a Unix timestamp in milliseconds.
-          example: 1705000000000
-        targetAmount:
-          type: number
-          format: float
-          description: The target amount for the collection.
-          example: 5000.00
-        classId:
-          type: string
-          description: The ID of the class associated with the collection.
-          example: "6760912e3aa833ba37bff1f1"
-      required:
-        - title
-        - description
-        - logo
-        - startDate
-        - endDate
-        - targetAmount
-        - classId
-    CollectionUpdate:
-      allOf:
-        - $ref: '#/components/schemas/CollectionPayload'
-        - type: object
-          properties:
-            collectionId:
-              type: string
-              description: The unique ID of the collection to update.
-              example: "6732020bc70fc650c5345263"
-          required:
-            - collectionId
-    CollectionWithCurrentAmount:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the collection.
-          example: "6732020bc70fc650c5345263"
-        class:
-          $ref: '#/components/schemas/Class'
-        creator:
-          type: string
-          description: The ID of the parent who created the collection.
-          example: "675ef643801ef10491d529a2"
-        title:
-          type: string
-          description: The title of the collection.
-          example: "School Fundraiser"
-        description:
-          type: string
-          description: A brief description of the collection.
-          example: "Raising funds for the school trip."
-        logo:
-          type: string
-          nullable: true
-          description: The URL of the logo associated with the collection.
-          example: "https://example.com/logo.png"
-        bankAccount:
-          type: string
-          description: The ID of the bank account associated with the collection.
-          example: "6782040bc70fc650c5345264"
-        startDate:
-          type: string
-          format: date-time
-          description: The start date of the collection.
-          example: "2024-01-01T00:00:00.000Z"
-        endDate:
-          type: string
-          format: date-time
-          description: The end date of the collection.
-          example: "2024-12-31T23:59:59.000Z"
-        targetAmount:
-          type: number
-          format: float
-          description: The target amount for the collection.
-          example: 5000.00
-        currentAmount:
-          type: number
-          format: float
-          description: The current amount available in the associated bank account.
-          example: 2000.00
-        isBlocked:
-          type: boolean
-          description: Indicates whether the collection is blocked.
-          example: false
+                _id:
+                    type: string
+                    description: The unique identifier of the child.
+                    example: '6760912e3aa833ba37bff1f1'
+                name:
+                    type: string
+                    description: The name of the class.
+                    minLength: 2
+                    maxLength: 30
+                treasurer:
+                    type: string
+                    description: The ObjectId reference to the treasurer (parent).
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date when the class was created.
+            required:
+                - name
+                - treasurer
+                - createdAt
+        ParentRegister:
+            type: object
+            properties:
+                firstName:
+                    type: string
+                    description: The first name of the parent.
+                lastName:
+                    type: string
+                    description: The last name of the parent.
+                email:
+                    type: string
+                    description: The email address of the parent.
+                    format: email
+                password:
+                    type: string
+                    description: The password for the parent.
+                repeatPassword:
+                    type: string
+                    description: The repeated password for validation.
+            required:
+                - firstName
+                - lastName
+                - email
+                - password
+                - repeatPassword
+        ParentLogin:
+            type: object
+            properties:
+                email:
+                    type: string
+                    description: The email address of the parent.
+                    format: email
+                password:
+                    type: string
+                    description: The password for the parent.
+            required:
+                - email
+                - password
+        ChildCreateDetails:
+            type: object
+            properties:
+                inviteCode:
+                    type: string
+                    description: The invitation code for the child.
+                firstName:
+                    type: string
+                    description: The first name of the child.
+                lastName:
+                    type: string
+                    description: The last name of the child.
+                birthDate:
+                    type: integer
+                    description: The birth date of the child as a UNIX timestamp (optional).
+                    format: int64
+            required:
+                - inviteCode
+                - firstName
+                - lastName
 
-    Payment:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique ID of the payment.
-          example: "6749020bc70fc650c5345289"
-        collection:
-          type: string
-          description: The ID of the collection this payment belongs to.
-          example: "6732020bc70fc650c5345263"
-        parent:
-          type: string
-          description: The ID of the parent who made the payment.
-          example: "675ef643801ef10491d529a2"
-        child:
-          type: string
-          nullable: true
-          description: The ID of the child associated with the payment, if applicable.
-          example: null
-        amount:
-          type: number
-          format: float
-          description: The amount of the payment.
-          example: 100.00
-        description:
-          type: string
-          description: A description of the payment.
-          example: "Payment for school trip"
-        createdAt:
-          type: string
-          format: date-time
-          description: The date of the payment.
-          example: "2024-12-01T10:00:00.000Z"
+        ChildResponse:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the child.
+                    example: '6760912e3aa833ba37bff1f1'
+                parent:
+                    type: string
+                    description: The ID of the parent associated with the child.
+                    example: '675ef643801ef10491d529a2'
+                class:
+                    type: string
+                    description: The ID of the class associated with the child.
+                    example: '6732020bc70fc650c5345263'
+                firstName:
+                    type: string
+                    description: The first name of the child.
+                    example: 'Tomek'
+                lastName:
+                    type: string
+                    description: The last name of the child.
+                    example: 'Tomowiak'
+                birthDate:
+                    type: string
+                    format: date-time
+                    description: The birth date of the child.
+                    example: '2018-01-01T00:00:00.000Z'
+                avatar:
+                    type: string
+                    nullable: true
+                    description: The avatar of the child, if available.
+                    example: null
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date and time the child was created.
+                    example: '2024-12-16T20:44:13.764Z'
+                classCode:
+                    type: string
+                    description: The class invite code (id) associated with the child.
+                    example: '6760912e3aa833ba37bff1f1'
+                className:
+                    type: string
+                    description: The name of the class associated with the child.
+                    example: 'Math 101'
 
-    PaymentInCollectionDetails:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique ID of the payment.
-          example: "6749020bc70fc650c5345289"
-        collection:
-          type: string
-          description: The ID of the collection this payment belongs to.
-          example: "6732020bc70fc650c5345263"
-        parent:
-          $ref: '#/components/schemas/Parent'
-        child:
-          $ref: '#/components/schemas/Child'
-          nullable: true
-        amount:
-          type: number
-          format: float
-          description: The amount of the payment.
-          example: 100.00
-        description:
-          type: string
-          description: A description of the payment.
-          example: "Payment for school trip"
-        createdAt:
-          type: string
-          format: date-time
-          description: The date of the payment.
-          example: "2024-12-01T10:00:00.000Z"
-        withdrawable:
-          type: boolean
-          description: Indicates whether the payment can be withdrawn.
-          example: true
+        ChildUpdateDetails:
+            type: object
+            properties:
+                childId:
+                    type: string
+                    description: The unique ID of the child to update.
+                    example: '6760912e3aa833ba37bff1f1'
+                classId:
+                    type: string
+                    description: The ID of the class associated with the child.
+                    example: '6732020bc70fc650c5345263'
+                firstName:
+                    type: string
+                    nullable: true
+                    description: The updated first name of the child.
+                    example: 'Tomek'
+                lastName:
+                    type: string
+                    nullable: true
+                    description: The updated last name of the child.
+                    example: 'Tomowiak'
+                birthDate:
+                    type: integer
+                    nullable: true
+                    description: The updated birth date of the child as a UNIX timestamp.
+                    format: int64
+                    example: 1514764800
+            required:
+                - childId
+                - classId
+        ClassDetails:
+            type: object
+            properties:
+                name:
+                    type: string
+                    description: The name of the class.
+                    minLength: 2
+                    maxLength: 30
+                    example: 'Math 101'
+            required:
+                - name
 
-    Parent:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique ID of the parent.
-          example: "675ef643801ef10491d529a2"
-        firstName:
-          type: string
-          description: The first name of the parent.
-          example: "John"
-        lastName:
-          type: string
-          description: The last name of the parent.
-          example: "Doe"
-        email:
-          type: string
-          description: The email of the parent.
-          example: "john.doe@example.com"
-        avatar:
-          type: string
-          nullable: true
-          description: The URL of the parent's avatar, if available.
-          example: null
-        createdAt:
-          type: string
-          format: date-time
-          description: The date the parent was created.
-          example: "2024-12-16T20:44:13.764Z"
+        ClassResponse:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the class.
+                    example: '6760912e3aa833ba37bff1f1'
+                name:
+                    type: string
+                    description: The name of the class.
+                    example: 'Math 101'
+                treasurer:
+                    type: string
+                    description: The ID of the parent assigned as the treasurer.
+                    example: '675ef643801ef10491d529a2'
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The timestamp when the class was created.
+                    example: '2024-12-16T20:44:13.764Z'
+        ClassResponseWithDetails:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the class.
+                    example: '6760912e3aa833ba37bff1f1'
+                name:
+                    type: string
+                    description: The name of the class.
+                    example: 'Math 101'
+                treasurer:
+                    type: string
+                    description: The ID of the parent assigned as the treasurer.
+                    example: '675ef643801ef10491d529a2'
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The timestamp when the class was created.
+                    example: '2024-12-16T20:44:13.764Z'
+                childrenAmount:
+                    type: integer
+                    description: The number of children in the class.
+                    example: 25
+                isTreasurer:
+                    type: boolean
+                    description: Indicates whether the authenticated parent is the treasurer of the class.
+                    example: true
+        GetClassInviteCodePayload:
+            type: object
+            properties:
+                classId:
+                    type: string
+                    description: The ID of the class for which the invite code is being requested.
+                    example: '6760912e3aa833ba37bff1f1'
+            required:
+                - classId
+        GetClassDetailsPayload:
+            type: object
+            properties:
+                classId:
+                    type: string
+                    description: The ID of the class for which details are being requested.
+                    example: '6760912e3aa833ba37bff1f1'
+            required:
+                - classId
 
-    Collection:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the collection.
-          example: "6732020bc70fc650c5345263"
-        class:
-          type: string
-          description: The ID of the class associated with the collection.
-          example: "6760912e3aa833ba37bff1f1"
-        creator:
-          type: string
-          description: The ID of the parent who created the collection.
-          example: "675ef643801ef10491d529a2"
-        title:
-          type: string
-          description: The title of the collection.
-          example: "School Fundraiser"
-        description:
-          type: string
-          description: A brief description of the collection.
-          example: "Raising funds for the school trip."
-        logo:
-          type: string
-          nullable: true
-          description: The URL of the logo associated with the collection.
-          example: "https://example.com/logo.png"
-        startDate:
-          type: string
-          format: date-time
-          description: The start date of the collection.
-          example: "2024-01-01T00:00:00.000Z"
-        endDate:
-          type: string
-          format: date-time
-          description: The end date of the collection.
-          example: "2024-12-31T23:59:59.000Z"
-        targetAmount:
-          type: number
-          format: float
-          description: The target amount for the collection.
-          example: 5000.00
-        isBlocked:
-          type: boolean
-          description: Indicates whether the collection is blocked.
-          example: false
+        ClassDetailsResponse:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the class.
+                    example: '6760912e3aa833ba37bff1f1'
+                className:
+                    type: string
+                    description: The name of the class.
+                    example: 'Math 101'
+                children:
+                    type: array
+                    description: A list of children in the class.
+                    items:
+                        type: object
+                        properties:
+                            _id:
+                                type: string
+                                description: The unique identifier of the child.
+                                example: '6760912e3aa833ba37bff1f1'
+                            firstName:
+                                type: string
+                                description: The first name of the child.
+                                example: 'Jane'
+                            lastName:
+                                type: string
+                                description: The last name of the child.
+                                example: 'Doe'
+                            avatar:
+                                type: string
+                                nullable: true
+                                description: The avatar of the child, if available.
+                                example: null
+                treasurer:
+                    type: object
+                    description: Details of the class treasurer.
+                    properties:
+                        _id:
+                            type: string
+                            description: The unique identifier of the treasurer.
+                            example: '675ef643801ef10491d529a2'
+                        firstName:
+                            type: string
+                            description: The first name of the treasurer.
+                            example: 'John'
+                        lastName:
+                            type: string
+                            description: The last name of the treasurer.
+                            example: 'Doe'
+                        avatar:
+                            type: string
+                            nullable: true
+                            description: The avatar of the treasurer, if available.
+                            example: null
+                collections:
+                    type: array
+                    description: A list of collections associated with the class.
+                    items:
+                        type: object
+                        properties:
+                            _id:
+                                type: string
+                                description: The unique identifier of the collection.
+                                example: '6732020bc70fc650c5345263'
+                            title:
+                                type: string
+                                description: The title of the collection.
+                                example: 'Fundraiser 2024'
+                            description:
+                                type: string
+                                description: A brief description of the collection.
+                                example: 'Raising funds for the school trip.'
+                            logo:
+                                type: string
+                                nullable: true
+                                description: The logo of the collection, if available.
+                                example: null
+                            startDate:
+                                type: string
+                                format: date-time
+                                description: The start date of the collection.
+                                example: '2024-01-01T00:00:00.000Z'
+                            endDate:
+                                type: string
+                                format: date-time
+                                description: The end date of the collection.
+                                example: '2024-12-31T23:59:59.000Z'
+                            targetAmount:
+                                type: number
+                                format: float
+                                description: The target amount for the collection.
+                                example: 5000.00
+                isTreasurer:
+                    type: boolean
+                    description: Indicates whether the authenticated user is the treasurer of the class.
+                    example: true
+        PassTreasurerToParentPayload:
+            type: object
+            properties:
+                newTreasurerId:
+                    type: string
+                    description: The ID of the new treasurer.
+                    example: '675ef643801ef10491d529a2'
+                classId:
+                    type: string
+                    description: The ID of the class for which the treasurer role is being transferred.
+                    example: '6760912e3aa833ba37bff1f1'
+            required:
+                - newTreasurerId
+                - classId
+        CollectionPayload:
+            type: object
+            properties:
+                title:
+                    type: string
+                    description: The title of the collection.
+                    example: 'School Fundraiser'
+                description:
+                    type: string
+                    description: A brief description of the collection.
+                    example: 'Raising funds for the school trip.'
+                logo:
+                    type: string
+                    description: The URL of the logo associated with the collection.
+                    example: 'https://example.com/logo.png'
+                startDate:
+                    type: integer
+                    format: int64
+                    description: The start date of the collection as a Unix timestamp in milliseconds.
+                    example: 1700000000000
+                endDate:
+                    type: integer
+                    format: int64
+                    description: The end date of the collection as a Unix timestamp in milliseconds.
+                    example: 1705000000000
+                targetAmount:
+                    type: number
+                    format: float
+                    description: The target amount for the collection.
+                    example: 5000.00
+                classId:
+                    type: string
+                    description: The ID of the class associated with the collection.
+                    example: '6760912e3aa833ba37bff1f1'
+            required:
+                - title
+                - description
+                - logo
+                - startDate
+                - endDate
+                - targetAmount
+                - classId
+        CollectionUpdate:
+            allOf:
+                - $ref: '#/components/schemas/CollectionPayload'
+                - type: object
+                  properties:
+                      collectionId:
+                          type: string
+                          description: The unique ID of the collection to update.
+                          example: '6732020bc70fc650c5345263'
+                  required:
+                      - collectionId
+        CollectionWithCurrentAmount:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the collection.
+                    example: '6732020bc70fc650c5345263'
+                class:
+                    $ref: '#/components/schemas/Class'
+                creator:
+                    type: string
+                    description: The ID of the parent who created the collection.
+                    example: '675ef643801ef10491d529a2'
+                title:
+                    type: string
+                    description: The title of the collection.
+                    example: 'School Fundraiser'
+                description:
+                    type: string
+                    description: A brief description of the collection.
+                    example: 'Raising funds for the school trip.'
+                logo:
+                    type: string
+                    nullable: true
+                    description: The URL of the logo associated with the collection.
+                    example: 'https://example.com/logo.png'
+                bankAccount:
+                    type: string
+                    description: The ID of the bank account associated with the collection.
+                    example: '6782040bc70fc650c5345264'
+                startDate:
+                    type: string
+                    format: date-time
+                    description: The start date of the collection.
+                    example: '2024-01-01T00:00:00.000Z'
+                endDate:
+                    type: string
+                    format: date-time
+                    description: The end date of the collection.
+                    example: '2024-12-31T23:59:59.000Z'
+                targetAmount:
+                    type: number
+                    format: float
+                    description: The target amount for the collection.
+                    example: 5000.00
+                currentAmount:
+                    type: number
+                    format: float
+                    description: The current amount available in the associated bank account.
+                    example: 2000.00
+                isBlocked:
+                    type: boolean
+                    description: Indicates whether the collection is blocked.
+                    example: false
 
-    PaymentDto:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique ID of the payment.
-          example: "6749020bc70fc650c5345289"
-        collection:
-          $ref: '#/components/schemas/Collection'
-        parent:
-          $ref: '#/components/schemas/Parent'
-        child:
-          $ref: '#/components/schemas/Child'
-        amount:
-          type: number
-          format: float
-          description: The amount of the payment.
-          example: 100.00
-        description:
-          type: string
-          description: A description of the payment.
-          example: "Payment for school trip"
-        createdAt:
-          type: string
-          format: date-time
-          description: The date the payment was made.
-          example: "2024-12-01T10:00:00.000Z"
+        Payment:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique ID of the payment.
+                    example: '6749020bc70fc650c5345289'
+                collection:
+                    type: string
+                    description: The ID of the collection this payment belongs to.
+                    example: '6732020bc70fc650c5345263'
+                parent:
+                    type: string
+                    description: The ID of the parent who made the payment.
+                    example: '675ef643801ef10491d529a2'
+                child:
+                    type: string
+                    nullable: true
+                    description: The ID of the child associated with the payment, if applicable.
+                    example: null
+                amount:
+                    type: number
+                    format: float
+                    description: The amount of the payment.
+                    example: 100.00
+                description:
+                    type: string
+                    description: A description of the payment.
+                    example: 'Payment for school trip'
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date of the payment.
+                    example: '2024-12-01T10:00:00.000Z'
 
-    Child:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the child.
-          example: "6782020bc70fc650c5345276"
-        parent:
-          type: string
-          description: The ID of the parent associated with the child.
-          example: "675ef643801ef10491d529a2"
-        class:
-          type: string
-          description: The ID of the class associated with the child.
-          example: "6760912e3aa833ba37bff1f1"
-        firstName:
-          type: string
-          description: The first name of the child.
-          example: "Jane"
-        lastName:
-          type: string
-          description: The last name of the child.
-          example: "Doe"
-        birthDate:
-          type: string
-          format: date-time
-          description: The birth date of the child.
-          example: "2015-04-12T00:00:00.000Z"
-        avatar:
-          type: string
-          nullable: true
-          description: The URL of the avatar for the child, if available.
-          example: null
-        createdAt:
-          type: string
-          format: date-time
-          description: The date and time when the child was created.
-          example: "2024-12-16T20:44:13.764Z"
-          
-    GetCollectionDetails:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the collection.
-          example: "6732020bc70fc650c5345263"
-        class:
-          $ref: '#/components/schemas/Class'
-        payments:
-          type: array
-          description: A list of payments associated with the collection.
-          items:
-            $ref: '#/components/schemas/PaymentInCollectionDetails'
-        creator:
-          $ref: '#/components/schemas/Parent'
-        title:
-          type: string
-          description: The title of the collection.
-          example: "School Fundraiser"
-        description:
-          type: string
-          description: A brief description of the collection.
-          example: "Raising funds for the school trip."
-        logo:
-          type: string
-          nullable: true
-          description: The URL of the logo associated with the collection.
-          example: "https://example.com/logo.png"
-        startDate:
-          type: string
-          format: date-time
-          description: The start date of the collection.
-          example: "2024-01-01T00:00:00.000Z"
-        endDate:
-          type: string
-          format: date-time
-          description: The end date of the collection.
-          example: "2024-12-31T23:59:59.000Z"
-        targetAmount:
-          type: number
-          format: float
-          description: The target amount for the collection.
-          example: 5000.00
-        currentAmount:
-          type: number
-          format: float
-          description: The current amount available in the associated bank account.
-          example: 2000.00
-        isBlocked:
-          type: boolean
-          description: Indicates whether the collection is blocked.
-          example: false
-        children:
-          type: array
-          description: A list of children associated with the collection.
-          items:
-            $ref: '#/components/schemas/Child'
+        PaymentInCollectionDetails:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique ID of the payment.
+                    example: '6749020bc70fc650c5345289'
+                collection:
+                    type: string
+                    description: The ID of the collection this payment belongs to.
+                    example: '6732020bc70fc650c5345263'
+                parent:
+                    $ref: '#/components/schemas/Parent'
+                child:
+                    $ref: '#/components/schemas/Child'
+                    nullable: true
+                amount:
+                    type: number
+                    format: float
+                    description: The amount of the payment.
+                    example: 100.00
+                description:
+                    type: string
+                    description: A description of the payment.
+                    example: 'Payment for school trip'
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date of the payment.
+                    example: '2024-12-01T10:00:00.000Z'
+                withdrawable:
+                    type: boolean
+                    description: Indicates whether the payment can be withdrawn.
+                    example: true
 
-    PaymentCreatePayload:
-      type: object
-      properties:
-        collectionId:
-          type: string
-          description: The ID of the collection for which the payment is being made.
-          example: "6732020bc70fc650c5345263"
-        childId:
-          type: string
-          nullable: true
-          description: The ID of the child associated with the payment, if applicable.
-          example: "6782020bc70fc650c5345276"
-        amount:
-          type: number
-          format: float
-          description: The amount of the payment.
-          example: 100.00
-      required:
-        - collectionId
-        - amount
-    WithdrawPaymentPayload:
-      type: object
-      properties:
-        paymentId:
-          type: string
-          description: The unique ID of the payment to withdraw.
-          example: "6749020bc70fc650c5345289"
-      required:
-        - paymentId
-    PaymentDtoMadeByParent:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique ID of the payment.
-          example: "6749020bc70fc650c5345289"
-        collection:
-          $ref: '#/components/schemas/Collection'
-        child:
-          $ref: '#/components/schemas/Child'
-        amount:
-          type: number
-          format: float
-          description: The amount of the payment.
-          example: 100.00
-        description:
-          type: string
-          description: A description of the payment.
-          example: "Payment for school trip"
-        createdAt:
-          type: string
-          format: date-time
-          description: The date the payment was made.
-          example: "2024-12-01T10:00:00.000Z"
-    BankAccount:
-      type: object
-      properties:
-        _id:
-          type: string
-          description: The unique identifier of the bank account.
-          example: "6749020bc70fc650c5345289"
-        accountNumber:
-          type: string
-          description: The 16-digit account number of the bank account.
-          example: "1234567812345678"
-        balance:
-          type: number
-          format: float
-          description: The current balance of the bank account.
-          example: 1500.75
-        owner:
-          type: string
-          description: The unique identifier of the owner associated with the bank account.
-          example: "675ef643801ef10491d529a2"
-      required:
-        - _id
-        - accountNumber
-        - balance
-        - owner
+        Parent:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique ID of the parent.
+                    example: '675ef643801ef10491d529a2'
+                firstName:
+                    type: string
+                    description: The first name of the parent.
+                    example: 'John'
+                lastName:
+                    type: string
+                    description: The last name of the parent.
+                    example: 'Doe'
+                email:
+                    type: string
+                    description: The email of the parent.
+                    example: 'john.doe@example.com'
+                avatar:
+                    type: string
+                    nullable: true
+                    description: The URL of the parent's avatar, if available.
+                    example: null
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date the parent was created.
+                    example: '2024-12-16T20:44:13.764Z'
+
+        Collection:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the collection.
+                    example: '6732020bc70fc650c5345263'
+                class:
+                    type: string
+                    description: The ID of the class associated with the collection.
+                    example: '6760912e3aa833ba37bff1f1'
+                creator:
+                    type: string
+                    description: The ID of the parent who created the collection.
+                    example: '675ef643801ef10491d529a2'
+                title:
+                    type: string
+                    description: The title of the collection.
+                    example: 'School Fundraiser'
+                description:
+                    type: string
+                    description: A brief description of the collection.
+                    example: 'Raising funds for the school trip.'
+                logo:
+                    type: string
+                    nullable: true
+                    description: The URL of the logo associated with the collection.
+                    example: 'https://example.com/logo.png'
+                startDate:
+                    type: string
+                    format: date-time
+                    description: The start date of the collection.
+                    example: '2024-01-01T00:00:00.000Z'
+                endDate:
+                    type: string
+                    format: date-time
+                    description: The end date of the collection.
+                    example: '2024-12-31T23:59:59.000Z'
+                targetAmount:
+                    type: number
+                    format: float
+                    description: The target amount for the collection.
+                    example: 5000.00
+                isBlocked:
+                    type: boolean
+                    description: Indicates whether the collection is blocked.
+                    example: false
+
+        PaymentDto:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique ID of the payment.
+                    example: '6749020bc70fc650c5345289'
+                collection:
+                    $ref: '#/components/schemas/Collection'
+                parent:
+                    $ref: '#/components/schemas/Parent'
+                child:
+                    $ref: '#/components/schemas/Child'
+                amount:
+                    type: number
+                    format: float
+                    description: The amount of the payment.
+                    example: 100.00
+                description:
+                    type: string
+                    description: A description of the payment.
+                    example: 'Payment for school trip'
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date the payment was made.
+                    example: '2024-12-01T10:00:00.000Z'
+
+        Child:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the child.
+                    example: '6782020bc70fc650c5345276'
+                parent:
+                    type: string
+                    description: The ID of the parent associated with the child.
+                    example: '675ef643801ef10491d529a2'
+                class:
+                    type: string
+                    description: The ID of the class associated with the child.
+                    example: '6760912e3aa833ba37bff1f1'
+                firstName:
+                    type: string
+                    description: The first name of the child.
+                    example: 'Jane'
+                lastName:
+                    type: string
+                    description: The last name of the child.
+                    example: 'Doe'
+                birthDate:
+                    type: string
+                    format: date-time
+                    description: The birth date of the child.
+                    example: '2015-04-12T00:00:00.000Z'
+                avatar:
+                    type: string
+                    nullable: true
+                    description: The URL of the avatar for the child, if available.
+                    example: null
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date and time when the child was created.
+                    example: '2024-12-16T20:44:13.764Z'
+
+        GetCollectionDetails:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the collection.
+                    example: '6732020bc70fc650c5345263'
+                class:
+                    $ref: '#/components/schemas/Class'
+                payments:
+                    type: array
+                    description: A list of payments associated with the collection.
+                    items:
+                        $ref: '#/components/schemas/PaymentInCollectionDetails'
+                creator:
+                    $ref: '#/components/schemas/Parent'
+                title:
+                    type: string
+                    description: The title of the collection.
+                    example: 'School Fundraiser'
+                description:
+                    type: string
+                    description: A brief description of the collection.
+                    example: 'Raising funds for the school trip.'
+                logo:
+                    type: string
+                    nullable: true
+                    description: The URL of the logo associated with the collection.
+                    example: 'https://example.com/logo.png'
+                startDate:
+                    type: string
+                    format: date-time
+                    description: The start date of the collection.
+                    example: '2024-01-01T00:00:00.000Z'
+                endDate:
+                    type: string
+                    format: date-time
+                    description: The end date of the collection.
+                    example: '2024-12-31T23:59:59.000Z'
+                targetAmount:
+                    type: number
+                    format: float
+                    description: The target amount for the collection.
+                    example: 5000.00
+                currentAmount:
+                    type: number
+                    format: float
+                    description: The current amount available in the associated bank account.
+                    example: 2000.00
+                isBlocked:
+                    type: boolean
+                    description: Indicates whether the collection is blocked.
+                    example: false
+                children:
+                    type: array
+                    description: A list of children associated with the collection.
+                    items:
+                        $ref: '#/components/schemas/Child'
+
+        PaymentCreatePayload:
+            type: object
+            properties:
+                collectionId:
+                    type: string
+                    description: The ID of the collection for which the payment is being made.
+                    example: '6732020bc70fc650c5345263'
+                childId:
+                    type: string
+                    nullable: true
+                    description: The ID of the child associated with the payment, if applicable.
+                    example: '6782020bc70fc650c5345276'
+                amount:
+                    type: number
+                    format: float
+                    description: The amount of the payment.
+                    example: 100.00
+            required:
+                - collectionId
+                - amount
+        WithdrawPaymentPayload:
+            type: object
+            properties:
+                paymentId:
+                    type: string
+                    description: The unique ID of the payment to withdraw.
+                    example: '6749020bc70fc650c5345289'
+            required:
+                - paymentId
+        PaymentDtoMadeByParent:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique ID of the payment.
+                    example: '6749020bc70fc650c5345289'
+                collection:
+                    $ref: '#/components/schemas/Collection'
+                child:
+                    $ref: '#/components/schemas/Child'
+                amount:
+                    type: number
+                    format: float
+                    description: The amount of the payment.
+                    example: 100.00
+                description:
+                    type: string
+                    description: A description of the payment.
+                    example: 'Payment for school trip'
+                createdAt:
+                    type: string
+                    format: date-time
+                    description: The date the payment was made.
+                    example: '2024-12-01T10:00:00.000Z'
+        BankAccount:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    description: The unique identifier of the bank account.
+                    example: '6749020bc70fc650c5345289'
+                accountNumber:
+                    type: string
+                    description: The 16-digit account number of the bank account.
+                    example: '1234567812345678'
+                balance:
+                    type: number
+                    format: float
+                    description: The current balance of the bank account.
+                    example: 1500.75
+                owner:
+                    type: string
+                    description: The unique identifier of the owner associated with the bank account.
+                    example: '675ef643801ef10491d529a2'
+            required:
+                - _id
+                - accountNumber
+                - balance
+                - owner

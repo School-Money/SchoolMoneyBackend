@@ -62,7 +62,14 @@ export class AuthService {
                 this.parentService.getUserInfo(userId),
                 this.parentService.getParentBalance(userId),
             ]);
-            return { _id: userId, email: parent.email, firstName: parent.firstName, lastName: parent.lastName, balance };
+            return {
+                _id: userId,
+                email: parent.email,
+                firstName: parent.firstName,
+                lastName: parent.lastName,
+                balance,
+                avatar: parent.avatar,
+            };
         } catch (error) {
             throw new UnauthorizedException('Invalid credentials');
         }

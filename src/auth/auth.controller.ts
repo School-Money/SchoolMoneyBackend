@@ -23,12 +23,4 @@ export class AuthController {
         const { id: userId } = req.user;
         return this.authService.getUserInfo(userId);
     }
-
-    //   If we want to make artificial logout just to check if this user at least exists
-    //   @UseGuards(AuthGuard)
-    //   @Post('logout')
-    //   async logOutUser(@Request() req) {
-    //     const { username } = req.user;
-    //     return this.authService.logOutUser(username);
-    //   }
 }
