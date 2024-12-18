@@ -1892,6 +1892,12 @@ components:
           type: boolean
           description: Indicates whether the collection is blocked.
           example: false
+        children:
+          type: array
+          description: A list of children associated with the collection.
+          items:
+            $ref: '#/components/schemas/Child'
+
     PaymentCreatePayload:
       type: object
       properties:

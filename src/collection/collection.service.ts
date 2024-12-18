@@ -165,7 +165,8 @@ export class CollectionService {
 
             const bankAccount = await this.bankAccountModel.findById(collection.bankAccount);
             const classDoc = await this.classModel.findById(collection.class);
-            const parentChildren = await this.childModel.find({ parent: parent._id });
+            const childrenInClass = await this.childModel.find({ class: classDoc._id });
+            const parentChildren = childrenInClass.filter((child) => child.parent.toString() === parent._id.toString());
             if (!bankAccount) {
                 throw new NotFoundException('Bank account not found');
             } else if (!classDoc) {
@@ -192,6 +193,7 @@ export class CollectionService {
                 targetAmount: collection.targetAmount,
                 currentAmount: bankAccount.balance,
                 isBlocked: collection.isBlocked,
+                children: childrenInClass,
             };
         } catch (error) {
             if (error instanceof NotFoundException) {

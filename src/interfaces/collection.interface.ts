@@ -1,3 +1,4 @@
+import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
 import { Parent } from 'src/schemas/Parent.schema';
@@ -40,4 +41,5 @@ export interface GetCollectionDetails {
     targetAmount: number;
     currentAmount: number;
     isBlocked: boolean;
+    children: Child[];
 }
