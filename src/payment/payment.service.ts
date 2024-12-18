@@ -201,7 +201,7 @@ export class PaymentService {
             throw new NotFoundException('Child ID is required');
         } else if (!paymentCreatePayload.amount) {
             throw new NotFoundException('Amount is required');
-        } else if (paymentCreatePayload.amount <= 0) {
+        } else if (paymentCreatePayload.amount <= 0 && paymentCreatePayload.childId) {
             throw new NotFoundException('Amount must be greater than 0');
         }
     }
