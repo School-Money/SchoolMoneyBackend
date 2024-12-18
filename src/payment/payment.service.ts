@@ -103,9 +103,18 @@ export class PaymentService {
                     { _id: bankAccount._id },
                     { $inc: { balance: paymentCreatePayload.amount } },
                 );
+                await this.bankAccountModel.updateOne(
+                    { _id: parentBankAccount._id },
+                    { $inc: { balance: -paymentCreatePayload.amount } },
+                );
 
                 return payment;
             }
+
+            await this.bankAccountModel.updateOne(
+                { _id: parentBankAccount._id },
+                { $inc: { balance: paymentCreatePayload.amount } },
+            );
             return await this.paymentModel.create({
                 ...paymentCreatePayload,
                 collection: collection._id,
@@ -157,6 +166,7 @@ export class PaymentService {
             });
 
             await this.bankAccountModel.updateOne({ _id: bankAccount._id }, { $inc: { balance: -payment.amount } });
+            await this.bankAccountModel.updateOne({ _id: parentBankAccount._id }, { $inc: { balance: payment.amount } });
 
             return withdrawnPayment;
         } catch (error) {
