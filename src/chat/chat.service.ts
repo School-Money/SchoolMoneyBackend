@@ -83,13 +83,14 @@ export class ChatService {
         if (!admin) {
             throw new NotFoundException('Admin not found');
         }
+        const parentAdmin = await this.parentModel.findById(admin.parent);
 
         let chatRoom = await this.privateChatRoomModel.findOne({
-            participants: { $all: [user._id, admin._id] },
+            participants: { $all: [user._id, parentAdmin._id] },
         });
         if (!chatRoom) {
             chatRoom = await this.privateChatRoomModel.create({
-                participants: [user._id, admin._id],
+                participants: [user._id, parentAdmin._id],
                 messages: [],
             });
         }
@@ -109,13 +110,14 @@ export class ChatService {
         if (!admin) {
             throw new NotFoundException('Admin not found');
         }
+        const parentAdmin = await this.parentModel.findById(admin.parent);
 
         let chatRoom = await this.privateChatRoomModel.findOne({
-            participants: { $all: [user._id, admin._id] },
+            participants: { $all: [user._id, parentAdmin._id] },
         });
         if (!chatRoom) {
             chatRoom = await this.privateChatRoomModel.create({
-                participants: [user._id, admin._id],
+                participants: [user._id, parentAdmin._id],
                 messages: [],
             });
         }

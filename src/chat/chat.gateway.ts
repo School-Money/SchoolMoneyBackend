@@ -45,6 +45,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         @Req() req,
     ) {
         const userId = req.user.id;
+        console.log(`Client ${client.id} is joining room with user ${userId}`);
         const chatRoom = await this.chatService.getPrivateMessages(userId, payload.receiverId);
         const roomId = chatRoom._id.toHexString();
         client.join(roomId);
