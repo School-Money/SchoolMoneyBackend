@@ -100,6 +100,8 @@ export class CollectionService {
 
             await collection.updateOne({
                 ...payload,
+                startDate: new Date(payload.startDate * 1000),
+                endDate: new Date(payload.endDate * 1000),
                 logo: collection.logo,
             });
 
