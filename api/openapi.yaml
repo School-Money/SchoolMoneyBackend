@@ -1531,10 +1531,6 @@ components:
                     type: string
                     description: A brief description of the collection.
                     example: 'Raising funds for the school trip.'
-                logo:
-                    type: string
-                    description: The URL of the logo associated with the collection.
-                    example: 'https://example.com/logo.png'
                 startDate:
                     type: integer
                     format: int64

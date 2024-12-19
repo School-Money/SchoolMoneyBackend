@@ -7,7 +7,6 @@ import { Payment } from 'src/schemas/Payment.schema';
 export interface CollectionPayload {
     title: string;
     description: string;
-    logo: string;
     // Unix timestamp in milliseconds
     startDate: number;
     // Unix timestamp in milliseconds
