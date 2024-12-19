@@ -742,34 +742,6 @@ paths:
                     description: Forbidden. The user does not have permission to create a collection for the specified class.
                 '500':
                     description: Server error.
-        patch:
-            summary: Update a collection
-            description: Updates an existing collection associated with a specific class.
-            operationId: updateCollection
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CollectionUpdate'
-            responses:
-                '200':
-                    description: Collection updated successfully.
-                    content:
-                        application/json:
-                            schema:
-                                type: string
-                                example: 'Collection updated successfully'
-                '400':
-                    description: Bad request. Invalid input or validation error.
-                '401':
-                    description: Unauthorized. The user is not authenticated.
-                '403':
-                    description: Forbidden. The user does not have permission to update the collection.
-                '404':
-                    description: Not found. The collection with the given ID does not exist.
-                '500':
-                    description: Server error.
         get:
             summary: Get all collections
             description: Retrieves all collections associated with the authenticated user, including their current amount.
@@ -838,6 +810,42 @@ paths:
                     description: Unauthorized. The user is not authenticated.
                 '403':
                     description: Forbidden. The user does not have permission to close the collection.
+                '404':
+                    description: Not found. The collection with the given ID does not exist.
+                '500':
+                    description: Server error.
+        patch:
+            summary: Update a collection
+            description: Updates an existing collection associated with a specific class.
+            operationId: updateCollection
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CollectionUpdate'
+            parameters:
+                - name: collectionid
+                  in: path
+                  required: true
+                  description: The unique ID of the collection
+                  schema:
+                      type: string
+                      example: '6760912e3aa833ba37bff1f1'
+            responses:
+                '200':
+                    description: Collection updated successfully.
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+                                example: 'Collection updated successfully'
+                '400':
+                    description: Bad request. Invalid input or validation error.
+                '401':
+                    description: Unauthorized. The user is not authenticated.
+                '403':
+                    description: Forbidden. The user does not have permission to update the collection.
                 '404':
                     description: Not found. The collection with the given ID does not exist.
                 '500':
@@ -1553,22 +1561,42 @@ components:
             required:
                 - title
                 - description
-                - logo
                 - startDate
                 - endDate
                 - targetAmount
                 - classId
         CollectionUpdate:
-            allOf:
-                - $ref: '#/components/schemas/CollectionPayload'
-                - type: object
-                  properties:
-                      collectionId:
-                          type: string
-                          description: The unique ID of the collection to update.
-                          example: '6732020bc70fc650c5345263'
-                  required:
-                      - collectionId
+            type: object
+            properties:
+                title:
+                    type: string
+                    description: The title of the collection.
+                    example: 'School Fundraiser'
+                description:
+                    type: string
+                    description: A brief description of the collection.
+                    example: 'Raising funds for the school trip.'
+                startDate:
+                    type: integer
+                    format: int64
+                    description: The start date of the collection as a Unix timestamp in milliseconds.
+                    example: 1700000000000
+                endDate:
+                    type: integer
+                    format: int64
+                    description: The end date of the collection as a Unix timestamp in milliseconds.
+                    example: 1705000000000
+                targetAmount:
+                    type: number
+                    format: float
+                    description: The target amount for the collection.
+                    example: 5000.00
+            required:
+                - title
+                - description
+                - startDate
+                - endDate
+                - targetAmount
         CollectionWithCurrentAmount:
             type: object
             properties:
