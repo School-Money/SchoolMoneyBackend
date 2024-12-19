@@ -13,7 +13,7 @@ import { BankAccount } from 'src/schemas/BankAccount.schema';
 import { Child } from 'src/schemas/Child.schema';
 import { Class } from 'src/schemas/Class.schema';
 import { Collection } from 'src/schemas/Collection.schema';
-import { Parent } from 'src/schemas/Parent.schema';
+import { Parent, ParentDocument } from 'src/schemas/Parent.schema';
 import { Payment } from 'src/schemas/Payment.schema';
 
 @Injectable()
@@ -101,6 +101,7 @@ export class CollectionService {
 
             await collection.updateOne({
                 ...payload,
+                logo: collection.logo,
             });
 
             return collection;
@@ -159,7 +160,7 @@ export class CollectionService {
             const parent = await this.parentModel.findById(parentId);
             const collection = await this.collectionModel
                 .findById(collectionId)
-                .populate<{ creator: Parent }>('creator', '-password');
+                .populate<{ creator: ParentDocument }>('creator', '-password');
             const payments = await this.paymentModel
                 .find({ collection: collection._id })
                 .populate('parent', '-password')
@@ -181,7 +182,7 @@ export class CollectionService {
                 throw new NotFoundException('Class not found');
             } else if (!parentChildren.length) {
                 throw new NotFoundException('No child found for this parent');
-            } else if (!parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString())) {
+            } else if (!parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString()) && collection.creator._id !== parent._id) {
                 throw new BadRequestException('Parent has no children in this class');
             }
 

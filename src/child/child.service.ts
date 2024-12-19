@@ -61,23 +61,6 @@ export class ChildService {
                 throw new BadRequestException('Cannot update child of another parent');
             }
 
-            if (child.class.toString() !== childUpdate.classId) {
-                const oldClass = await this.classModel.findById(child.class);
-                const parentChildrenInOldClass = await this.childModel.find({
-                    parent: parent._id,
-                    class: child.class,
-                });
-
-                if (!oldClass) {
-                    throw new NotFoundException('Old class not found');
-                } else if (
-                    parent._id.toString() === oldClass.treasurer.toString() &&
-                    !parentChildrenInOldClass.some((child) => child._id.toString() !== childUpdate.childId)
-                ) {
-                    throw new BadRequestException('Cannot change class of only child in class of treasurer parent');
-                }
-            }
-
             return await this.childModel.findByIdAndUpdate(childUpdate.childId, {
                 ...childUpdate,
                 parent: parent._id,
