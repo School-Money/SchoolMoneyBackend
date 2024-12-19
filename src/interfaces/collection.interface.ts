@@ -15,9 +15,7 @@ export interface CollectionPayload {
     classId: string;
 }
 
-export interface CollectionUpdate extends CollectionPayload {
-    collectionId: string;
-}
+export interface CollectionUpdate extends Omit<CollectionPayload, 'classId'> {}
 
 export interface CollectionsDto extends Collection {
     currentAmount: number;

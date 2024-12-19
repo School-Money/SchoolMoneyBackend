@@ -1,4 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Patch,
+    Post,
+    Req,
+    Res,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CollectionPayload, CollectionUpdate, GetCollectionDetails } from 'src/interfaces/collection.interface';
 import { CollectionService } from './collection.service';
@@ -22,10 +35,14 @@ export class CollectionController {
         return 'Collection created successfully';
     }
 
-    @Patch()
-    async updateCollection(@Body() payload: CollectionUpdate, @Req() req): Promise<string> {
+    @Patch(':collectionId')
+    async updateCollection(
+        @Body() payload: CollectionUpdate,
+        @Req() req,
+        @Param('collectionId') collectionId: string,
+    ): Promise<string> {
         const { id } = req.user;
-        await this.collectionService.updateCollection(payload, id);
+        await this.collectionService.updateCollection(payload, collectionId, id);
 
         return 'Collection updated successfully';
     }
@@ -62,14 +79,10 @@ export class CollectionController {
     }
 
     @Get(':collectionId/logo')
-    async getCollectionLogo(
-        @Req() req,
-        @Param('collectionId') collectionId: string,
-        @Res() res: Response,
-    ) {
+    async getCollectionLogo(@Req() req, @Param('collectionId') collectionId: string, @Res() res: Response) {
         const { id: parentId } = req.user;
         const { stream, contentType } = await this.imageService.getImage('collection', collectionId, parentId);
-        
+
         res.setHeader('Content-Type', contentType);
         res.setHeader('Cache-Control', 'public, max-age=31536000');
 
