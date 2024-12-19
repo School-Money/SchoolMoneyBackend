@@ -182,7 +182,7 @@ export class CollectionService {
                 throw new NotFoundException('Class not found');
             } else if (!parentChildren.length) {
                 throw new NotFoundException('No child found for this parent');
-            } else if (!parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString()) && collection.creator._id !== parent._id) {
+            } else if (!(parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString()) || collection.creator._id === parent._id)) {
                 throw new BadRequestException('Parent has no children in this class');
             }
 
