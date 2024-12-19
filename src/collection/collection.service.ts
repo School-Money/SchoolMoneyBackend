@@ -180,9 +180,9 @@ export class CollectionService {
                 throw new NotFoundException('Bank account not found');
             } else if (!classDoc) {
                 throw new NotFoundException('Class not found');
-            } else if (!(parentChildren.length || collection.creator._id === parent._id)) {
+            } else if (!(parentChildren.length || collection.creator._id.toHexString() === parent._id.toHexString())) {
                 throw new NotFoundException('No child found for this parent');
-            } else if (!(parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString()) || collection.creator._id === parent._id)) {
+            } else if (!(parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString()) || collection.creator._id.toHexString() === parent._id.toHexString())) {
                 throw new BadRequestException('Parent has no children in this class');
             }
 
