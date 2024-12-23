@@ -18,8 +18,7 @@ import { Payment } from 'src/schemas/Payment.schema';
 
 @Injectable()
 export class CollectionService {
-    private readonly logoUrl: string =
-        `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099330/default-logo.png`;
+    private readonly logoUrl: string = `https://res.cloudinary.com/${this.configService.get<string>('CLOUDINARY_CLOUD_NAME')}/image/upload/v1734099330/default-logo.png`;
 
     constructor(
         @InjectModel(Collection.name)
@@ -79,7 +78,7 @@ export class CollectionService {
         }
     }
 
-    async updateCollection(payload: CollectionUpdate, parentId: string): Promise<Collection> {
+    async updateCollection(payload: CollectionUpdate, collectionId: string, parentId: string): Promise<Collection> {
         try {
             if (payload.startDate >= payload.endDate) {
                 throw new BadRequestException('Start date cannot be greater than end date');
@@ -90,7 +89,7 @@ export class CollectionService {
                 throw new NotFoundException('Parent not found');
             }
 
-            const collection = await this.collectionModel.findById(payload.collectionId);
+            const collection = await this.collectionModel.findById(collectionId);
             if (!collection || collection.isBlocked) {
                 throw new NotFoundException('Collection not found');
             }
@@ -101,6 +100,8 @@ export class CollectionService {
 
             await collection.updateOne({
                 ...payload,
+                startDate: new Date(payload.startDate * 1000),
+                endDate: new Date(payload.endDate * 1000),
                 logo: collection.logo,
             });
 
@@ -185,7 +186,12 @@ export class CollectionService {
                 throw new NotFoundException('Class not found');
             } else if (!(parentChildren.length || collection.creator._id.toHexString() === parent._id.toHexString())) {
                 throw new NotFoundException('No child found for this parent');
-            } else if (!(parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString()) || collection.creator._id.toHexString() === parent._id.toHexString())) {
+            } else if (
+                !(
+                    parentChildren.some((child) => child.class.toHexString() === classDoc._id.toHexString()) ||
+                    collection.creator._id.toHexString() === parent._id.toHexString()
+                )
+            ) {
                 throw new BadRequestException('Parent has no children in this class');
             }
 
