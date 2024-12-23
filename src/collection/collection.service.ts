@@ -130,11 +130,14 @@ export class CollectionService {
                 throw new NotFoundException('No class found for this parent');
             }
 
-            const collections = await this.collectionModel.find({
-                class: {
-                    $in: parentChildClasses,
-                },
-            }).populate<{class: Class}>('class');
+            const collections = await this.collectionModel
+                .find({
+                    $or: [
+                        { class: { $in: parentChildClasses } },
+                        { creator: parent._id },
+                    ],
+                })
+                .populate<{ class: Class }>('class');
 
             const collectionsWithCurrentAmount = await Promise.all(
                 collections.map(async (collection) => {
