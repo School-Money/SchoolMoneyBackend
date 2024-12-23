@@ -760,18 +760,19 @@ paths:
                 '500':
                     description: Server error.
     /collections/{collectionId}:
+        parameters:
+          - name: collectionId
+            in: path
+            required: true
+            description: The unique ID of the collection.
+            schema:
+                type: string
+                example: '6732020bc70fc650c5345263'
         get:
             summary: Get details of a specific collection
             description: Retrieves detailed information about a specific collection, including associated class, payments, creator, and financial details.
             operationId: getCollectionDetails
-            parameters:
-                - name: collectionId
-                  in: path
-                  required: true
-                  description: The unique ID of the collection.
-                  schema:
-                      type: string
-                      example: '6732020bc70fc650c5345263'
+
             responses:
                 '200':
                     description: Collection details retrieved successfully.
@@ -824,14 +825,6 @@ paths:
                     application/json:
                         schema:
                             $ref: '#/components/schemas/CollectionUpdate'
-            parameters:
-                - name: collectionid
-                  in: path
-                  required: true
-                  description: The unique ID of the collection
-                  schema:
-                      type: string
-                      example: '6760912e3aa833ba37bff1f1'
             responses:
                 '200':
                     description: Collection updated successfully.
@@ -1126,7 +1119,210 @@ paths:
                     description: Unauthorized. The user is not authenticated.
                 '500':
                     description: Server error.
+                    
+    /chat/private:
+      get:
+        summary: Get private chat messages
+        description: Retrieves private chat messages between the authenticated user and a specific receiver
+        operationId: getPrivateMessages
+        parameters:
+          - name: receiverId
+            in: query
+            required: true
+            schema:
+              type: string
+            description: The ID of the user to retrieve private messages with
+        responses:
+          '200':
+            description: Successfully retrieved private messages
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      sender:
+                        type: string
+                        description: ID of the message sender
+                      senderName:
+                        type: string
+                        description: Name of the message sender
+                      content:
+                        type: string
+                        description: Content of the message
+                      createdAt:
+                        type: string
+                        format: date-time
+                        description: Timestamp of the message
+          '401':
+            description: Unauthorized
+          '500':
+            description: Server error
+  
+      post:
+        summary: Send a private message
+        description: Sends a private message to a specific receiver
+        operationId: sendPrivateMessage
+        parameters:
+          - name: receiverId
+            in: query
+            required: true
+            schema:
+              type: string
+            description: The ID of the user to send a private message to
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: string
+                    description: Content of the message
+                required:
+                  - content
+        responses:
+          '200':
+            description: Message sent successfully
+          '401':
+            description: Unauthorized
+          '500':
+            description: Server error
 
+    /chat/helpdesk:
+        get:
+          summary: Get helpdesk messages (admin messages)
+          description: Retrieves messages from the helpdesk for the authenticated user with the admin
+          operationId: getHelpdeskMessages
+          responses:
+            '200':
+              description: Successfully retrieved helpdesk messages
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        sender:
+                          type: string
+                          description: ID of the message sender
+                        senderName:
+                          type: string
+                          description: Name of the message sender
+                        content:
+                          type: string
+                          description: Content of the message
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: Timestamp of the message
+            '401':
+              description: Unauthorized
+            '500':
+              description: Server error
+    
+        post:
+          summary: Send a helpdesk message (to admin)
+          description: Sends a message to the helpdesk (to admin)
+          operationId: sendHelpdeskMessage
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      description: Content of the message
+                  required:
+                    - content
+          responses:
+            '200':
+              description: Message sent successfully
+            '401':
+              description: Unauthorized
+            '500':
+              description: Server error
+
+    /chat/class:
+        get:
+          summary: Get class chat messages
+          description: Retrieves chat messages for a specific class
+          operationId: getClassMessages
+          parameters:
+            - name: classId
+              in: query
+              required: true
+              schema:
+                type: string
+              description: The ID of the class to retrieve messages for
+          responses:
+            '200':
+              description: Successfully retrieved class messages
+              content:
+                application/json:
+                  schema:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        sender:
+                          type: string
+                          description: ID of the message sender
+                        senderName:
+                          type: string
+                          description: Name of the message sender
+                        content:
+                          type: string
+                          description: Content of the message
+                        createdAt:
+                          type: string
+                          format: date-time
+                          description: Timestamp of the message
+            '401':
+              description: Unauthorized
+            '403':
+              description: Not a member of the class
+            '500':
+              description: Server error
+    
+        post:
+          summary: Send a class chat message
+          description: Sends a message to a specific class chat
+          operationId: sendClassMessage
+          parameters:
+            - name: classId
+              in: query
+              required: true
+              schema:
+                type: string
+              description: The ID of the class to send a message to
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      description: Content of the message
+                  required:
+                    - content
+          responses:
+            '200':
+              description: Message sent successfully
+            '401':
+              description: Unauthorized
+            '403':
+              description: Not a member of the class
+            '500':
+              description: Server error
+            
 components:
     schemas:
         GetParentsDto:
